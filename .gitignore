@@ -1,5 +1,8 @@
-.idea
-__pycache__
+.idea/
+__pycache__/
+build/
+dist/
+*.egg-info/
 
 serviceAccountKey.json
 testing.py
