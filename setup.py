@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="siegeapi",
-    version="1.0",
+    version="1.0.1",
     url="https://github.com/CNDRD/siege-api",
     description="Rainbow Six Siege API interface",
     author="CNDRD",
