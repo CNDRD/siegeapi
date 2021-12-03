@@ -161,7 +161,7 @@ class Player:
         data = await self.auth.get(self.url_builder.load_level_url())
 
         if "player_profiles" in data and len(data["player_profiles"]) > 0:
-            self.xp = data["player_profiles"][0].get("xp", 0)
+            # self.xp = data["player_profiles"][0].get("xp", 0)
             self.level = data["player_profiles"][0].get("level", 0)
             self.lootbox_probability = data["player_profiles"][0].get("lootbox_probability", 0)
         else:
