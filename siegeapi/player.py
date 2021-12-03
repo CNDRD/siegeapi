@@ -57,7 +57,6 @@ class Player:
         self.profile_pic_url: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
 
         self.name: str = data.get("nameOnPlatform")
-        self.time_played: int = 0
         self.xp: int = 0
         self.level: int = 0
         self.lootbox_probability: int = 0
