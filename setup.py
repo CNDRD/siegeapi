@@ -1,5 +1,9 @@
 from setuptools import setup, find_packages
 
+readme = ''
+with open('README.md') as f:
+    long_description = f.read()
+
 setup(
     name="siegeapi",
     version="1.0.1",
@@ -11,6 +15,8 @@ setup(
     include_package_data=True,
     install_requires=["aiohttp>=3.6.0,<3.8.0"],
     python_requires=">=3.8.0",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
