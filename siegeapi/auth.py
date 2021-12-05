@@ -5,7 +5,7 @@ import base64
 from urllib import parse
 
 from .exceptions import FailedToConnect, InvalidRequest
-from .player import Player
+from .player import Player, PlayerBatch
 
 
 class Auth:
@@ -196,7 +196,7 @@ class Auth:
         results = await self.get_players(name=name, platform=platform, uid=uid)
         return results[0]
 
-    async def get_player_batch(self, platform, names=None, uids=None):
+    async def get_player_batch(self, platform, names=None, uids=None) -> PlayerBatch:
         players = {}
         if names is not None:
             for name in names:
@@ -207,4 +207,4 @@ class Auth:
             for uid in uids:
                 player = await self.get_player(uid=uid, platform=platform)
                 players[player.id] = player
-        return players
+        return PlayerBatch(players)

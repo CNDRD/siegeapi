@@ -43,9 +43,55 @@ class UrlBuilder:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?profileIds={self.player_ids}&spaceId={self.spaceid}&statNames={','.join(statistics)}"
 
 
+class PlayerBatch:
+    """ Accumulates requests for multiple players' stats in to a single request, saving time """
+
+    def __init__(self, players):
+        self.players = players
+        self.player_ids = [player_id for player_id in players]
+        self._player_objs = [players[player_id] for player_id in players]
+
+        if len(players) == 0:
+            raise ValueError("batch must contain at least one player")
+
+    def __iter__(self):
+        return iter(self._player_objs)
+
+    def __getitem__(self, name):
+        return self.players[name]
+
+    def __getattr__(self, name):
+        root_player = self.players[self.player_ids[0]]
+        root_method = getattr(root_player, name)
+
+        async def _proxy(*args, **kwargs):
+            results = {}
+
+            # temporarily override url builder so we get data for all players
+            root_player.url_builder.player_ids = ",".join(self.player_ids)
+
+            root_result = await root_method(*args, **kwargs)
+            results[root_player.id] = root_result
+
+            data = root_player._last_data
+            kwargs["data"] = data
+
+            for player_id in self.players:
+                if player_id != root_player.id:
+                    results[player_id] = await getattr(self.players[player_id], name)(*args, **kwargs)
+
+            # reset root player url builder to default state
+            root_player.url_builder.player_ids = root_player.id
+
+            return results
+
+        return _proxy
+
+
 class Player:
     def __init__(self, auth: aiohttp.ClientSession(), data: dict):
         self.auth: aiohttp.ClientSession() = auth
+        self._last_data = None
 
         self.id: str = data.get("profileId")
         self.userid: str = data.get("userId")
@@ -110,8 +156,11 @@ class Player:
         }
         return stats
 
-    async def _fetch_statistics(self, statistics: list) -> dict[str: str | int | float]:
-        data = await self.auth.get(self.url_builder.fetch_statistic_url(statistics))
+    async def _fetch_statistics(self, statistics: list, data=None) -> dict[str: str | int | float]:
+
+        if not data:
+            data = await self.auth.get(self.url_builder.fetch_statistic_url(statistics))
+            self._last_data = data
 
         if "results" not in data or self.id not in data["results"]:
             raise InvalidRequest(f"Missing results key in returned JSON object {str(data)}")
@@ -125,7 +174,7 @@ class Player:
                 stats[statistic] = data[x]
         return stats
 
-    async def load_general(self):
+    async def load_general(self) -> None:
         """ Loads players' general stats """
 
         stats = await self._fetch_statistics(stat_names.GENERAL_URL_STATS)
@@ -156,9 +205,12 @@ class Player:
         self.gadgets_destroyed = stats.get(f"{statname}gadgetdestroy", 0)
         self.blind_kills = stats.get(f"{statname}blindkills")
 
-    async def load_level(self) -> None:
+    async def load_level(self, data=None) -> None:
         """ Load the players' XP, level & alpha pack % """
-        data = await self.auth.get(self.url_builder.load_level_url())
+
+        if not data:
+            data = await self.auth.get(self.url_builder.load_level_url())
+            self._last_data = data
 
         if "player_profiles" in data and len(data["player_profiles"]) > 0:
             # self.xp = data["player_profiles"][0].get("xp", 0)
@@ -167,9 +219,12 @@ class Player:
         else:
             raise InvalidRequest(f"Missing key player_profiles in returned JSON object {str(data)}")
 
-    async def load_casual(self, region='EU', season=-1) -> Rank:
+    async def load_casual(self, region='EU', season=-1, data=None) -> Rank:
         """ Loads the players' rank for this region and season """
-        data = await self.auth.get(self.url_builder.load_casual_url(region, season))
+
+        if not data:
+            data = await self.auth.get(self.url_builder.load_casual_url(region, season))
+            self._last_data = data
 
         if season < 0:
             season = len(seasons) + season
@@ -183,9 +238,12 @@ class Player:
         else:
             raise InvalidRequest(f"Missing players key in returned JSON object {str(data)}")
 
-    async def load_rank(self, region='EU', season=-1) -> Rank:
+    async def load_rank(self, region='EU', season=-1, data=None) -> Rank:
         """ Loads the players rank for the given and season """
-        data = await self.auth.get(self.url_builder.load_rank_url(region, season))
+
+        if not data:
+            data = await self.auth.get(self.url_builder.load_rank_url(region, season))
+            self._last_data = data
 
         if season < 0:
             season = len(seasons) + season
@@ -244,9 +302,12 @@ class Player:
         self.casual = Gamemode("casual", stats)
         await self._load_thunt()
 
-    async def load_weapon_types(self) -> None:
+    async def load_weapon_types(self, data=None) -> None:
         """ Load the players' weapon type stats """
-        data = await self.auth.get(self.url_builder.load_weapon_type_url())
+
+        if not data:
+            data = await self.auth.get(self.url_builder.load_weapon_type_url())
+            self._last_data = data
 
         if "results" not in data or self.id not in data["results"]:
             raise InvalidRequest(f"Missing key results in returned JSON object {str(data)}")
