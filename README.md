@@ -13,7 +13,7 @@
 pip install siegeapi
 ```
 
-## How to use  
+## Quick example  
 ```python
 from siegeapi import Auth, Platforms
 import asyncio
@@ -43,23 +43,158 @@ Alpha pack %: 2050
 
 > **_NOTE:_** `player.lootbox_probability` is 3 or 4-digits long E.g.:  `player.lootbox_probability = 500` 👉 5.00%  
 
-> **_NOTE:_** To get user XP use `player.load_level()`, then `player.total_xp`  
-
 ---  
 
-## Some weird stuff
+# Docs  
 
-### `player.load_rank(region='EU', season-1)`  
-Loads the players' ranked info for the latest season in the EU region  
-However, the API just flat out errors out when you try to input season number that's lower than `18` (or `-7`)  
-This can be seen also at their own stats website, where the last season with sensible data is Shadow Legacy  
-> **_NOTE:_** I am planning on limiting the season numbers or using some other endpoint to get the missing seasons but for now be careful  
+# `Auth`  
+|       Parameter       |  Type  |                       Info                       |
+|:---------------------:|:------:|:------------------------------------------------:|
+|         email         | string |          Ubisoft account email address           |
+|       password        | string |             Ubisoft account password             |
+ 
+### `.close()`  
+Closes the [`Auth`](#auth) session  
 
-### `player.load_general()`  
-`player.bullets_fired` - Hasn't been updated for a long time  
-`player.distance_travelled` - Could be overflown, so if you see a funny number send a thank you letter to Ubi  
+### `.get_player(name=None, platform=None, uid=None) -> Player`  
+Either `name` or `uid` must be given, but not both  
+Returns one instance of [`Player`](#player) that matches either `name` or `uid`   
 
-> **_NOTE:_** I want to remove all the unsupported data that Ubi sends out but for that I need to figure out which data is affected  
+### `.get_player_batch(self, platform, names=None, uids=None) -> PlayerBatch:`  
+Returns a [`PlayerBatch`](#playerbatch) of players' data according to the given lists of `names` and/or `uids`  
+
+# `Player`  
+
+### `.load_playtime() -> dict[str: int]`  
+Loads the `Player.pvp_time_played`, `Player.pve_time_played` and `Player.time_played`  
+_(Also returns these values)_  
+
+### `.load_general() -> None`  
+Loads these values into the [`Player`](#player) object:  
+- `.deaths`  
+- `.kills`  
+- `.kill_assists`  
+- `.penetration_kills`  
+- `.matches_won`  
+- `.bullets_hit`  
+- `.melee_kills`  
+- `.matches_played`  
+- `.revives`  
+- `.headshots`  
+- `.matches_lost`  
+- `.dbno_assists`  
+- `.suicides`  
+- `.barricades_deployed`  
+- `.reinforcements_deployed`  
+- `.total_xp`  
+- `.rappel_breaches`  
+- `.distance_travelled`  
+- `.revives_denied`  
+- `.dbnos`  
+- `.gadgets_destroyed`  
+- `.blind_kills`  
+
+> **_NOTE:_** `.distance_travelled` Could be overflown, so if you see a funny number send a thank you letter to Ubi  
+
+### `.load_gamemodes() -> None`  
+Loads [`Gamemode`](#gamemode) objects into the current [`Player`](#player)  
+
+| `Gamemode` | `Player.` |
+|:----------:|:---------:|
+|   Ranked   | `.ranked` |
+|   Casual   | `.casual` |
+|   T Hunt   | `.thunt`  |
+
+### `.load_weapon_types() -> None`  
+Loads [`Weapon`](#weapon) type stats into `Player.weapons`  
+
+|      Weapon       |     types      |
+|:-----------------:|:--------------:|
+|   Assault Rifle   | Submachine Gun |
+| Light Machine Gun | Marksman Rifle |
+|      Handgun      |    Shotgun     |
+|  Machine Pistol   |       -        |
+
+Loads these values:  
+
+|     attr     |         ?         |
+|:------------:|:-----------------:|
+|   `.kills`   |                   |
+| `.headshots` |                   |
+|   `.shots`   |   bullets fired   |
+|   `.hits`    | bullets connected |
+
+### `.load_all_operators() -> dict[str: Operator]`  
+Loads all the available operators' statistics inside the [`Operator`](#operator) class and also returns them  
+Dict keys are lowercase operator names  
+
+### `.load_everything()`  
+As the name suggests, loads everything in one call  
+
+# Operator  
+Holds general operator statistics for a given operator as well as a list of their unique ability stats
+
+|      Stat      |      Stat       |
+|:--------------:|:---------------:|
+|    `.wins`     |    `.losses`    |
+|    `.kills`    |    `.deaths`    |
+|  `.headshots`  |    `.melees`    |
+|    `.dbnos`    |      `.xp`      |
+| `.time_played` |    `.atkdef`    |
+|    `.icon`     | `.unique_stats` |
+
+> **_NOTE:_** `.atkdef` & `.icon` are strings; `.unique_stats` is a dict  
+
+# Rank  
+Holds stats for the given gamemode (ranked / casual) for the given `Rank.season` and `Rank.region`  
+
+| Stat               |  Type  |
+|:-------------------|:------:|
+| `.kills`           |  int   |
+| `.deaths`          |  int   |
+| `.last_mmr_change` | float  |
+| `.prev_rank_mmr`   | float  |
+| `.next_rank_mmr`   | float  |
+| `.mmr`             |  int   |
+| `.max_mmr`         |  int   |
+| `.wins`            |  int   |
+| `.losses`          |  int   |
+| `.abandons`        |  int   |
+| `.rank_id`         |  int   |
+| `.rank`            | string |
+| `.max_rank_id`     |  int   |
+| `.max_rank`        | string |
+| `.season`          |  int   |
+| `.region`          | string |
+| `.skill_mean`      | float  |
+| `.skill_stdev`     | float  |
+
+
+# Gamemode  
+Holds the following statistics for the given gamemode  
+- `.won`  
+- `.lost`  
+- `.time_played`  
+- `.played`  
+- `.kills`  
+- `.deaths`  
+
+# Weapon  
+Holds weapon type statistics  
+
+|     attr     |         ?         |
+|:------------:|:-----------------:|
+|   `.kills`   |                   |
+| `.headshots` |                   |
+|   `.shots`   |   bullets fired   |
+|   `.hits`    | bullets connected |
+
+# Platforms  
+Used while getting players in [`Auth`](#auth)  
+
+`Platforms.UPLAY` is for Ubisoft Connect  
+`Platforms.XBOX` is for XBOX  
+`Platforms.PLAYSTATION` is for Playstation  
 
 ---  
 
