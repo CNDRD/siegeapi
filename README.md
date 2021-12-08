@@ -71,28 +71,20 @@ _(Also returns these values)_
 
 ### `.load_general() -> None`  
 Loads these values into the [`Player`](#player) object:  
-- `.deaths`  
-- `.kills`  
-- `.kill_assists`  
-- `.penetration_kills`  
-- `.matches_won`  
-- `.bullets_hit`  
-- `.melee_kills`  
-- `.matches_played`  
-- `.revives`  
-- `.headshots`  
-- `.matches_lost`  
-- `.dbno_assists`  
-- `.suicides`  
-- `.barricades_deployed`  
-- `.reinforcements_deployed`  
-- `.total_xp`  
-- `.rappel_breaches`  
-- `.distance_travelled`  
-- `.revives_denied`  
-- `.dbnos`  
-- `.gadgets_destroyed`  
-- `.blind_kills`  
+
+|            Stat            |          Stat          |
+|:--------------------------:|:----------------------:|
+|         `.deaths`          |        `.kills`        |
+|      `.kill_assists`       |  `.penetration_kills`  |
+|       `.matches_won`       |     `.bullets_hit`     |
+|       `.melee_kills`       |   `.matches_played`    |
+|         `.revives`         |      `.headshots`      |
+|      `.matches_lost`       |    `.dbno_assists`     |
+|        `.suicides`         | `.barricades_deployed` |
+| `.reinforcements_deployed` |      `.total_xp`       |
+|     `.rappel_breaches`     | `.distance_travelled`  |
+|     `.revives_denied`      |        `.dbnos`        |
+|    `.gadgets_destroyed`    |     `.blind_kills`     |
 
 > **_NOTE:_** `.distance_travelled` Could be overflown, so if you see a funny number send a thank you letter to Ubi  
 
@@ -148,27 +140,17 @@ Holds general operator statistics for a given operator as well as a list of thei
 # Rank  
 Holds stats for the given gamemode (ranked / casual) for the given `Rank.season` and `Rank.region`  
 
-| Stat               |  Type  |
-|:-------------------|:------:|
-| `.kills`           |  int   |
-| `.deaths`          |  int   |
-| `.last_mmr_change` | float  |
-| `.prev_rank_mmr`   | float  |
-| `.next_rank_mmr`   | float  |
-| `.mmr`             |  int   |
-| `.max_mmr`         |  int   |
-| `.wins`            |  int   |
-| `.losses`          |  int   |
-| `.abandons`        |  int   |
-| `.rank_id`         |  int   |
-| `.rank`            | string |
-| `.max_rank_id`     |  int   |
-| `.max_rank`        | string |
-| `.season`          |  int   |
-| `.region`          | string |
-| `.skill_mean`      | float  |
-| `.skill_stdev`     | float  |
-
+| Stat               | Type  |     | Stat           |  Type  |
+|:-------------------|:-----:|-----|:---------------|:------:|
+| `.kills`           |  int  |     | `.abandons`    |  int   |
+| `.deaths`          |  int  |     | `.rank_id`     |  int   |
+| `.last_mmr_change` | float |     | `.rank`        | string |
+| `.prev_rank_mmr`   | float |     | `.max_rank_id` |  int   |
+| `.next_rank_mmr`   | float |     | `.max_rank`    | string |
+| `.mmr`             |  int  |     | `.season`      |  int   |
+| `.max_mmr`         |  int  |     | `.region`      | string |
+| `.wins`            |  int  |     | `.skill_mean`  | float  |
+| `.losses`          |  int  |     | `.skill_stdev` | float  |
 
 # Gamemode  
 Holds the following statistics for the given gamemode  
