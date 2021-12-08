@@ -1,4 +1,5 @@
 <div align="center">
+    <img width="250" src="./assets/siegeapi-banner.png" />
     <h1>siegeapi</h1>
     <img src="https://img.shields.io/github/license/CNDRD/siegeapi" />
     <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release" />
