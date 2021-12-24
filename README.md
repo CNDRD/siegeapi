@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="250" src="./assets/siegeapi-banner.png" />
+    <img width="250" src="https://raw.githubusercontent.com/CNDRD/siegeapi/master/assets/siegeapi-banner.png" />
     <h1>siegeapi</h1>
     <img src="https://img.shields.io/github/license/CNDRD/siegeapi" />
     <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release" />
@@ -22,14 +22,14 @@ import asyncio
 async def sample():
     auth = Auth("UBI_EMAIL", "UBI_PASSWORD")
     player = await auth.get_player(uid="7e0f63df-a39b-44c5-8de0-d39a05926e77", platform=Platforms.UPLAY)
-    
+
     print(f"Name: {player.name}")
     print(f"Profile pic URL: {player.profile_pic_url}")
-    
+
     await player.load_level()
     print(f"Level: {player.level}")
     print(f"Alpha pack %: {player.lootbox_probability}")
-    
+
     await auth.close()
 
 asyncio.get_event_loop().run_until_complete(sample())
@@ -53,7 +53,7 @@ Alpha pack %: 2050
 |:---------------------:|:------:|:------------------------------------------------:|
 |         email         | string |          Ubisoft account email address           |
 |       password        | string |             Ubisoft account password             |
- 
+
 ### `.close()`  
 Closes the [`Auth`](#auth) session  
 
