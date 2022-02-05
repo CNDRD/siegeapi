@@ -3,10 +3,13 @@
     <h1>siegeapi</h1>
     <img src="https://img.shields.io/github/license/CNDRD/siegeapi" />
     <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release" />
+    <img src="https://img.shields.io/pypi/v/siegeapi" />
     <img src="https://img.shields.io/pypi/pyversions/siegeapi" />
+    <img src="https://img.shields.io/github/repo-size/CNDRD/siegeapi" />
     <br/>
     <img src="https://img.shields.io/github/last-commit/CNDRD/siegeapi" />
     <img src="https://img.shields.io/github/commit-activity/m/CNDRD/siegeapi" />
+    <img src="https://img.shields.io/pypi/dm/siegeapi" />
 </div>
 
 ## How to install  
