@@ -14,7 +14,7 @@ class Auth:
 
     @staticmethod
     def get_basic_token(email: str, password: str) -> str:
-        return base64.b64encode((email + ":" + password).encode("utf-8")).decode("utf-8")
+        return base64.b64encode(f"{email}:{password}".encode("utf-8")).decode("utf-8")
 
     def __init__(
             self,
