@@ -7,9 +7,8 @@ def get_from_operators_const(name: str, what: str) -> str:
 
 class Operator:
     def __init__(self, name, stats=None, unique_stats=None):
-        nl = name.lower()
-        self.name = nl
-        self.readable = get_from_operators_const(nl, 'name')
+        self.name = name.lower()
+        self.readable = get_from_operators_const(self.name, 'name')
 
         stats = stats or {}
         self.wins = stats.get("roundwon", 0)
@@ -21,8 +20,8 @@ class Operator:
         self.dbnos = stats.get("dbno", 0)
         self.xp = stats.get("totalxp", 0)
         self.time_played = stats.get("timeplayed", 0)
-        self.atkdef = get_from_operators_const(nl, 'side')
-        self.icon = get_from_operators_const(nl, 'icon_url')
+        self.atkdef = get_from_operators_const(self.name, 'side')
+        self.icon = get_from_operators_const(self.name, 'icon_url')
 
         if unique_stats is not None:
             self.unique_stats = unique_stats
