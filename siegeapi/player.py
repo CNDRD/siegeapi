@@ -19,27 +19,27 @@ class UrlBuilder:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
                f"populations={self.player_ids}&statistics={','.join(statistics)}"
 
-    def load_level_url(self) -> str:
+    def create_level_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/r6playerprofile/" \
                f"playerprofile/progressions?profile_ids={self.player_ids}"
 
-    def load_rank_url(self, region, season) -> str:
+    def create_rank_url(self, region, season) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/r6karma/players?" \
                f"board_id=pvp_ranked&profile_ids={self.player_ids}&region_id={region}&season_id={season}"
 
-    def load_casual_url(self, region, season) -> str:
+    def create_casual_url(self, region, season) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/r6karma/players?" \
                f"board_id=pvp_casual&profile_ids={self.player_ids}&region_id={region}&season_id={season}"
 
-    def load_operator_url(self, statistics) -> str:
+    def create_operator_url(self, statistics) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
                f"populations={self.player_ids}&statistics={statistics}"
 
-    def load_weapon_type_url(self) -> str:
+    def create_weapon_type_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
                f"populations={self.player_ids}&statistics=weapontypepvp_kills,weapontypepvp_headshot,weapontypepvp_bulletfired,weapontypepvp_bullethit"
 
-    def load_playtime_url(self, statistics) -> str:
+    def create_playtime_url(self, statistics) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?profileIds={self.player_ids}&spaceId={self.spaceid}&statNames={','.join(statistics)}"
 
 
@@ -145,7 +145,7 @@ class Player:
         self.thunt: Gamemode | None = None
 
     async def load_playtime(self) -> dict[str: int]:
-        data = await self.auth.get(self.url_builder.load_playtime_url(PLAYTIME_URL_STATS))
+        data = await self.auth.get(self.url_builder.create_playtime_url(PLAYTIME_URL_STATS))
         self.pvp_time_played = data['profiles'][0]['stats']["PPvPTimePlayed"]["value"]
         self.pve_time_played = data['profiles'][0]['stats']["PPvETimePlayed"]["value"]
         self.time_played = data['profiles'][0]['stats']["PTotalTimePlayed"]["value"]
@@ -209,7 +209,7 @@ class Player:
         """ Load the players' XP, level & alpha pack % """
 
         if not data:
-            data = await self.auth.get(self.url_builder.load_level_url())
+            data = await self.auth.get(self.url_builder.create_level_url())
             self._last_data = data
 
         if "player_profiles" in data and len(data["player_profiles"]) > 0:
@@ -223,7 +223,7 @@ class Player:
         """ Loads the players' rank for this region and season """
 
         if not data:
-            data = await self.auth.get(self.url_builder.load_casual_url(region, season))
+            data = await self.auth.get(self.url_builder.create_casual_url(region, season))
             self._last_data = data
 
         if season < 0:
@@ -242,7 +242,7 @@ class Player:
         """ Loads the players rank for the given and season """
 
         if not data:
-            data = await self.auth.get(self.url_builder.load_rank_url(region, season))
+            data = await self.auth.get(self.url_builder.create_rank_url(region, season))
             self._last_data = data
 
         if season < 0:
@@ -306,7 +306,7 @@ class Player:
         """ Load the players' weapon type stats """
 
         if not data:
-            data = await self.auth.get(self.url_builder.load_weapon_type_url())
+            data = await self.auth.get(self.url_builder.create_weapon_type_url())
             self._last_data = data
 
         if "results" not in data or self.id not in data["results"]:
@@ -326,7 +326,7 @@ class Player:
 
         statistics = ",".join(statistics)
 
-        data = await self.auth.get(self.url_builder.load_operator_url(statistics))
+        data = await self.auth.get(self.url_builder.create_operator_url(statistics))
 
         if "results" not in data or self.id not in data["results"]:
             raise InvalidRequest(f"Missing results key in returned JSON object {str(data)}")
