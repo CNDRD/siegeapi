@@ -42,6 +42,9 @@ class UrlBuilder:
     def create_playtime_url(self, statistics) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?profileIds={self.player_ids}&spaceId={self.spaceid}&statNames={','.join(statistics)}"
 
+    def create_level_only_url(self) -> str:
+        return f"https://public-ubiservices.ubi.com/v1/profiles/{self.player_ids}/stats/PClearanceLevel?spaceId={self.spaceid}"
+
 
 class PlayerBatch:
     """ Accumulates requests for multiple players' stats in to a single request, saving time """
@@ -143,6 +146,10 @@ class Player:
         self.casual: Gamemode | None = None
         self.ranked: Gamemode | None = None
         self.thunt: Gamemode | None = None
+
+    async def load_only_level(self) -> int:
+        data = await self.auth.get(self.url_builder.create_level_only_url())
+        return data["stats"]["PClearanceLevel"]["value"]
 
     async def load_playtime(self) -> dict[str: int]:
         data = await self.auth.get(self.url_builder.create_playtime_url(PLAYTIME_URL_STATS))
