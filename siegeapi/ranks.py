@@ -15,15 +15,22 @@ def get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
     return ranks_v5
 
 
+def _get_rank_from_mmr(mmr: int | float, season: int = -1) -> tuple[str, int, int, int]:
+    for rank_id, r in enumerate(get_rank_constants(season)):
+        if r["min_mmr"] <= int(mmr) <= r["max_mmr"]:
+            return r["name"], r["min_mmr"], r["max_mmr"]+1, rank_id
+    return "Unranked", 0, 0, 0
+
+
 class Rank:
     def __init__(self, data, rank_definitions):
         self.kills: int = data.get("kills", 0)
         self.deaths: int = data.get("deaths", 0)
-        self.last_mmr_change: float = data.get("last_match_mmr_change", 0)
-        self.prev_rank_mmr: float = data.get("previous_rank_mmr", 0)
-        self.next_rank_mmr: float = data.get("next_rank_mmr", 0)
-        self.mmr: float = data.get("mmr", 0)
-        self.max_mmr: float = data.get("max_mmr", 0)
+        self.last_mmr_change: int = int(data.get("last_match_mmr_change", 0))
+        self.prev_rank_mmr: int = int(data.get("previous_rank_mmr", 0))
+        self.next_rank_mmr: int = int(data.get("next_rank_mmr", 0))
+        self.mmr: int = int(data.get("mmr", 0))
+        self.max_mmr: int = int(data.get("max_mmr", 0))
         self.wins: int = data.get("wins", 0)
         self.losses: int = data.get("losses", 0)
         self.rank_id: int = data.get("rank")
@@ -35,6 +42,12 @@ class Rank:
         self.abandons: int = data.get("abandons", 0)
         self.skill_mean: float = data.get("skill_mean", 0)
         self.skill_stdev: float = data.get("skill_stdev", 0)
+
+        # For casual where the API doesn't return this data
+        if self.prev_rank_mmr == 0 and self.next_rank_mmr == 0:
+            self.rank, self.prev_rank_mmr, self.next_rank_mmr, self.rank_id = _get_rank_from_mmr(self.mmr)
+            self.max_rank_id = self.max_mmr = -1
+            self.max_rank = "Undefined"
 
     def get_dict(self) -> dict[str: str | int | float]:
         return vars(self)
