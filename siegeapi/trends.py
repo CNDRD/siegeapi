@@ -22,7 +22,7 @@ class TrendBlocks:
         self.melee_kills: list[int] = data.get("meleeKills", [])
         self.team_kills: list[int] = data.get("teamKills", [])
         self.opening_kills: list[int] = data.get("openingKills", [])
-        self.opening_Deaths: list[int] = data.get("openingDeaths", [])
+        self.opening_deaths: list[int] = data.get("openingDeaths", [])
         self.trades: list[int] = data.get("trades", [])
         self.opening_kill_trades: list[int] = data.get("openingKillTrades", [])
         self.opening_death_trades: list[int] = data.get("openingDeathTrades", [])
