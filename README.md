@@ -1,15 +1,31 @@
 <div align="center">
     <img width="250" src="https://raw.githubusercontent.com/CNDRD/siegeapi/master/assets/siegeapi-banner.png" />
     <h1>siegeapi</h1>
-    <img src="https://img.shields.io/github/license/CNDRD/siegeapi" />
-    <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release" />
-    <img src="https://img.shields.io/pypi/v/siegeapi" />
-    <img src="https://img.shields.io/pypi/pyversions/siegeapi" />
-    <img src="https://img.shields.io/github/repo-size/CNDRD/siegeapi" />
+    <a href="https://github.com/CNDRD/siegeapi/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/CNDRD/siegeapi" />
+    </a>
+    <a href="https://github.com/CNDRD/siegeapi/releases">
+        <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release" />
+    </a>
+    <a href="https://pypi.org/project/siegeapi/#history">
+        <img src="https://img.shields.io/pypi/v/siegeapi" />
+    </a>
+    <a href="https://www.python.org/downloads/">
+        <img src="https://img.shields.io/pypi/pyversions/siegeapi" />
+    </a>
+    <a href="https://github.com/CNDRD/siegeapi">
+        <img src="https://img.shields.io/github/repo-size/CNDRD/siegeapi" />
+    </a>
     <br/>
-    <img src="https://img.shields.io/github/last-commit/CNDRD/siegeapi" />
-    <img src="https://img.shields.io/github/commit-activity/m/CNDRD/siegeapi" />
-    <img src="https://img.shields.io/pypi/dm/siegeapi" />
+    <a href="https://github.com/CNDRD/siegeapi/commits/master">
+        <img src="https://img.shields.io/github/last-commit/CNDRD/siegeapi" />
+    </a>
+    <a href="https://github.com/CNDRD/siegeapi/commits/master">
+        <img src="https://img.shields.io/github/commit-activity/m/CNDRD/siegeapi" />
+    </a>
+    <a href="https://pypi.org/project/siegeapi">
+        <img src="https://img.shields.io/pypi/dm/siegeapi" />
+    </a>
 </div>
 
 ## How to install  
