@@ -4,6 +4,7 @@ from .ranks import Rank, get_rank_constants
 from .gamemode import Gamemode
 from .weapons import Weapon
 from .operators import Operator
+from .trends import Trends, TrendBlockDuration
 
 from .constants import *
 import aiohttp
@@ -44,6 +45,10 @@ class UrlBuilder:
 
     def create_level_only_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/{self.player_ids}/stats/PClearanceLevel?spaceId={self.spaceid}"
+
+    def create_trends_url(self, block_duration: TrendBlockDuration) -> str:
+        return f"https://r6s-stats.ubisoft.com/v1/current/trend/{self.player_ids}?" \
+               f"gameMode=all,ranked,casual,unranked&teamRole=all,attacker,defender&trendType={block_duration}"
 
 
 class PlayerBatch:
@@ -146,6 +151,12 @@ class Player:
         self.casual: Gamemode | None = None
         self.ranked: Gamemode | None = None
         self.thunt: Gamemode | None = None
+
+        self.trends: Trends | None = None
+
+    async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
+        self.trends = Trends(await self.auth.get(self.url_builder.create_trends_url(block_duration)))
+        return self.trends
 
     async def load_only_level(self) -> int:
         data = await self.auth.get(self.url_builder.create_level_only_url())
