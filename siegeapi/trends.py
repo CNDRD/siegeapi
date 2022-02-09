@@ -12,7 +12,7 @@ class TrendBlocks:
         self.rounds_played: list[int] = data.get("roundsPlayed", [])
         self.minutes_played: list[int] = data.get("minutesPlayed", [])
         self.matches_won: list[int] = data.get("matchesWon", [])
-        self.matchesLost: list[int] = data.get("matchesLost", [])
+        self.matches_lost: list[int] = data.get("matchesLost", [])
         self.rounds_won: list[int] = data.get("roundsWon", [])
         self.rounds_lost: list[int] = data.get("roundsLost", [])
         self.kills: list[int] = data.get("kills", [])
