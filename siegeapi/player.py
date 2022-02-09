@@ -237,7 +237,7 @@ class Player:
         else:
             raise InvalidRequest(f"Missing key player_profiles in returned JSON object {str(data)}")
 
-    async def load_casual(self, region='EU', season=-1, data=None) -> Rank:
+    async def load_casual(self, region='emea', season=-1, data=None) -> Rank:
         """ Loads the players' rank for this region and season """
 
         if not data:
@@ -256,7 +256,7 @@ class Player:
         else:
             raise InvalidRequest(f"Missing players key in returned JSON object {str(data)}")
 
-    async def load_rank(self, region='EU', season=-1, data=None) -> Rank:
+    async def load_rank(self, region='emea', season=-1, data=None) -> Rank:
         """ Loads the players rank for the given and season """
 
         if not data:
