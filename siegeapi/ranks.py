@@ -1,4 +1,5 @@
 from .constants.ranks import *
+from .constants.seasons import seasons
 
 
 def _get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
@@ -42,6 +43,8 @@ class Rank:
         self.abandons: int = data.get("abandons", 0)
         self.skill_mean: float = data.get("skill_mean", 0)
         self.skill_stdev: float = data.get("skill_stdev", 0)
+        self.season_name: str = seasons[self.season]["name"] or seasons[0]["name"]
+        self.season_code: str = seasons[self.season]["code"] or seasons[0]["code"]
 
         # For casual where the API doesn't return this data
         if self.prev_rank_mmr == 0 and self.next_rank_mmr == 0:
