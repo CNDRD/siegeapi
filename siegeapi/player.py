@@ -1,6 +1,6 @@
 from .platforms import PlatformURLNames
 from .exceptions import InvalidRequest
-from .ranks import Rank, get_rank_constants
+from .ranks import Rank, _get_rank_constants
 from .gamemode import Gamemode
 from .weapons import Weapon
 from .operators import Operator
@@ -247,7 +247,7 @@ class Player:
         if season < 0:
             season = len(seasons) + season
 
-        rank_definitions = get_rank_constants(season)
+        rank_definitions = _get_rank_constants(season)
 
         if "players" in data and self.id in data["players"]:
             regionkey = f"{region}:{season}"
@@ -266,7 +266,7 @@ class Player:
         if season < 0:
             season = len(seasons) + season
 
-        rank_definitions = get_rank_constants(season)
+        rank_definitions = _get_rank_constants(season)
 
         if "players" in data and self.id in data["players"]:
             regionkey = f"{region}:{season}"

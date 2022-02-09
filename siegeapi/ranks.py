@@ -1,7 +1,7 @@
 from .constants.ranks import *
 
 
-def get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
+def _get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
     if 1 <= season_number <= 3:
         return ranks_v1
     if 4 == season_number:
@@ -16,7 +16,7 @@ def get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
 
 
 def _get_rank_from_mmr(mmr: int | float, season: int = -1) -> tuple[str, int, int, int]:
-    for rank_id, r in enumerate(get_rank_constants(season)):
+    for rank_id, r in enumerate(_get_rank_constants(season)):
         if r["min_mmr"] <= int(mmr) <= r["max_mmr"]:
             return r["name"], r["min_mmr"], r["max_mmr"]+1, rank_id
     return "Unranked", 0, 0, 0
