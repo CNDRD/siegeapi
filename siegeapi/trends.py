@@ -51,9 +51,9 @@ class TrendBlocks:
 class TrendsGameMode:
     def __init__(self, data: dict, name: str):
         self.name = name
-        self.all = TrendBlocks(data.get("teamRoles").get("all")[0])
-        self.attacker = TrendBlocks(data.get("teamRoles").get("attacker")[0])
-        self.defender = TrendBlocks(data.get("teamRoles").get("defender")[0])
+        self.all = TrendBlocks(next(iter(data.get("teamRoles", {}).get("all", [])), {}))
+        self.attacker = TrendBlocks(next(iter(data.get("teamRoles", {}).get("attacker", [])), {}))
+        self.defender = TrendBlocks(next(iter(data.get("teamRoles", {}).get("defender", [])), {}))
 
     def __repr__(self) -> str:
         return str(vars(self))
@@ -61,10 +61,10 @@ class TrendsGameMode:
 
 class Trends:
     def __init__(self, data: dict):
-        self.all = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("all"), "all")
-        self.casual = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual"), "casual")
-        self.ranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked"), "ranked")
-        self.unranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked"), "unranked")
+        self.all = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("all", {}), "all")
+        self.casual = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}), "casual")
+        self.ranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}), "ranked")
+        self.unranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}), "unranked")
 
     def __repr__(self) -> str:
         return str(vars(self))
