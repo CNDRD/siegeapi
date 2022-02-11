@@ -398,14 +398,3 @@ class Player:
             unique_data[ab_name]["name"] = ability["name"]
 
         return unique_data
-
-    async def load_everything(self) -> tuple[Rank, Rank, dict[str: Operator]]:
-        await self.load_playtime()
-        await self.load_general()
-        await self.load_level()
-        casual = await self.load_casual()
-        rank = await self.load_rank()
-        await self.load_gamemodes()
-        await self.load_weapon_types()
-        all_operators = await self.load_all_operators()
-        return casual, rank, all_operators
