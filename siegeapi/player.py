@@ -8,6 +8,7 @@ from .trends import Trends, TrendBlockDuration
 
 from .constants import *
 import aiohttp
+import datetime
 
 
 class UrlBuilder:
@@ -49,6 +50,9 @@ class UrlBuilder:
     def create_trends_url(self, block_duration: TrendBlockDuration) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/trend/{self.player_ids}?" \
                f"gameMode=all,ranked,casual,unranked&teamRole=all,attacker,defender&trendType={block_duration}"
+
+    def create_profile_applications_url(self) -> str:
+        return f"https://public-ubiservices.ubi.com/v1/profiles/applications?profileIds={self.player_ids}&limit=1000"
 
 
 class PlayerBatch:
@@ -109,6 +113,7 @@ class Player:
         self.spaceid: str = self.auth.spaceids[self.platform]
         self.url_builder: UrlBuilder = UrlBuilder(self.spaceid, self.platform_url, self.id)
         self.profile_pic_url: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
+        self.profile_pic_url_tall: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_tall.png"  # 500×500
 
         self.name: str = data.get("nameOnPlatform")
         self.xp: int = 0
@@ -153,6 +158,21 @@ class Player:
         self.thunt: Gamemode | None = None
 
         self.trends: Trends | None = None
+
+        self.sessions_played: int = 0
+        self.first_time_played: datetime = datetime.datetime.min
+        self.last_time_played: datetime = datetime.datetime.max
+
+    async def load_sessions_first_last_time_played(self) -> (int, datetime, datetime):
+        applications = await self.auth.get(self.url_builder.create_profile_applications_url())
+
+        for app in applications["applications"]:
+            if app["appId"] in SIEGE_APP_IDS:
+                self.first_time_played = datetime.datetime.strptime(app["firstDatePlayed"], "%Y-%m-%dT%H:%M:%S.%fZ")
+                self.last_time_played = datetime.datetime.strptime(app["lastDatePlayed"], "%Y-%m-%dT%H:%M:%S.%fZ")
+                self.sessions_played = app["sessionsPlayed"]
+
+        return self.sessions_played, self.first_time_played, self.last_time_played
 
     async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
         self.trends = Trends(await self.auth.get(self.url_builder.create_trends_url(block_duration)))
