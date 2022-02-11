@@ -129,6 +129,7 @@ class Auth:
         kwargs["headers"]["Ubi-SessionId"] = self.sessionid
         kwargs["headers"]["Connection"] = "keep-alive"
         kwargs["headers"]["expiration"] = f"{(datetime.datetime.utcnow()+datetime.timedelta(hours=2.0)).isoformat()}Z"
+        kwargs["headers"]["Ubi-LocaleCode"] = "x"
 
         if referer is not None:
             if isinstance(referer, Player):
