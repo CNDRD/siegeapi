@@ -193,7 +193,8 @@ class Player:
 
     async def load_only_level(self) -> int:
         data = await self.auth.get(self.url_builder.create_level_only_url())
-        return data["stats"]["PClearanceLevel"]["value"]
+        self.level = data["stats"]["PClearanceLevel"]["value"]
+        return self.level
 
     async def load_playtime(self) -> dict[str: int]:
         data = await self.auth.get(self.url_builder.create_playtime_url(PLAYTIME_URL_STATS))
