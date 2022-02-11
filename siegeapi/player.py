@@ -54,6 +54,9 @@ class UrlBuilder:
     def create_profile_applications_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/applications?profileIds={self.player_ids}&limit=1000"
 
+    def create_online_status_url(self) -> str:
+        return f"https://public-ubiservices.ubi.com/v1/users/onlineStatuses?UserIds={self.player_ids}"
+
 
 class PlayerBatch:
     """ Accumulates requests for multiple players' stats in to a single request, saving time """
@@ -162,6 +165,16 @@ class Player:
         self.sessions_played: int = 0
         self.first_time_played: datetime = datetime.datetime.min
         self.last_time_played: datetime = datetime.datetime.max
+
+    async def is_currently_online(self) -> dict[str: bool | str]:
+        """Checks if the user is currently in game and if the user is 'online' / 'away' / 'dnd'"""
+        data = await self.auth.get(self.url_builder.create_online_status_url())
+        statuses = data["onlineStatuses"][0]
+
+        for connection in statuses["connections"]:
+            if connection["applicationId"] in SIEGE_APP_IDS:
+                return {"in_game": True, "status": statuses["onlineStatus"]}
+        return {"in_game": False, "status": statuses["onlineStatus"]}
 
     async def load_sessions_first_last_time_played(self) -> (int, datetime, datetime):
         applications = await self.auth.get(self.url_builder.create_profile_applications_url())
