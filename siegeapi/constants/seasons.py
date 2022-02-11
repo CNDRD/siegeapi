@@ -164,4 +164,13 @@ seasons = {
         "code": "Y6S4",
         "start_date": "2021-11-30"
     },
+
+
+
+    25: {
+        "name": "Demon Veil",
+        "hex": "#010101",
+        "code": "Y7S1",
+        "start_date": "2022-03-08"
+    },
 }
