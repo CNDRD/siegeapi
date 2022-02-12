@@ -51,9 +51,6 @@ class UrlBuilder:
         return f"https://r6s-stats.ubisoft.com/v1/current/trend/{self.player_ids}?" \
                f"gameMode=all,ranked,casual,unranked&teamRole=all,attacker,defender&trendType={block_duration}"
 
-    def create_profile_applications_url(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/profiles/applications?profileIds={self.player_ids}&limit=1000"
-
     def create_online_status_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/users/onlineStatuses?UserIds={self.player_ids}"
 
@@ -175,17 +172,6 @@ class Player:
             if connection["applicationId"] in SIEGE_APP_IDS:
                 return {"in_game": True, "status": statuses["onlineStatus"]}
         return {"in_game": False, "status": statuses["onlineStatus"]}
-
-    async def load_sessions_first_last_time_played(self) -> (int, datetime, datetime):
-        applications = await self.auth.get(self.url_builder.create_profile_applications_url())
-
-        for app in applications["applications"]:
-            if app["appId"] in SIEGE_APP_IDS:
-                self.first_time_played = datetime.datetime.strptime(app["firstDatePlayed"], "%Y-%m-%dT%H:%M:%S.%fZ")
-                self.last_time_played = datetime.datetime.strptime(app["lastDatePlayed"], "%Y-%m-%dT%H:%M:%S.%fZ")
-                self.sessions_played = app["sessionsPlayed"]
-
-        return self.sessions_played, self.first_time_played, self.last_time_played
 
     async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
         self.trends = Trends(await self.auth.get(self.url_builder.create_trends_url(block_duration)))
