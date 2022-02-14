@@ -2,7 +2,7 @@ from .platforms import PlatformURLNames
 from .exceptions import InvalidRequest
 from .ranks import Rank, _get_rank_constants
 from .gamemode import Gamemode
-from .weapons import Weapon
+from .weapon_types import Weapon
 from .operators import Operator
 from .trends import Trends, TrendBlockDuration
 
