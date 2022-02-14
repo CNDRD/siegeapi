@@ -2,7 +2,7 @@ from .platforms import PlatformURLNames
 from .exceptions import InvalidRequest
 from .ranks import Rank, _get_rank_constants
 from .gamemode import Gamemode
-from .weapon_types import Weapon
+from .weapon_types import WeaponType
 from .operators import Operator
 from .trends import Trends, TrendBlockDuration
 
@@ -351,7 +351,7 @@ class Player:
             raise InvalidRequest(f"Missing key results in returned JSON object {str(data)}")
 
         data = data["results"][self.id]
-        self.weapons = [Weapon(i, data) for i in range(1, 8)]
+        self.weapons = [WeaponType(i, data) for i in range(1, 8)]
 
     async def load_all_operators(self) -> dict[str: Operator]:
         # ask the api for all the basic stat names WITHOUT a postfix to ask for all (I assume)

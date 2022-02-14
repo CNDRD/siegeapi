@@ -1,6 +1,6 @@
 # Icon url: f"https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/{weapon.icon_url}"
 
-GUNS_DICT = {
+WEAPONS_DICT = {
     "primary": {
         # AR's
         "AK-12": {

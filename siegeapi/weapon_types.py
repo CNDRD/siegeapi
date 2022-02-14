@@ -23,7 +23,7 @@ WeaponNames = {
 }
 
 
-class Weapon:
+class WeaponType:
     def __init__(self, weapon_type, stats=None):
         self.type = weapon_type
         self.name = WeaponNames.get(self.type, "Unknown")
