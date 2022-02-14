@@ -5,6 +5,7 @@ from .gamemode import Gamemode
 from .weapon_types import WeaponType
 from .operators import Operator
 from .trends import Trends, TrendBlockDuration
+from .weapons import Weapons
 
 from .constants import *
 import aiohttp
@@ -53,6 +54,10 @@ class UrlBuilder:
 
     def create_online_status_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/users/onlineStatuses?UserIds={self.player_ids}"
+
+    def create_weapons_url(self) -> str:
+        return f"https://r6s-stats.ubisoft.com/v1/current/weapons/{self.player_ids}?" \
+               f"gameMode=all,ranked,casual,unranked&platform=PC&teamRole=all"
 
 
 class PlayerBatch:
@@ -151,7 +156,8 @@ class Player:
         self.casuals: dict = {}
         self.operators: dict = {}
         self.gamemodes: dict = {}
-        self.weapons: list = []
+        self.weapon_types: list = []
+        self.weapons: Weapons | None = None
 
         self.casual: Gamemode | None = None
         self.ranked: Gamemode | None = None
