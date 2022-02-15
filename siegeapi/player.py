@@ -125,7 +125,7 @@ class Player:
         self.name: str = data.get("nameOnPlatform")
         self.xp: int = 0
         self.level: int = 0
-        self.lootbox_probability: int = 0
+        self.alpha_pack: int = 0
         self.deaths: int = 0
         self.penetration_kills: int = 0
         self.matches_won: int = 0
@@ -167,41 +167,13 @@ class Player:
 
         self.trends: Trends | None = None
 
-    async def is_currently_online(self) -> dict[str: bool | str]:
-        """Checks if the user is currently in game and if the user is 'online' / 'away' / 'dnd'"""
-        data = await self.auth.get(self.url_builder.create_online_status_url())
-        statuses = data["onlineStatuses"][0]
+    async def load_weapons(self) -> Weapons:
+        self.weapons = Weapons(await self.auth.get(self.url_builder.create_weapons_url()))
+        return self.weapons
 
-        for connection in statuses["connections"]:
-            if connection["applicationId"] in SIEGE_APP_IDS:
-                return {"in_game": True, "status": statuses["onlineStatus"]}
-        return {"in_game": False, "status": statuses["onlineStatus"]}
+    async def _fetch_statistics(self, statistics: list) -> dict[str: str | int | float]:
 
-    async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
-        self.trends = Trends(await self.auth.get(self.url_builder.create_trends_url(block_duration)))
-        return self.trends
-
-    async def load_only_level(self) -> int:
-        data = await self.auth.get(self.url_builder.create_level_only_url())
-        self.level = data["stats"]["PClearanceLevel"]["value"]
-        return self.level
-
-    async def load_playtime(self) -> dict[str: int]:
-        data = await self.auth.get(self.url_builder.create_playtime_url(PLAYTIME_URL_STATS))
-        self.pvp_time_played = data['profiles'][0]['stats']["PPvPTimePlayed"]["value"]
-        self.pve_time_played = data['profiles'][0]['stats']["PPvETimePlayed"]["value"]
-        self.time_played = data['profiles'][0]['stats']["PTotalTimePlayed"]["value"]
-        stats = {
-            "PVPTimePlayed": self.pvp_time_played,
-            "PVETimePlayed": self.pve_time_played,
-            "TotalTimePlayed": self.time_played,
-        }
-        return stats
-
-    async def _fetch_statistics(self, statistics: list, data=None) -> dict[str: str | int | float]:
-
-        if not data:
-            data = await self.auth.get(self.url_builder.fetch_statistic_url(statistics))
+        data = await self.auth.get(self.url_builder.fetch_statistic_url(statistics))
 
         if "results" not in data or self.id not in data["results"]:
             raise InvalidRequest(f"Missing results key in returned JSON object {str(data)}")
@@ -214,6 +186,16 @@ class Player:
             if statistic in statistics:
                 stats[statistic] = data[x]
         return stats
+
+    async def is_currently_online(self) -> dict[str: bool | str]:
+        """Checks if the user is currently in game and if the user is 'online' / 'away' / 'dnd'"""
+        data = await self.auth.get(self.url_builder.create_online_status_url())
+        statuses = data["onlineStatuses"][0]
+
+        for connection in statuses["connections"]:
+            if connection["applicationId"] in SIEGE_APP_IDS:
+                return {"in_game": True, "status": statuses["onlineStatus"]}
+        return {"in_game": False, "status": statuses["onlineStatus"]}
 
     async def load_general(self) -> None:
         """ Loads players' general stats """
@@ -246,18 +228,31 @@ class Player:
         self.gadgets_destroyed = stats.get(f"{statname}gadgetdestroy", 0)
         self.blind_kills = stats.get(f"{statname}blindkills")
 
-    async def load_level(self, data=None) -> None:
-        """ Load the players' XP, level & alpha pack % """
+    async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
+        self.trends = Trends(await self.auth.get(self.url_builder.create_trends_url(block_duration)))
+        return self.trends
 
-        if not data:
-            data = await self.auth.get(self.url_builder.create_level_url())
+    async def load_level(self) -> None:
+        data = await self.auth.get(self.url_builder.create_level_only_url())
+        self.level = data["stats"]["PClearanceLevel"]["value"]
+        return self.level
+
+    async def load_playtime(self) -> dict[str: int]:
+        data = await self.auth.get(self.url_builder.create_playtime_url(PLAYTIME_URL_STATS))
+        self.pvp_time_played = data['profiles'][0]['stats']["PPvPTimePlayed"]["value"]
+        self.pve_time_played = data['profiles'][0]['stats']["PPvETimePlayed"]["value"]
+        self.time_played = data['profiles'][0]['stats']["PTotalTimePlayed"]["value"]
+        return self.pvp_time_played, self.pve_time_played, self.time_played
+
+    async def load_alpha_pack(self) -> float:
+        data = await self.auth.get(self.url_builder.create_level_url())
 
         if "player_profiles" in data and len(data["player_profiles"]) > 0:
-            # self.xp = data["player_profiles"][0].get("xp", 0)
-            self.level = data["player_profiles"][0].get("level", 0)
-            self.lootbox_probability = data["player_profiles"][0].get("lootbox_probability", 0)
+            self.alpha_pack = data["player_profiles"][0].get("lootbox_probability", 0)
         else:
             raise InvalidRequest(f"Missing key player_profiles in returned JSON object {str(data)}")
+
+        return self.alpha_pack
 
     async def load_casual(self, region='emea', season=-1, data=None) -> Rank:
         """ Loads the players' rank for this region and season """
@@ -315,7 +310,7 @@ class Player:
         data = data["results"][self.id]
         self.weapons = [WeaponType(i, data) for i in range(1, 8)]
 
-    async def load_all_operators(self) -> dict[str: Operator]:
+    async def load_operators(self) -> dict[str: Operator]:
         # ask the api for all the basic stat names WITHOUT a postfix to ask for all (I assume)
         statistics = list(OPERATOR_URL_STATS)
 
