@@ -90,3 +90,10 @@ PLAYTIME_URL_STATS = [
     "PPvETimePlayed",
     "PTotalTimePlayed"
 ]
+
+WEAPON_TYPE_STATS = [
+    "weapontypepvp_kills",
+    "weapontypepvp_headshot",
+    "weapontypepvp_bulletfired",
+    "weapontypepvp_bullethit"
+]

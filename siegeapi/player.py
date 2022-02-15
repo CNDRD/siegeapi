@@ -18,7 +18,7 @@ class UrlBuilder:
         self.platform_url: str = platform_url
         self.player_ids: list[str] = player_ids
 
-    def fetch_statistic_url(self, statistics) -> str:
+    def fetch_statistic_url(self, statistics: list) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
                f"populations={self.player_ids}&statistics={','.join(statistics)}"
 
@@ -34,16 +34,17 @@ class UrlBuilder:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/r6karma/players?" \
                f"board_id=pvp_casual&profile_ids={self.player_ids}&region_id={region}&season_id={season}"
 
-    def create_operator_url(self, statistics) -> str:
+    def create_operator_url(self, statistics: list) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
-               f"populations={self.player_ids}&statistics={statistics}"
+               f"populations={self.player_ids}&statistics={','.join(statistics)}"
 
-    def create_weapon_type_url(self) -> str:
+    def create_weapon_type_url(self, statistics: list) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
-               f"populations={self.player_ids}&statistics=weapontypepvp_kills,weapontypepvp_headshot,weapontypepvp_bulletfired,weapontypepvp_bullethit"
+               f"populations={self.player_ids}&statistics={','.join(statistics)}"
 
     def create_playtime_url(self, statistics) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/profiles/stats?profileIds={self.player_ids}&spaceId={self.spaceid}&statNames={','.join(statistics)}"
+        return f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
+               f"profileIds={self.player_ids}&spaceId={self.spaceid}&statNames={','.join(statistics)}"
 
     def create_level_only_url(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/{self.player_ids}/stats/PClearanceLevel?spaceId={self.spaceid}"
@@ -114,7 +115,6 @@ class Player:
         self.userid: str = data.get("userId")
         self.platform: str = data.get("platformType")
         self.platform_url: str = PlatformURLNames[self.platform]
-
         self.spaceid: str = self.auth.spaceids[self.platform]
         self.url_builder: UrlBuilder = UrlBuilder(self.spaceid, self.platform_url, self.id)
         self.profile_pic_url: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
@@ -164,10 +164,6 @@ class Player:
         self.thunt: Gamemode | None = None
 
         self.trends: Trends | None = None
-
-        self.sessions_played: int = 0
-        self.first_time_played: datetime = datetime.datetime.min
-        self.last_time_played: datetime = datetime.datetime.max
 
     async def is_currently_online(self) -> dict[str: bool | str]:
         """Checks if the user is currently in game and if the user is 'online' / 'away' / 'dnd'"""
@@ -221,7 +217,7 @@ class Player:
     async def load_general(self) -> None:
         """ Loads players' general stats """
 
-        stats = await self._fetch_statistics(stat_names.GENERAL_URL_STATS)
+        stats = await self._fetch_statistics(GENERAL_URL_STATS)
 
         statname: str = "generalpvp_"
         self.deaths = stats.get(f"{statname}death", 0)
@@ -303,7 +299,7 @@ class Player:
 
     async def _load_thunt(self) -> None:
         """ Loads the players' stats for terrorist hunt"""
-        stats = await self._fetch_statistics(stat_names.THUNT_URL_STATS)
+        stats = await self._fetch_statistics(THUNT_URL_STATS)
 
         self.thunt = Gamemode("terrohunt")
 
@@ -340,7 +336,7 @@ class Player:
 
     async def load_gamemodes(self) -> None:
         """ Loads the totals for players' ranked, casual and thunt gamemodes """
-        stats = await self._fetch_statistics(stat_names.RANKED_CASUAL_URL_STATS)
+        stats = await self._fetch_statistics(RANKED_CASUAL_URL_STATS)
 
         self.ranked = Gamemode("ranked", stats)
         self.casual = Gamemode("casual", stats)
@@ -350,7 +346,7 @@ class Player:
         """ Load the players' weapon type stats """
 
         if not data:
-            data = await self.auth.get(self.url_builder.create_weapon_type_url())
+            data = await self.auth.get(self.url_builder.create_weapon_type_url(WEAPON_TYPE_STATS))
             self._last_data = data
 
         if "results" not in data or self.id not in data["results"]:
@@ -367,8 +363,6 @@ class Player:
         for op in operator_dict:
             for ability in operator_dict[op]["unique_stats"]:
                 statistics.append(f"{ability['id']}:{operator_dict[op]['id']}:infinite")
-
-        statistics = ",".join(statistics)
 
         data = await self.auth.get(self.url_builder.create_operator_url(statistics))
 
