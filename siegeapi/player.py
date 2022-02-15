@@ -117,8 +117,11 @@ class Player:
         self.platform_url: str = PlatformURLNames[self.platform]
         self.spaceid: str = self.auth.spaceids[self.platform]
         self.url_builder: UrlBuilder = UrlBuilder(self.spaceid, self.platform_url, self.id)
-        self.profile_pic_url: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
-        self.profile_pic_url_tall: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_tall.png"  # 500×500
+
+        self.profile_pic_url_146: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
+        self.profile_pic_url_256: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
+        self.profile_pic_url_500: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_tall.png"
+        self.profile_pic_url: str = self.profile_pic_url_256
 
         self.name: str = data.get("nameOnPlatform")
         self.xp: int = 0
