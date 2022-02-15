@@ -300,7 +300,7 @@ class Player:
         else:
             raise InvalidRequest(f"Missing players key in returned JSON object {str(data)}")
 
-    async def _load_thunt(self) -> None:
+    async def load_thunt(self) -> None:
         """ Loads the players' stats for terrorist hunt"""
         stats = await self._fetch_statistics(THUNT_URL_STATS)
 
@@ -343,7 +343,7 @@ class Player:
 
         self.ranked = Gamemode("ranked", stats)
         self.casual = Gamemode("casual", stats)
-        await self._load_thunt()
+        await self.load_thunt()
 
     async def load_weapon_types(self, data=None) -> None:
         """ Load the players' weapon type stats """
