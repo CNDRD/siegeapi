@@ -109,7 +109,6 @@ class PlayerBatch:
 class Player:
     def __init__(self, auth: aiohttp.ClientSession(), data: dict):
         self.auth: aiohttp.ClientSession() = auth
-        self._last_data = None
 
         self.id: str = data.get("profileId")
         self.userid: str = data.get("userId")
@@ -203,7 +202,6 @@ class Player:
 
         if not data:
             data = await self.auth.get(self.url_builder.fetch_statistic_url(statistics))
-            self._last_data = data
 
         if "results" not in data or self.id not in data["results"]:
             raise InvalidRequest(f"Missing results key in returned JSON object {str(data)}")
@@ -253,7 +251,6 @@ class Player:
 
         if not data:
             data = await self.auth.get(self.url_builder.create_level_url())
-            self._last_data = data
 
         if "player_profiles" in data and len(data["player_profiles"]) > 0:
             # self.xp = data["player_profiles"][0].get("xp", 0)
@@ -267,7 +264,6 @@ class Player:
 
         if not data:
             data = await self.auth.get(self.url_builder.create_casual_url(region, season))
-            self._last_data = data
 
         if season < 0:
             season = len(seasons) + season
@@ -286,7 +282,6 @@ class Player:
 
         if not data:
             data = await self.auth.get(self.url_builder.create_rank_url(region, season))
-            self._last_data = data
 
         if season < 0:
             season = len(seasons) + season
@@ -350,7 +345,6 @@ class Player:
 
         if not data:
             data = await self.auth.get(self.url_builder.create_weapon_type_url(WEAPON_TYPE_STATS))
-            self._last_data = data
 
         if "results" not in data or self.id not in data["results"]:
             raise InvalidRequest(f"Missing key results in returned JSON object {str(data)}")
