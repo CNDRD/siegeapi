@@ -25,7 +25,7 @@ GENERAL_URL_STATS = [
     "generalpvp_blindkills"
 ]
 
-RANKED_CASUAL_URL_STATS = [
+RANKED_CASUAL_THUNT_URL_STATS = [
     "casualpvp_matchwon",
     "casualpvp_matchlost",
     "casualpvp_timeplayed",
@@ -37,10 +37,8 @@ RANKED_CASUAL_URL_STATS = [
     "rankedpvp_timeplayed",
     "rankedpvp_matchplayed",
     "rankedpvp_kills",
-    "rankedpvp_death"
-]
+    "rankedpvp_death",
 
-THUNT_URL_STATS = [
     "generalpve_dbnoassists",
     "generalpve_death",
     "generalpve_revive",

@@ -295,50 +295,13 @@ class Player:
         else:
             raise InvalidRequest(f"Missing players key in returned JSON object {str(data)}")
 
-    async def load_thunt(self) -> None:
-        """ Loads the players' stats for terrorist hunt"""
-        stats = await self._fetch_statistics(THUNT_URL_STATS)
-
-        self.thunt = Gamemode("terrohunt")
-
-        statname = "generalpve_"
-        self.thunt.deaths = stats.get(f"{statname}death", 0)
-        self.thunt.penetration_kills = stats.get(f"{statname}penetrationkills", 0)
-        self.thunt.matches_won = stats.get(f"{statname}matchwon", 0)
-        self.thunt.bullets_hit = stats.get(f"{statname}bullethit", 0)
-        self.thunt.melee_kills = stats.get(f"{statname}meleekills", 0)
-        self.thunt.bullets_fired = stats.get(f"{statname}bulletfired", 0)
-        self.thunt.matches_played = stats.get(f"{statname}matchplayed", 0)
-        self.thunt.kill_assists = stats.get(f"{statname}killassists", 0)
-        self.thunt.time_played = stats.get(f"{statname}timeplayed", 0)
-        self.thunt.revives = stats.get(f"{statname}revive", 0)
-        self.thunt.kills = stats.get(f"{statname}kills", 0)
-        self.thunt.headshots = stats.get(f"{statname}headshot", 0)
-        self.thunt.matches_lost = stats.get(f"{statname}matchlost", 0)
-        self.thunt.dbno_assists = stats.get(f"{statname}dbnoassists", 0)
-        self.thunt.suicides = stats.get(f"{statname}suicide", 0)
-        self.thunt.barricades_deployed = stats.get(f"{statname}barricadedeployed", 0)
-        self.thunt.reinforcements_deployed = stats.get(f"{statname}reinforcementdeploy", 0)
-        self.thunt.total_xp = stats.get(f"{statname}totalxp", 0)
-        self.thunt.rappel_breaches = stats.get(f"{statname}rappelbreach", 0)
-        self.thunt.distance_travelled = stats.get(f"{statname}distancetravelled", 0)
-        self.thunt.revives_denied = stats.get(f"{statname}revivedenied", 0)
-        self.thunt.dbnos = stats.get(f"{statname}dbno", 0)
-        self.thunt.gadgets_destroyed = stats.get(f"{statname}gadgetdestroy", 0)
-        self.thunt.areas_secured = stats.get(f"{statname}servershacked", 0)
-        self.thunt.areas_defended = stats.get(f"{statname}serverdefender", 0)
-        self.thunt.areas_contested = stats.get(f"{statname}serveraggression", 0)
-        self.thunt.hostages_rescued = stats.get(f"{statname}hostagerescue", 0)
-        self.thunt.hostages_defended = stats.get(f"{statname}hostagedefense", 0)
-        self.thunt.blind_kills = stats.get(f"{statname}blindkills", 0)
-
-    async def load_gamemodes(self) -> None:
+    async def load_gamemodes(self) -> (Gamemode, Gamemode, Gamemode):
         """ Loads the totals for players' ranked, casual and thunt gamemodes """
-        stats = await self._fetch_statistics(RANKED_CASUAL_URL_STATS)
-
+        stats = await self._fetch_statistics(RANKED_CASUAL_THUNT_URL_STATS)
         self.ranked = Gamemode("ranked", stats)
         self.casual = Gamemode("casual", stats)
-        await self.load_thunt()
+        self.thunt = Gamemode("terrohunt", stats)
+        return self.ranked, self.casual, self.thunt
 
     async def load_weapon_types(self, data=None) -> None:
         """ Load the players' weapon type stats """
