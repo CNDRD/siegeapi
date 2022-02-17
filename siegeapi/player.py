@@ -232,7 +232,7 @@ class Player:
         self.level = data["stats"]["PClearanceLevel"]["value"]
         return self.level
 
-    async def load_playtime(self) -> dict[str: int]:
+    async def load_playtime(self) -> (int, int, int):
         data = await self.auth.get(self.url_builder.create_playtime_url(PLAYTIME_URL_STATS))
         self.pvp_time_played = data['profiles'][0]['stats']["PPvPTimePlayed"]["value"]
         self.pve_time_played = data['profiles'][0]['stats']["PPvETimePlayed"]["value"]
