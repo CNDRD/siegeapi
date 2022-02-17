@@ -9,7 +9,6 @@ from .weapons import Weapons
 
 from .constants import *
 import aiohttp
-import datetime
 
 
 class UrlBuilder:
