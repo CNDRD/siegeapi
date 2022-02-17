@@ -46,22 +46,23 @@ async def sample():
     print(f"Profile pic URL: {player.profile_pic_url}")
 
     await player.load_level()
+    await player.load_alpha_pack()
+    
     print(f"Level: {player.level}")
-    print(f"Alpha pack %: {player.lootbox_probability}")
+    print(f"Alpha pack %: {player.alpha_pack}")
 
     await auth.close()
 
 asyncio.get_event_loop().run_until_complete(sample())
+# Or `asyncio.run(sample())`  
 ```
 ### Output  
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
 Level: 256
-Alpha pack %: 2050
+Level: 3250
 ```
-
-> **_NOTE:_** `player.lootbox_probability` is 3 or 4-digits long E.g.:  `player.lootbox_probability = 500` 👉 5.00%  
 
 ---
 
