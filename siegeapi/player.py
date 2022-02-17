@@ -135,7 +135,7 @@ class Player:
         self.time_played: int = 0
         self.pvp_time_played: int = 0
         self.pve_time_played: int = 0
-        self.not_updated_time_played: int = 0
+        self._not_updated_time_played: int = 0
         self.revives: int = 0
         self.kills: int = 0
         self.headshots: int = 0
@@ -209,7 +209,7 @@ class Player:
         self.bullets_fired = stats.get(f"{statname}bulletfired", 0)
         self.matches_played = stats.get(f"{statname}matchplayed", 0)
         self.kill_assists = stats.get(f"{statname}killassists", 0)
-        self.not_updated_time_played = stats.get(f"{statname}timeplayed", 0)
+        self._not_updated_time_played = stats.get(f"{statname}timeplayed", 0)
         self.revives = stats.get(f"{statname}revive", 0)
         self.kills = stats.get(f"{statname}kills", 0)
         self.headshots = stats.get(f"{statname}headshot", 0)
