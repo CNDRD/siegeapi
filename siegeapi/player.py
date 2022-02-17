@@ -155,7 +155,6 @@ class Player:
         self.ranks: dict = {}
         self.casuals: dict = {}
         self.operators: dict = {}
-        self.gamemodes: dict = {}
         self.weapon_types: list = []
         self.weapons: Weapons | None = None
 
