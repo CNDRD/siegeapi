@@ -204,7 +204,6 @@ class Player:
         self.matches_won = stats.get(f"{statname}matchwon", 0)
         self.bullets_hit = stats.get(f"{statname}bullethit", 0)
         self.melee_kills = stats.get(f"{statname}meleekills", 0)
-        self.bullets_fired = stats.get(f"{statname}bulletfired", 0)
         self.matches_played = stats.get(f"{statname}matchplayed", 0)
         self.kill_assists = stats.get(f"{statname}killassists", 0)
         self._not_updated_time_played = stats.get(f"{statname}timeplayed", 0)
