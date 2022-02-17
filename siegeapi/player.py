@@ -227,7 +227,7 @@ class Player:
         self.trends = Trends(await self.auth.get(self.url_builder.create_trends_url(block_duration)))
         return self.trends
 
-    async def load_level(self) -> None:
+    async def load_level(self) -> int:
         data = await self.auth.get(self.url_builder.create_level_only_url())
         self.level = data["stats"]["PClearanceLevel"]["value"]
         return self.level
