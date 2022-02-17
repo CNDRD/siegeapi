@@ -130,7 +130,6 @@ class Player:
         self.matches_won: int = 0
         self.bullets_hit: int = 0
         self.melee_kills: int = 0
-        self.bullets_fired: int = 0
         self.matches_played: int = 0
         self.kill_assists: int = 0
         self.time_played: int = 0
