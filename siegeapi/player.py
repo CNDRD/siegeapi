@@ -293,7 +293,7 @@ class Player:
         self.thunt = Gamemode("terrohunt", stats)
         return self.ranked, self.casual, self.thunt
 
-    async def load_weapon_types(self, data=None) -> None:
+    async def load_weapon_types(self, data=None) -> list[WeaponType]:
         """ Load the players' weapon type stats """
 
         if not data:
@@ -303,7 +303,8 @@ class Player:
             raise InvalidRequest(f"Missing key results in returned JSON object {str(data)}")
 
         data = data["results"][self.id]
-        self.weapons = [WeaponType(i, data) for i in range(1, 8)]
+        self.weapon_types = [WeaponType(i, data) for i in range(1, 8)]
+        return self.weapon_types
 
     async def load_operators(self) -> dict[str: Operator]:
         # ask the api for all the basic stat names WITHOUT a postfix to ask for all (I assume)
