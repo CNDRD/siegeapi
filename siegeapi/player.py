@@ -123,7 +123,6 @@ class Player:
         self.profile_pic_url: str = self.profile_pic_url_256
 
         self.name: str = data.get("nameOnPlatform")
-        self.xp: int = 0
         self.level: int = 0
         self.alpha_pack: int = 0
         self.deaths: int = 0
