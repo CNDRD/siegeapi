@@ -101,6 +101,10 @@ WEAPONS_DICT = {
         "type": "Submachine Gun",
         "icon_url": "3a4dgTWGdiJqALhtRp4pKy/f2568d3de3cfe7e4b53179e8653cd2a2/MP7.png",
     },
+    "MP5SD": {
+        "type": "Submachine Gun",
+        "icon_url": "6de3aa9aaa17458e7f6186ba59b8deff/MP5SD.png"
+    },
     "T-5 SMG": {
         "type": "Submachine Gun",
         "icon_url": "1Ne8bvX8BdCALevWKMllQN/4baa3e79d323de134dd182e0272b9c3b/T-5_SMG.png",
