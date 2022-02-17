@@ -239,7 +239,7 @@ class Player:
         self.time_played = data['profiles'][0]['stats']["PTotalTimePlayed"]["value"]
         return self.pvp_time_played, self.pve_time_played, self.time_played
 
-    async def load_alpha_pack(self) -> float:
+    async def load_alpha_pack(self) -> int:
         data = await self.auth.get(self.url_builder.create_level_url())
 
         if "player_profiles" in data and len(data["player_profiles"]) > 0:
