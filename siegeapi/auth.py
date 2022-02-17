@@ -167,7 +167,7 @@ class Auth:
         else:
             return await resp.text()
 
-    async def get_players(self, name=None, platform=None, uid=None) -> list[Player]:
+    async def _get_players(self, name=None, platform=None, uid=None) -> list[Player]:
         """ Get a list of players matching the search term on a given platform """
 
         if name is None and uid is None:
@@ -197,7 +197,7 @@ class Auth:
     async def get_player(self, name=None, platform=None, uid=None) -> Player:
         """ Calls get_players and returns the first element """
 
-        results = await self.get_players(name=name, platform=platform, uid=uid)
+        results = await self._get_players(name=name, platform=platform, uid=uid)
         return results[0]
 
     async def get_player_batch(self, platform, names=None, uids=None) -> PlayerBatch:
