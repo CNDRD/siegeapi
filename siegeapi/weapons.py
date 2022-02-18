@@ -29,7 +29,8 @@ class WeaponsGameMode:
         self.primary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("primaryWeapons", {}).get("weaponTypes", {}))
         self.secondary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("secondaryWeapons", {}).get("weaponTypes", {}))
 
-    def _get_weapons_list(self, data: list[dict]) -> list[Weapon]:
+    @staticmethod
+    def _get_weapons_list(data: list[dict]) -> list[Weapon]:
         return [Weapon(weapon) for weaponType in data for weapon in weaponType.get("weapons")]
 
     def __repr__(self) -> str:
