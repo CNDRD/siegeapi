@@ -63,6 +63,42 @@ WEAPONS_DICT = {
         "type": "Assault Rifle",
         "icon_url": "4P9dpUph5w3MSsLNnW6be/04baba24990fcb75a9c0bcfd01b7d190/Commando_9.png",
     },
+    "AUG A2": {
+        "type": "Assault Rifle",
+        "icon_url": "1eO39zRe8XxJXH1KZiIWhM/02049ced0fbfa630833e8b0d3c03de07/AUG_A2.png",
+    },
+    "F2": {
+        "type": "Assault Rifle",
+        "icon_url": "5HTvw1cJInVAGxOLXR0war/2f142437f5c0944fdcfcce8a03c37676/F2.png",
+    },
+    "C8-SFW": {
+        "type": "Assault Rifle",
+        "icon_url": "1itXpz2GnvdwwRyhX1SYa2/b58ff71048fa3bb5ed09d5d935dc90f4/C8-SFW.png",
+    },
+    "R4-C": {
+        "type": "Assault Rifle",
+        "icon_url": "dQbqK9VxczuiscwBDSkT8/777a062f6095dde0371eab5200dcb451/R4-C.png",
+    },
+    "C7E": {
+        "type": "Assault Rifle",
+        "icon_url": "63vTDjkXeKq7rOoSBhoJD4/08603e6603d564e0fa38af9ec86b7c1f/C7E.png",
+    },
+    "MK17 CQB": {
+        "type": "Assault Rifle",
+        "icon_url": "4LytczDQmu0M63gO2WtCCm/331ef3b1938352ae71d7c0bd23de3596/Mk17_CQB.png",
+    },
+    "552 COMMANDO": {
+        "type": "Assault Rifle",
+        "icon_url": "1LT0N89YaOHvRwn3Pphr8K/02d4a3da9cda132d8201fd134f24fede/552_Commando.png",
+    },
+    "ARX200": {
+        "type": "Assault Rifle",
+        "icon_url": "6VgkPBsr1WApI3rWc9kcM0/b18b8e25f3e951e8e722213f2ee59eb0/ARX200.png",
+    },
+    "F90": {
+        "type": "Assault Rifle",
+        "icon_url": "62tE3th2ThcGHlrcqWkmEX/d69c9de199542e25fa55f6d293f15671/r6-operator-weapon-ar-f90.png",
+    },
 
     # Submachine Guns
     "9mm C1": {
@@ -88,6 +124,18 @@ WEAPONS_DICT = {
     "PDW9": {
         "type": "Submachine Gun",
         "icon_url": "4yYCuRnduMq35CTHfq6wwU/b7d49cdbcb05917e014c99efeaadd33b/PDW9.png",
+    },
+    "UMP45": {
+        "type": "Submachine Gun",
+        "icon_url": "6X2EZPq2s8UKrP67uxz5FI/f0df4c57d5890c79311e4eb62d4470e7/UMP45.png",
+    },
+    "SCORPION EVO 3 A1": {
+        "type": "Submachine Gun",
+        "icon_url": "6OdwaLWxcnFvhlVwWbP2Du/4f7e94bdb6d34d5c0aa7b7b147b4092e/Scorpion_EVO_3_A1.png",
+    },
+    "P10 RONI": {
+        "type": "Submachine Gun",
+        "icon_url": "7K86OBjL3zmYWt0ZvUcCLj/16a947334e39f27da177d787773593e4/r6-operator-weapon-smg-p10roni.png",
     },
     "MP5": {
         "type": "Submachine Gun",
@@ -147,6 +195,14 @@ WEAPONS_DICT = {
         "type": "Marksman Rifle",
         "icon_url": "6KIMqp5dA95z1RI3PrG9jv/eb939638169811a3fa858a44e6e5d97e/Mk_14_EBR.png",
     },
+    "OTs-03": {
+        "type": "Marksman Rifle",
+        "icon_url": "4fXznwDtLt61VCF8QIF4N3/34e2e6d6c33d4c504c945bdd13c322f6/OTs-03.png",
+    },
+    "CSRX 300": {
+        "type": "Marksman Rifle",
+        "icon_url": "7tUB9ZNXJhdN6ejAkCEeFQ/99691bcc19f641cf872925905d08a539/CSRX_300.png",
+    },
 
     # Shotguns
     "ACS12": {
@@ -178,6 +234,10 @@ WEAPONS_DICT = {
         "type": "Shotgun",
         "icon_url": "2v6MwsHwjOZ5Muid53lyfN/e5f1c4997db93abfe3ac356fce23376c/SIX12.png",
     },
+    "SIX12 SD": {
+        "type": "Shotgun",
+        "icon_url": "1GTua079Xbtkpjhx96sRsW/079ed1a71a0d12b5e48e1b0d40b87110/SIX12_SD.png",
+    },
     "M1014": {
         "type": "Shotgun",
         "icon_url": "2pUiVbwNnQnDTesmWXktqW/f27c1fab9a354bb89cbe309a688f5e02/M1014.png",
@@ -185,6 +245,10 @@ WEAPONS_DICT = {
     "SG-CQB": {
         "type": "Shotgun",
         "icon_url": "5JoL3b36Fsztt9Q2XYmrbJ/dacec96948d3f8fe92914a69b9aac593/SG-CQB.png",
+    },
+    "SPAS-15": {
+        "type": "Shotgun",
+        "icon_url": "CyofBgipHq4RTafvPFWd4/bc3d0ecc871b70e57735855f852efacf/SPAS-15.png",
     },
 
     # Light Machine Guns
@@ -200,9 +264,25 @@ WEAPONS_DICT = {
         "type": "Light Machine Gun",
         "icon_url": "3p0oG7GsLIoHaRullf7xsF/e2a9e135af63e8897355023cd34538c4/M249_SAW.png",
     },
+    "M249": {
+        "type": "Light Machine Gun",
+        "icon_url": "7z8UpVPS3P14OC1oL9dDIn/39c0c657f154218003fd4b2a9250b92f/M249.png",
+    },
     "ALDA 5.56": {
         "type": "Light Machine Gun",
         "icon_url": "39yB6TFl9ph6Rb4bDV4lqK/7f9b3abf8dff19bacc026a7212849ca4/ALDA_5.56.png",
+    },
+    "6P41": {
+      "type": "Light Machine Gun",
+      "icon_url": "1wxS2HOCvoPAfnJEDFWjfw/7feddb98582ec37b500243d3f3e19eca/6P41.png",
+    },
+    "DP28": {
+        "type": "Light Machine Gun",
+        "icon_url": "7LoT7yAe0LK7bDOeq6MZZM/33995bc704667674af1b73fe962d4c7c/Primary_gun_DP27.png",
+    },
+    "T-95 LSW": {
+      "type": "Light Machine Gun",
+      "icon_url": "23HCxaNTRUHBlFAvCTMZQm/fe319cc164fac034a29e9b114ae7d5cb/T-95_LSW.png",
     },
 
     # Gadget
@@ -263,6 +343,10 @@ WEAPONS_DICT = {
     "M45 MEUSOC": {
         "type": "Pistol",
         "icon_url": "3u5cecgWYl3WuJK50mKEGd/a4a0eb15c710edfc0d29e98c2ee7ea33/M45_MEUSOC.png",
+    },
+    "MK1 9mm": {
+        "type": "Pistol",
+        "icon_url": "3tWoNeF3jQYs3w4EOydQYs/434409c96693df1fd3e969d778e70795/Mk1_9mm_BI.png",
     },
     "GSH-18": {
         "type": "Pistol",
@@ -335,6 +419,12 @@ WEAPONS_DICT = {
     ".44 Mag Semi-Auto": {
         "type": "Pistol",
         "icon_url": "6W3Jz0YcQzbZ6BOPr7VVel/4c67f342964132a652f7d5821e887050/.44_Mag_Semi-Auto.png",
+    },
+
+    # Hand Cannon
+    "GONNE-6": {
+        "type": "Hand Cannon",
+        "icon_url": "23AlSVw8MwI1y3ZakEfqgW/c4561ae6e8da8db2627a146b8b55ee6c/GONNE-6_HUD_Icon__1_.png",
     },
 
 }
