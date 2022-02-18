@@ -13,9 +13,12 @@ class Weapon:
         self.rounds_with_kill: float = data.get("roundsWithAKill")
         self.rounds_with_multi_kill: float = data.get("roundsWithMultiKill")
 
-        weapon = WEAPONS_DICT.get(self.name)
-        self.image_url: str = f"https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/{weapon.get('icon_url')}"
-        self.type: str = weapon.get("type")
+        if weapon := WEAPONS_DICT.get(self.name):
+            self.image_url: str = f"https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/{weapon.get('icon_url')}"
+            self.type: str = weapon.get("type")
+        else:
+            self.image_url: str = "Missing Asset"
+            self.type: str = "Missing Asset"
 
     def __repr__(self) -> str:
         return str(vars(self))
