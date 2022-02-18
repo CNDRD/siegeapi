@@ -23,8 +23,8 @@ class Weapon:
 
 class WeaponsGameMode:
     def __init__(self, data: dict):
-        self.primary: list = self._get_weapons_list(data.get("teamRoles").get("all").get("weaponSlots").get("primaryWeapons").get("weaponTypes"))
-        self.secondary: list = self._get_weapons_list(data.get("teamRoles").get("all").get("weaponSlots").get("secondaryWeapons").get("weaponTypes"))
+        self.primary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("primaryWeapons", {}).get("weaponTypes", {}))
+        self.secondary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("secondaryWeapons", {}).get("weaponTypes", {}))
 
     def _get_weapons_list(self, data: list[dict]) -> list[Weapon]:
         return [Weapon(weapon) for weaponType in data for weapon in weaponType.get("weapons")]
@@ -35,10 +35,10 @@ class WeaponsGameMode:
 
 class Weapons:
     def __init__(self, data: dict):
-        self.all: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("all"))
-        self.casual: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual"))
-        self.ranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked"))
-        self.unranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked"))
+        self.all: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("all", {}))
+        self.casual: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
+        self.ranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
+        self.unranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))
