@@ -101,6 +101,10 @@ WEAPONS_DICT = {
     },
 
     # Submachine Guns
+    "P90": {
+        "type": "Submachine Gun",
+        "icon_url": "4nGrNspOvII2oS3lEMkg5x/2398a493c298bc654f97c58767aa40f3/P90.png",
+    },
     "9mm C1": {
         "type": "Submachine Gun",
         "icon_url": "60sbThKtOpNOwKu3OP0oGV/672fd9263f7786402a0d855273473a6f/9mm_C1.png",
@@ -250,6 +254,26 @@ WEAPONS_DICT = {
         "type": "Shotgun",
         "icon_url": "CyofBgipHq4RTafvPFWd4/bc3d0ecc871b70e57735855f852efacf/SPAS-15.png",
     },
+    "SPAS-12": {
+        "type": "Shotgun",
+        "icon_url": "7Hp6Fbss6uI59OT4nZNB6e/a4d09954803cb2580353cfa03e8c778b/SPAS-12.png",
+    },
+    "SASG-12": {
+        "type": "Shotgun",
+        "icon_url": "2Q6mL4CbifmIgifV2yV3Hi/2bb2b323f055b03a2c1ba516c262c24e/SASG-12.png",
+    },
+    "Supernova": {
+        "type": "Shotgun",
+        "icon_url": "2tpjCRFLcc3hogjJGbKDsi/5ad0ab63b7245022aca5c1c1fb42d473/SuperNova.png",
+    },
+    "ITA12L": {
+        "type": "Shotgun",
+        "icon_url": "4Y6ziRzm9RiPii83fm8BV1/1f472744d2c2dec8d9206f4d8733d92c/ITA12L.png",
+    },
+    "BOSG.12.2": {
+        "type": "Shotgun",
+        "icon_url": "2ZjVndetsX8WEn5ZfyUQa0/e3a781be7eab22876d25f748e8fd0f5a/BOSG.12.2.png",
+    },
 
     # Light Machine Guns
     "G8A1": {
@@ -277,6 +301,10 @@ WEAPONS_DICT = {
       "icon_url": "1wxS2HOCvoPAfnJEDFWjfw/7feddb98582ec37b500243d3f3e19eca/6P41.png",
     },
     "DP28": {
+        "type": "Light Machine Gun",
+        "icon_url": "7LoT7yAe0LK7bDOeq6MZZM/33995bc704667674af1b73fe962d4c7c/Primary_gun_DP27.png",
+    },
+    "DP27": {
         "type": "Light Machine Gun",
         "icon_url": "7LoT7yAe0LK7bDOeq6MZZM/33995bc704667674af1b73fe962d4c7c/Primary_gun_DP27.png",
     },
@@ -343,6 +371,10 @@ WEAPONS_DICT = {
     "M45 MEUSOC": {
         "type": "Pistol",
         "icon_url": "3u5cecgWYl3WuJK50mKEGd/a4a0eb15c710edfc0d29e98c2ee7ea33/M45_MEUSOC.png",
+    },
+    "USP40": {
+        "type": "Pistol",
+        "icon_url": "7FxemzWRtlpAhK9MyKp1Gp/817cc25b6b7c3575dc1ba53a6a8170a9/USP40.png",
     },
     "MK1 9mm": {
         "type": "Pistol",
