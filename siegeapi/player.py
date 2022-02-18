@@ -90,9 +90,6 @@ class PlayerBatch:
             root_result = await root_method(*args, **kwargs)
             results[root_player.id] = root_result
 
-            data = root_player._last_data
-            kwargs["data"] = data
-
             for player_id in self.players:
                 if player_id != root_player.id:
                     results[player_id] = await getattr(self.players[player_id], name)(*args, **kwargs)
