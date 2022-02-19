@@ -15,9 +15,11 @@ class Weapon:
 
         if weapon := WEAPONS_DICT.get(self.name):
             self.image_url: str = f"https://staticctf.akamaized.net/J3yJr34U2pZ2Ieem48Dwy9uqj5PNUQTn/{weapon.get('icon_url')}"
+            self.imgur_url: str = weapon.get("imgur_url")
             self.type: str = weapon.get("type")
         else:
             self.image_url: str = "Missing Asset"
+            self.imgur_url: str = "Missing Asset"
             self.type: str = "Missing Asset"
 
     def __repr__(self) -> str:
