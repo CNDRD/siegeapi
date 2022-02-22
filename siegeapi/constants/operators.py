@@ -7,7 +7,7 @@ operator_dict = {
       "armor": 2,
       "unit": "UNAFFILIATED",
       "country_code": "JP",
-      "roles": [],
+      "roles": ["Area Denial"],
       "side": "defender",
       "id": "",
       "icon_url": "",
