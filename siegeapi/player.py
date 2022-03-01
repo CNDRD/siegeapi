@@ -1,3 +1,6 @@
+from __future__ import annotations
+from typing import List
+
 from .platforms import PlatformURLNames
 from .exceptions import InvalidRequest
 from .ranks import Rank, _get_rank_constants
@@ -15,7 +18,7 @@ class UrlBuilder:
     def __init__(self, spaceid, platform_url, player_ids):
         self.spaceid: str = spaceid
         self.platform_url: str = platform_url
-        self.player_ids: list[str] = player_ids
+        self.player_ids: List[str] = player_ids
 
     def fetch_statistic_url(self, statistics: list) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/playerstats2/statistics?" \
@@ -290,7 +293,7 @@ class Player:
         self.thunt = Gamemode("terrohunt", stats)
         return self.ranked, self.casual, self.thunt
 
-    async def load_weapon_types(self, data=None) -> list[WeaponType]:
+    async def load_weapon_types(self, data=None) -> List[WeaponType]:
         """ Load the players' weapon type stats """
 
         if not data:
@@ -330,7 +333,7 @@ class Player:
         return self.operators
 
     @staticmethod
-    def _process_data(data: dict[str: int], op_dict: dict[str: dict[str: str | int | list[str] | list[dict[str: str]]]]) -> dict[str: int]:
+    def _process_data(data: dict[str: int], op_dict: dict[str: dict[str: str | int | List[str] | List[dict[str: str]]]]) -> dict[str: int]:
         processed_data = {}
         for opd in op_dict:
             op = operator_dict[opd]
@@ -342,7 +345,7 @@ class Player:
         return processed_data
 
     @staticmethod
-    def _process_basic_data(data: dict[str: int], operator: dict[str: str | int | list[str] | list[dict[str: str]]]) -> dict[str: int]:
+    def _process_basic_data(data: dict[str: int], operator: dict[str: str | int | List[str] | List[dict[str: str]]]) -> dict[str: int]:
         basic_data = {}
         for stat in data:
             if stat.startswith(operator["safename"]):
@@ -350,7 +353,7 @@ class Player:
         return basic_data
 
     @staticmethod
-    def _process_unique_data(data: dict[str: int], operator: dict[str: str | int | list[str] | list[dict[str: str]]]) -> dict[str: int]:
+    def _process_unique_data(data: dict[str: int], operator: dict[str: str | int | List[str] | List[dict[str: str]]]) -> dict[str: int]:
         unique_data = {}
 
         for ability in operator["unique_stats"]:

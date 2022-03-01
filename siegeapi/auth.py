@@ -1,3 +1,6 @@
+from __future__ import annotations
+from typing import List
+
 import aiohttp
 import time
 import json
@@ -167,7 +170,7 @@ class Auth:
         else:
             return await resp.text()
 
-    async def _get_players(self, name=None, platform=None, uid=None) -> list[Player]:
+    async def _get_players(self, name=None, platform=None, uid=None) -> List[Player]:
         """ Get a list of players matching the search term on a given platform """
 
         if name is None and uid is None:

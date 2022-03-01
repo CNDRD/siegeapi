@@ -1,3 +1,5 @@
+from typing import List
+
 from .constants import WEAPONS_DICT
 
 
@@ -32,7 +34,7 @@ class WeaponsGameMode:
         self.secondary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("secondaryWeapons", {}).get("weaponTypes", {}))
 
     @staticmethod
-    def _get_weapons_list(data: list[dict]) -> list[Weapon]:
+    def _get_weapons_list(data: List[dict]) -> List[Weapon]:
         return [Weapon(weapon) for weaponType in data for weapon in weaponType.get("weapons")]
 
     def __repr__(self) -> str:
