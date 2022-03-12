@@ -61,7 +61,7 @@ asyncio.get_event_loop().run_until_complete(sample())
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
 Level: 256
-Level: 3250
+Alpha pack %: 3250
 ```
 
 ---
