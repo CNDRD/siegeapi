@@ -13,6 +13,12 @@ from .weapons import Weapons
 from .constants import *
 import aiohttp
 
+PlatformURLNames = {
+    "uplay": "OSBOR_PC_LNCH_A",
+    "psn": "OSBOR_PS4_LNCH_A",
+    "xbl": "OSBOR_XBOXONE_LNCH_A"
+}
+
 
 class UrlBuilder:
     def __init__(self, spaceid, platform_url, player_ids):
