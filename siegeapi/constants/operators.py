@@ -1,4 +1,23 @@
 operator_dict = {
+   "azami": {
+      "name": "Azami",
+      "safename": "azami",
+      "year": "Y7S1",
+      "health": 2,
+      "armor": 2,
+      "unit": "UNAFFILIATED",
+      "country_code": "JP",
+      "roles": ["Area Denial"],
+      "side": "defender",
+      "id": "",
+      "icon_url": "https://i.imgur.com/AmyLoc5.png",
+      "unique_stats": [
+         {
+            "id": "operatorpvp_azami_something",
+            "name": "Kiba Barrier something"
+         }
+      ]
+   },
    "thorn": {
       "name": "Thorn",
       "safename": "thorn",
@@ -12,7 +31,7 @@ operator_dict = {
          "Secure"
       ],
       "side": "defender",
-      "id": "A00:A00",
+      "id": "",
       "icon_url": "https://i.imgur.com/w5DB6xs.png",
       "unique_stats": [
          {

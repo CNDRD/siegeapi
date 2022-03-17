@@ -1,12 +1,11 @@
 from setuptools import setup, find_packages
 
-readme = ''
 with open('README.md') as f:
     long_description = f.read()
 
 setup(
     name="siegeapi",
-    version="1.2.1",
+    version="2.0.0",
     url="https://github.com/CNDRD/siege-api",
     description="Rainbow Six Siege API interface",
     author="CNDRD",

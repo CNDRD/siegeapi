@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 
-class Gamemode:
+class Map:
     def __init__(self, data: dict):
-        data = data.get("teamRoles", {}).get("all", [])[0]
+        self.map_name: str = data.get("statsDetail")
         self.matches_played: int = data.get("matchesPlayed")
         self.rounds_played: int = data.get("roundsPlayed")
         self.minutes_played: int = data.get("minutesPlayed")
@@ -44,12 +44,19 @@ class Gamemode:
         return str(vars(self))
 
 
-class Gamemodes:
+class MapRoles:
     def __init__(self, data: dict):
-        self.all: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("all", {}))
-        self.casual: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
-        self.ranked: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
-        self.unranked: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+        self.all: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("all", [])]
+        self.attacker: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("attacker", [])]
+        self.defender: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("defender", [])]
+
+
+class Maps:
+    def __init__(self, data: dict):
+        self.all: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("all", {}))
+        self.casual: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
+        self.ranked: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
+        self.unranked: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))
