@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import List
 
 from .platforms import PlatformURLNames
 from .exceptions import InvalidRequest
@@ -21,7 +20,7 @@ PlatformURLNames = {
 
 
 class UrlBuilder:
-    def __init__(self, spaceid, platform_url, player_ids):
+    def __init__(self, spaceid: str, platform_url: str, player_id: str):
         self.spaceid: str = spaceid
         self.platform_url: str = platform_url
         self.player_ids: List[str] = player_ids
