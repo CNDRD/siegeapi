@@ -171,6 +171,6 @@ seasons = {
         "name": "Demon Veil",
         "hex": "#ffb52c",
         "code": "Y7S1",
-        "start_date": "2022-03-08"
+        "start_date": "2022-03-15"
     },
 }
