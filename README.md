@@ -35,21 +35,23 @@ pip install siegeapi
 
 ## Quick example  
 ```python
-from siegeapi import Auth, Platforms
+from siegeapi import Auth
 import asyncio
 
 async def sample():
     auth = Auth("UBI_EMAIL", "UBI_PASSWORD")
-    player = await auth.get_player(uid="7e0f63df-a39b-44c5-8de0-d39a05926e77", platform=Platforms.UPLAY)
+    player = await auth.get_player(uid="7e0f63df-a39b-44c5-8de0-d39a05926e77")
 
     print(f"Name: {player.name}")
     print(f"Profile pic URL: {player.profile_pic_url}")
 
-    await player.load_level()
-    await player.load_alpha_pack()
+    await player.load_playtime()
+    print(f"Total Time Played: {player.total_time_played}")
     
+    await player.load_progress()
     print(f"Level: {player.level}")
     print(f"Alpha pack %: {player.alpha_pack}")
+    print(f"XP: {player.xp}")
 
     await auth.close()
 
@@ -60,8 +62,9 @@ asyncio.get_event_loop().run_until_complete(sample())
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
-Level: 256
+Level: 261
 Alpha pack %: 3250
+XP: 118420
 ```
 
 ---
