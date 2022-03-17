@@ -205,7 +205,7 @@ class Auth:
         results = await self._find_players(name=name, platform=platform, uid=uid)
         return results[0]
 
-    async def get_player_batch(self, platform, names=None, uids=None) -> PlayerBatch:
+    async def get_player_batch(self, platform, names=None, uids=None) -> dict[str: Player]:
         players = {}
         if names is not None:
             for name in names:
@@ -216,4 +216,4 @@ class Auth:
             for uid in uids:
                 player = await self.get_player(uid=uid, platform=platform)
                 players[player.id] = player
-        return PlayerBatch(players)
+        return players
