@@ -10,7 +10,7 @@ operator_dict = {
       "roles": ["Area Denial"],
       "side": "defender",
       "id": "",
-      "icon_url": "",
+      "icon_url": "https://i.imgur.com/AmyLoc5.png",
       "unique_stats": [
          {
             "id": "operatorpvp_azami_something",
