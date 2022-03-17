@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .exceptions import InvalidRequest
+from .utils import get_total_xp, get_xp_to_next_lvl
 from .ranks import Rank
 from .gamemode import Gamemodes
 from .operators import Operators
@@ -100,6 +101,8 @@ class Player:
         self.level: int = 0
         self.alpha_pack: float = 0
         self.xp: int = 0
+        self.total_xp: int = get_total_xp(self.level, self.xp)
+        self.xp_to_level_up: int = get_xp_to_next_lvl(self.level) - self.xp
 
         self.total_time_played: int = 0
         self.pvp_time_played: int = 0
