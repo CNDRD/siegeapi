@@ -27,7 +27,7 @@ def _get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, in
 
 
 class Rank:
-    def __init__(self, data, rank_definitions):
+    def __init__(self, data):
         self.kills: int = data.get("kills", 0)
         self.deaths: int = data.get("deaths", 0)
         self.last_mmr_change: int = int(data.get("last_match_mmr_change", 0))
@@ -39,9 +39,10 @@ class Rank:
         self.losses: int = data.get("losses", 0)
         self.rank_id: int = data.get("rank")
         self.season: int = data.get("season", -1)
-        self.rank: str = rank_definitions[self.rank_id]["name"]
+        _rank_definitions = _get_rank_constants(self.season)
+        self.rank: str = _rank_definitions[self.rank_id]["name"]
         self.max_rank_id: int = data.get("max_rank")
-        self.max_rank: str = rank_definitions[self.max_rank_id]["name"]
+        self.max_rank: str = _rank_definitions[self.max_rank_id]["name"]
         self.region: str = data.get("region")
         self.abandons: int = data.get("abandons", 0)
         self.skill_mean: float = data.get("skill_mean", 0)
