@@ -1,15 +1,14 @@
 from __future__ import annotations
-from typing import List
 
-import aiohttp
-import time
-import json
-import base64
 from urllib import parse
 import datetime
+import aiohttp
+import base64
+import time
+import json
 
 from .exceptions import FailedToConnect, InvalidRequest
-from .player import Player, PlayerBatch
+from .player import Player
 
 
 class Auth:
@@ -39,7 +38,7 @@ class Auth:
         self.sessionid: str = ""
         self.key: str = ""
         self.uncertain_spaceid: str = ""
-        self.spaceids: dict[str:str] = {
+        self.spaceids: dict[str: str] = {
             "uplay": "5172a557-50b5-4665-b7db-e3f2e8c5041d",
             "psn": "05bfb3f7-6c21-4c42-be1f-97a33fb5cf66",
             "xbl": "98a601e5-ca91-4440-b1c5-753f601a2c90"
@@ -53,9 +52,41 @@ class Auth:
         self._login_cooldown: int = 0
         self._session_start: float = time.time()
 
-    async def close(self) -> None:
-        """ Closes the session associated with the auth object """
-        await self.session.close()
+    async def _find_players(self, name: str = None, platform: str = None, uid: str = None) -> list[Player]:
+        """ Get a list of players matching the search term on a given platform """
+
+        if name is None and uid is None:
+            raise TypeError("'name' and 'uid' are both None, exactly one must be given")
+
+        if name is not None and uid is not None:
+            raise TypeError("Cannot search by 'uid' and 'name' at the same time, please give one or the other")
+
+        if platform is None:
+            raise TypeError("platform cannot be None")
+
+        if platform not in ("uplay", "xbl", "psn"):
+            raise TypeError(f"'platform' has to be one of the following: 'uplay' / 'xbl' / 'psn'; Not {platform}")
+
+        if name:
+            data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?"
+                                  f"nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
+        else:
+            data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?"
+                                  f"platformType={parse.quote(platform)}")
+
+        if "profiles" in data:
+            results = [Player(self, x) for x in data["profiles"] if x.get("platformType", "") == platform]
+            if len(results) == 0:
+                raise InvalidRequest("No results")
+            return results
+        else:
+            raise InvalidRequest(f"Missing key profiles in returned JSON object {str(data)}")
+
+    async def _ensure_session_valid(self) -> None:
+        if not self.session:
+            await self.refresh_session()
+        elif 0 <= self.refresh_session_period <= (time.time() - self._session_start):
+            await self.refresh_session()
 
     async def refresh_session(self) -> None:
         """ Closes the current session and opens a new one """
@@ -67,12 +98,6 @@ class Auth:
 
         self.session = aiohttp.ClientSession()
         self._session_start = time.time()
-
-    async def _ensure_session_valid(self) -> None:
-        if not self.session:
-            await self.refresh_session()
-        elif 0 <= self.refresh_session_period <= (time.time() - self._session_start):
-            await self.refresh_session()
 
     async def get_session(self) -> aiohttp.ClientSession():
         """ Retrieves the current session, ensuring it's valid first """
@@ -107,7 +132,11 @@ class Auth:
                 message = str(data["httpCode"])
             raise FailedToConnect(message)
 
-    async def get(self, *args, retries=0, referer=None, json=True, **kwargs) -> dict | str:
+    async def close(self) -> None:
+        """ Closes the session associated with the auth object """
+        await self.session.close()
+
+    async def get(self, *args, retries: int = 0, referer: str = None, json_: bool = True, **kwargs) -> dict | str:
         if not self.key:
             last_error = None
             for _ in range(self.max_connect_retries):
@@ -131,7 +160,7 @@ class Auth:
         kwargs["headers"]["Ubi-AppId"] = self.appid
         kwargs["headers"]["Ubi-SessionId"] = self.sessionid
         kwargs["headers"]["Connection"] = "keep-alive"
-        kwargs["headers"]["expiration"] = f"{(datetime.datetime.utcnow()+datetime.timedelta(hours=2.0)).isoformat()}Z"
+        kwargs["headers"]["expiration"] = f"{(datetime.datetime.utcnow() + datetime.timedelta(hours=2.0)).isoformat()}Z"
         kwargs["headers"]["Ubi-LocaleCode"] = "x"
 
         if referer is not None:
@@ -142,7 +171,7 @@ class Auth:
         session = await self.get_session()
         resp = await session.get(*args, **kwargs)
 
-        if json:
+        if json_:
             try:
                 data = await resp.json()
             except:
@@ -170,37 +199,10 @@ class Auth:
         else:
             return await resp.text()
 
-    async def _get_players(self, name=None, platform=None, uid=None) -> List[Player]:
-        """ Get a list of players matching the search term on a given platform """
-
-        if name is None and uid is None:
-            raise TypeError("name and uid are both None, exactly one must be given")
-
-        if name is not None and uid is not None:
-            raise TypeError("cannot search by uid and name at the same time, please give one or the other")
-
-        if platform is None:
-            raise TypeError("platform cannot be None")
-
-        if name:
-            data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?"
-                                  f"nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
-        else:
-            data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?"
-                                  f"platformType={parse.quote(platform)}")
-
-        if "profiles" in data:
-            results = [Player(self, x) for x in data["profiles"] if x.get("platformType", "") == platform]
-            if len(results) == 0:
-                raise InvalidRequest("No results")
-            return results
-        else:
-            raise InvalidRequest(f"Missing key profiles in returned JSON object {str(data)}")
-
     async def get_player(self, name=None, platform=None, uid=None) -> Player:
         """ Calls get_players and returns the first element """
 
-        results = await self._get_players(name=name, platform=platform, uid=uid)
+        results = await self._find_players(name=name, platform=platform, uid=uid)
         return results[0]
 
     async def get_player_batch(self, platform, names=None, uids=None) -> PlayerBatch:
