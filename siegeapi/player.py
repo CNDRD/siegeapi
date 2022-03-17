@@ -101,8 +101,8 @@ class Player:
         self.level: int = 0
         self.alpha_pack: float = 0
         self.xp: int = 0
-        self.total_xp: int = get_total_xp(self.level, self.xp)
-        self.xp_to_level_up: int = get_xp_to_next_lvl(self.level) - self.xp
+        self.total_xp: int = 0
+        self.xp_to_level_up: int = 0
 
         self.total_time_played: int = 0
         self.pvp_time_played: int = 0
@@ -130,9 +130,11 @@ class Player:
     async def load_progress(self) -> None:
         data = await self._auth.get(self._url_builder.level_xp_alphapack())
 
-        self.xp = int(data.get("player_profiles", [])[0].get("xp", 0))
         self.alpha_pack = int(data.get("player_profiles", [])[0].get("lootbox_probability", 0)) / 100
         self.level = int(data.get("player_profiles", [])[0].get("level", 0))
+        self.xp = int(data.get("player_profiles", [])[0].get("xp", 0))
+        self.total_xp: int = get_total_xp(self.level, self.xp)
+        self.xp_to_level_up: int = get_xp_to_next_lvl(self.level) - self.xp
 
     async def load_ranked(self, season: int = -1, region: str = "emea") -> Rank:
         data = await self._auth.get(self._url_builder.boards(season, "ranked", region))
