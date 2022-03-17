@@ -1,4 +1,5 @@
-def get_xp_to_next_lvl(lvl: int):
+
+def get_xp_to_next_lvl(lvl: int) -> int:
     if lvl == 0:
         return 500
     if lvl == 1:
@@ -32,8 +33,8 @@ def get_xp_to_next_lvl(lvl: int):
     return (lvl - 18) * 500
 
 
-def get_total_xp(lvl: int, current_xp: int):
+def get_total_xp(lvl: int, current_xp: int) -> int:
     total = 0
     for level in range(1, lvl):
-        total += _get_xp_to_next_lvl(level)
+        total += get_xp_to_next_lvl(level)
     return total + current_xp
