@@ -52,6 +52,8 @@ async def sample():
     print(f"Level: {player.level}")
     print(f"Alpha pack %: {player.alpha_pack}")
     print(f"XP: {player.xp}")
+    print(f"Total XP: {player.total_xp}")
+    print(f"XP to level up: {player.xp_to_level_up}")
 
     await auth.close()
 
@@ -62,9 +64,12 @@ asyncio.get_event_loop().run_until_complete(sample())
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
+Total Time Played: 6723492
 Level: 261
-Alpha pack %: 3250
-XP: 118420
+Alpha pack %: 30.5
+XP: 12318
+Total XP: 14875818
+XP to level up: 109182
 ```
 
 ---

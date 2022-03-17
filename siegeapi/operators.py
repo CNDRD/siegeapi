@@ -6,6 +6,8 @@ from .constants import operator_dict
 class Operator:
     def __init__(self, data: dict):
         self.name: str = data.get("statsDetail")
+        if self.name == "":
+            self.name = "Azami"
         self.matches_played: int = data.get("matchesPlayed")
         self.rounds_played: int = data.get("roundsPlayed")
         self.minutes_played: int = data.get("minutesPlayed")
@@ -58,8 +60,8 @@ class Operator:
 
 class OperatorsGameMode:
     def __init__(self, data: dict):
-        self.attacker: list = [Operator(operator) for operator in data.get("teamRoles", {}).get("attacker", {})]
-        self.defender: list = [Operator(operator) for operator in data.get("teamRoles", {}).get("defender", {})]
+        self.attacker: list = [Operator(operator) for operator in data.get("teamRoles", {}).get("attacker", {}) if operator.get("statsDetail") != "Reserve"]
+        self.defender: list = [Operator(operator) for operator in data.get("teamRoles", {}).get("defender", {}) if operator.get("statsDetail") != "Reserve"]
 
     def __repr__(self) -> str:
         return str(vars(self))
