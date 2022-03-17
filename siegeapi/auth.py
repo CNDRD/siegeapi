@@ -52,7 +52,7 @@ class Auth:
         self._login_cooldown: int = 0
         self._session_start: float = time.time()
 
-    async def _find_players(self, name: str = None, platform: str = None, uid: str = None) -> list[Player]:
+    async def _find_players(self, name: str, platform: str, uid: str) -> list[Player]:
         """ Get a list of players matching the search term on a given platform """
 
         if name is None and uid is None:
@@ -199,13 +199,13 @@ class Auth:
         else:
             return await resp.text()
 
-    async def get_player(self, name=None, platform=None, uid=None) -> Player:
+    async def get_player(self, name: str = None, uid: str = None, platform: str = "uplay") -> Player:
         """ Calls get_players and returns the first element """
 
         results = await self._find_players(name=name, platform=platform, uid=uid)
         return results[0]
 
-    async def get_player_batch(self, platform, names=None, uids=None) -> dict[str: Player]:
+    async def get_player_batch(self, names: list[str] = None, uids: list[str] = None, platform: str = "uplay") -> dict[str: Player]:
         players = {}
         if names is not None:
             for name in names:
