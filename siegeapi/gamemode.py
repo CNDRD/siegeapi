@@ -1,50 +1,55 @@
+from __future__ import annotations
+
 
 class Gamemode:
-    """ Contains information about a specific game queue """
-    def __init__(self, name, stats=None):
-        self.name = name
+    def __init__(self, data: dict):
+        data = data.get("teamRoles", {}).get("all", [])[0]
+        self.matches_played: int = data.get("matchesPlayed")
+        self.rounds_played: int = data.get("roundsPlayed")
+        self.minutes_played: int = data.get("minutesPlayed")
+        self.matches_won: int = data.get("matchesWon")
+        self.matches_lost: int = data.get("matchesLost")
+        self.rounds_won: int = data.get("roundsWon")
+        self.rounds_lost: int = data.get("roundsLost")
+        self.kills: int = data.get("kills")
+        self.assists: int = data.get("assists")
+        self.death: int = data.get("death")
+        self.headshots: int = data.get("headshots")
+        self.melee_kills: int = data.get("meleeKills")
+        self.team_kills: int = data.get("teamKills")
+        self.opening_kills: int = data.get("openingKills")
+        self.opening_deaths: int = data.get("openingDeaths")
+        self.trades: int = data.get("trades")
+        self.opening_kill_trades: int = data.get("openingKillTrades")
+        self.opening_death_trades: int = data.get("openingDeathTrades")
+        self.revives: int = data.get("revives")
+        self.distance_travelled: int = data.get("distanceTravelled")
+        self.win_loss_ratio: float = data.get("winLossRatio")
+        self.kill_death_ratio: float = round((data.get("killDeathRatio").get("value") * 100), 2)
+        self.headshot_accuracy: float = round((data.get("headshotAccuracy").get("value") * 100), 2)
+        self.kills_per_round: float = round((data.get("killsPerRound").get("value") * 100), 2)
+        self.rounds_with_a_kill: float = round((data.get("roundsWithAKill").get("value") * 100), 2)
+        self.rounds_with_multi_kill: float = round((data.get("roundsWithMultiKill").get("value") * 100), 2)
+        self.rounds_with_opening_kill: float = round((data.get("roundsWithOpeningKill").get("value") * 100), 2)
+        self.rounds_with_opening_death: float = round((data.get("roundsWithOpeningDeath").get("value") * 100), 2)
+        self.rounds_with_kost: float = round((data.get("roundsWithKOST").get("value") * 100), 2)
+        self.rounds_survived: float = round((data.get("roundsSurvived").get("value") * 100), 2)
+        self.rounds_with_an_ace: float = round((data.get("roundsWithAnAce").get("value") * 100), 2)
+        self.rounds_with_clutch: float = round((data.get("roundsWithClutch").get("value") * 100), 2)
+        self.time_alive_per_match: float = data.get("timeAlivePerMatch")
+        self.time_dead_per_match: float = data.get("timeDeadPerMatch")
+        self.distance_per_round: float = data.get("distancePerRound")
 
-        if name == "ranked" or name == "casual":
-            statname = f"{name}pvp_"
-            stats = stats or {}
-            self.won = stats.get(f"{statname}matchwon", 0)
-            self.lost = stats.get(f"{statname}matchlost", 0)
-            self.time_played = stats.get(f"{statname}timeplayed", 0)
-            self.played = stats.get(f"{statname}matchplayed", 0)
-            self.kills = stats.get(f"{statname}kills", 0)
-            self.deaths = stats.get(f"{statname}death", 0)
+    def __repr__(self) -> str:
+        return str(vars(self))
 
-        else:
-            statname = "generalpve_"
-            self.deaths = stats.get(f"{statname}death", 0)
-            self.penetration_kills = stats.get(f"{statname}penetrationkills", 0)
-            self.matches_won = stats.get(f"{statname}matchwon", 0)
-            self.bullets_hit = stats.get(f"{statname}bullethit", 0)
-            self.melee_kills = stats.get(f"{statname}meleekills", 0)
-            self.bullets_fired = stats.get(f"{statname}bulletfired", 0)
-            self.matches_played = stats.get(f"{statname}matchplayed", 0)
-            self.kill_assists = stats.get(f"{statname}killassists", 0)
-            self.time_played = stats.get(f"{statname}timeplayed", 0)
-            self.revives = stats.get(f"{statname}revive", 0)
-            self.kills = stats.get(f"{statname}kills", 0)
-            self.headshots = stats.get(f"{statname}headshot", 0)
-            self.matches_lost = stats.get(f"{statname}matchlost", 0)
-            self.dbno_assists = stats.get(f"{statname}dbnoassists", 0)
-            self.suicides = stats.get(f"{statname}suicide", 0)
-            self.barricades_deployed = stats.get(f"{statname}barricadedeployed", 0)
-            self.reinforcements_deployed = stats.get(f"{statname}reinforcementdeploy", 0)
-            self.total_xp = stats.get(f"{statname}totalxp", 0)
-            self.rappel_breaches = stats.get(f"{statname}rappelbreach", 0)
-            self.distance_travelled = stats.get(f"{statname}distancetravelled", 0)
-            self.revives_denied = stats.get(f"{statname}revivedenied", 0)
-            self.dbnos = stats.get(f"{statname}dbno", 0)
-            self.gadgets_destroyed = stats.get(f"{statname}gadgetdestroy", 0)
-            self.areas_secured = stats.get(f"{statname}servershacked", 0)
-            self.areas_defended = stats.get(f"{statname}serverdefender", 0)
-            self.areas_contested = stats.get(f"{statname}serveraggression", 0)
-            self.hostages_rescued = stats.get(f"{statname}hostagerescue", 0)
-            self.hostages_defended = stats.get(f"{statname}hostagedefense", 0)
-            self.blind_kills = stats.get(f"{statname}blindkills", 0)
 
-    def get_dict(self) -> dict[str: int]:
-        return vars(self)
+class Gamemodes:
+    def __init__(self, data: dict):
+        self.all: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("all", {}))
+        self.casual: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
+        self.ranked: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
+        self.unranked: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+
+    def __repr__(self) -> str:
+        return str(vars(self))
