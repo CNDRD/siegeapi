@@ -50,6 +50,7 @@ class Gamemodes:
         self.casual: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
         self.ranked: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
         self.unranked: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+        self.newcomer: Gamemode = Gamemode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))

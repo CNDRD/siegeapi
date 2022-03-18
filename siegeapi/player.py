@@ -67,7 +67,7 @@ class UrlBuilder:
 
     def gamemodes(self, start_date: str = None, end_date: str = None):
         return f"https://r6s-stats.ubisoft.com/v1/current/summary/{self.player_id}?" \
-               f"gameMode=all,ranked,unranked,casual" \
+               f"gameMode=all,ranked,unranked,casual,newcomer" \
                f"&platform=PC" \
                f"&startDate={start_date or self.siege_release}" \
                f"&endDate={end_date or self.today}"
