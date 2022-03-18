@@ -47,6 +47,7 @@ class Weapons:
         self.casual: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
         self.ranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
         self.unranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+        self.newcomer: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))

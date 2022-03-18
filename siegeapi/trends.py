@@ -67,6 +67,7 @@ class Trends:
         self.casual = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}), "casual")
         self.ranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}), "ranked")
         self.unranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}), "unranked")
+        self.newcomer = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}), "newcomer")
 
     def __repr__(self) -> str:
         return str(vars(self))

@@ -57,6 +57,7 @@ class Maps:
         self.casual: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
         self.ranked: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
         self.unranked: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+        self.newcomer: MapRoles = MapRoles(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))

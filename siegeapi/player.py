@@ -43,7 +43,7 @@ class UrlBuilder:
 
     def trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY, start_date: str = None, end_date: str = None) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/trend/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked" \
+               f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&teamRole=all,attacker,defender" \
                f"&trendType={block_duration}" \
                f"&startDate={start_date or self.siege_release}" \
@@ -51,7 +51,7 @@ class UrlBuilder:
 
     def weapons(self, start_date: str = None, end_date: str = None) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/weapons/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked" \
+               f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=all" \
                f"&startDate={start_date or self.siege_release}" \
@@ -59,7 +59,7 @@ class UrlBuilder:
 
     def operators(self, start_date: str = None, end_date: str = None):
         return f"https://r6s-stats.ubisoft.com/v1/current/operators/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked" \
+               f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=attacker,defender" \
                f"&startDate={start_date or self.siege_release}" \
@@ -74,7 +74,7 @@ class UrlBuilder:
 
     def maps(self, start_date: str = None, end_date: str = None):
         return f"https://r6s-stats.ubisoft.com/v1/current/maps/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked" \
+               f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=all,attacker,defender" \
                f"&startDate={start_date or self.siege_release}" \

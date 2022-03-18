@@ -73,6 +73,7 @@ class Operators:
         self.casual: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
         self.ranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
         self.unranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+        self.newcomer: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))
