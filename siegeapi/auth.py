@@ -174,7 +174,7 @@ class Auth:
         if json_:
             try:
                 data = await resp.json()
-            except:
+            except Exception:
                 text = await resp.text()
                 message = text.split("h1>")
                 message = message[1][:-2] if len(message) > 1 else text
