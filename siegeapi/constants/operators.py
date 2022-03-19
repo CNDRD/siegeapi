@@ -10,7 +10,7 @@ operator_dict = {
       "roles": ["Area Denial"],
       "side": "defender",
       "id": "",
-      "icon_url": "https://i.imgur.com/AmyLoc5.png",
+      "icon_url": "https://i.imgur.com/QnqklyT.png",
       "unique_stats": [
          {
             "id": "operatorpvp_azami_something",
@@ -55,7 +55,7 @@ operator_dict = {
       ],
       "side": "attacker",
       "id": "6:17",
-      "icon_url": "https://i.imgur.com/WjvbwYD.png",
+      "icon_url": "https://i.imgur.com/odZHbem.png",
       "unique_stats": [
          {
             "id": "operatorpvp_osa_shieldsdeployed",
