@@ -77,6 +77,9 @@ XP to level up: 109182
 ## Docs
 For docs visit [WIKI](https://github.com/CNDRD/siegeapi/wiki/)
 
+### Operator Icons  
+From [r6operators](https://github.com/marcopixel/r6operators) by [marcopixel](https://github.com/marcopixel)
+
 ### Type hints  
 Everything is type hinted to the best of my abilities  
 If there's something missing or wrong, let me know or submit a PR  
