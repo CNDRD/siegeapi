@@ -110,6 +110,7 @@ class Player:
         self.casuals: dict = {}
         self.newcomers: dict = {}
         self.events: dict = {}
+        self.deathmatch: dict = {}
 
         self.weapons: Weapons | None = None
         self.trends: Trends | None = None
@@ -165,6 +166,14 @@ class Player:
 
         self.events[f"{region}:{season}"] = Rank(data["players"][self.id])
         return self.events[f"{region}:{season}"]
+
+    async def load_deathmatch(self, season: int = -1, region: str = "emea") -> Rank:
+        data = await self._auth.get(self._url_builder.boards(season, "warmup", region))
+        if data["players"] == {}:
+            raise InvalidRequest(f"There is no such data for the given combination of season ({season}) and region ({region})")
+
+        self.deathmatch[f"{region}:{season}"] = Rank(data["players"][self.id])
+        return self.deathmatch[f"{region}:{season}"]
 
     async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
         self.trends = Trends(await self._auth.get(self._url_builder.trends(block_duration)))
