@@ -1,5 +1,5 @@
 
-# Until Y1S3 (#3)
+# Until Y1S3 | #3 | Skull Rain
 ranks_v1 = [
     {"name": "Unranked", "min_mmr": 0, "max_mmr": 0},
     {"name": "Copper 1", "min_mmr": 1, "max_mmr": 2199},
@@ -24,7 +24,7 @@ ranks_v1 = [
     {"name": "Diamond", "min_mmr": 6000, "max_mmr": 999999}
 ]
 
-# Y1S4 (#4)
+# Y1S4 | #4 | Red Crow
 ranks_v2 = [
     {"name": "Unranked", "min_mmr": 0, "max_mmr": 0},
     {"name": "Copper 1", "min_mmr": 1, "max_mmr": 1399},
@@ -49,7 +49,7 @@ ranks_v2 = [
     {"name": "Diamond", "min_mmr": 3700, "max_mmr": 999999}
 ]
 
-# Y2S1 - Y4S2 (#5 - #14)
+# Y2S1 - Y4S2 | #5 - #14 | Velvet Shell - Phantom Sight
 ranks_v3 = [
     {"name": "Unranked", "min_mmr": 0, "max_mmr": 0},
     {"name": "Copper 4", "min_mmr": 1, "max_mmr": 1399},
@@ -74,7 +74,7 @@ ranks_v3 = [
     {"name": "Diamond", "min_mmr": 4500, "max_mmr": 999999}
 ]
 
-# Y4S3 - Y6S2 (#15 - #22)
+# Y4S3 - Y6S2 | #15 - #22 | Ember Rise - North Star
 ranks_v4 = [
     {"name": "Unranked", "min_mmr": 0, "max_mmr": 0},
     {"name": "Copper 5", "min_mmr": 1, "max_mmr": 1199},
@@ -102,7 +102,7 @@ ranks_v4 = [
     {"name": "Champion", "min_mmr": 5000, "max_mmr": 999999}
 ]
 
-# Y6S3+ (#23+)
+# Y6S3+ | #23+ | Crystal Guard+
 ranks_v5 = [
     {"name": "Unranked", "min_mmr": 0, "max_mmr": 0},
     {"name": "Copper 5", "min_mmr": 1, "max_mmr": 1199},
