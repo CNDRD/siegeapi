@@ -1494,5 +1494,18 @@ operator_dict = {
             "name": "Enemies Tricked by Prisma"
          }
       ]
+   },
+   # Don't know any of this, but might as well be
+   "no class": {
+      "name": "Recruit",
+      "safename": "recruit",
+      "year": "Y0S0",
+      "health": 1,
+      "armor": 1,
+      "unit": "UNAFFILIATED",
+      "country_code": "",
+      "roles": [],
+      "side": "defender",
+      "icon_url": "https://i.imgur.com/PSVGuqT.png"
    }
 }
