@@ -52,7 +52,7 @@ class Operator:
         self.icon_url: int = self._get_from_operators_const("icon_url")
 
     def _get_from_operators_const(self, what: str) -> str | int | list:
-        return operator_dict.get(self.name.lower(), None).get(what, "Missing Data")
+        return operator_dict.get(self.name.lower(), {}).get(what, "Missing Data")
 
     def __repr__(self) -> str:
         return str(vars(self))
