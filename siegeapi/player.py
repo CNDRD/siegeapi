@@ -9,10 +9,11 @@ from .trends import Trends, TrendBlockDuration
 from .weapons import Weapons
 from .maps import Maps
 
-from datetime import date
 import aiohttp
+import re
 
-PlatformURLNames = {"uplay": "OSBOR_PC_LNCH_A", "psn": "OSBOR_PS4_LNCH_A", "xbl": "OSBOR_XBOXONE_LNCH_A"}
+platform_url_names = {"uplay": "OSBOR_PC_LNCH_A", "psn": "OSBOR_PS4_LNCH_A", "xbl": "OSBOR_XBOXONE_LNCH_A"}
+date_pattern = re.compile(r"^((2[0-9])\d{2})(0[1-9]|1[012])([012][1-9]|3[01])$")
 
 
 class UrlBuilder:
@@ -20,8 +21,12 @@ class UrlBuilder:
         self.spaceid: str = spaceid
         self.platform_url: str = platform_url
         self.player_id: str = player_id
-        self.siege_release: str = "20151201"
-        self.today: str = date.today().strftime("%Y%m%d")
+        self.start_date: str = ""
+        self.end_date: str = ""
+
+    def set_timespan_dates(self, start_date: str, end_date: str) -> None:
+        self.start_date = f"&startDate={start_date}"
+        self.end_date = f"&endDate={end_date}"
 
     def playtime(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
@@ -45,38 +50,40 @@ class UrlBuilder:
         return f"https://r6s-stats.ubisoft.com/v1/current/trend/{self.player_id}?" \
                f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&teamRole=all,attacker,defender" \
-               f"&trendType={block_duration}"
+               f"&trendType={block_duration}" \
+               f"{self.start_date}" \
+               f"{self.end_date}"
 
-    def weapons(self, start_date: str = None, end_date: str = None) -> str:
+    def weapons(self) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/weapons/{self.player_id}?" \
                f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=all" \
-               f"&startDate={start_date or self.siege_release}" \
-               f"&endDate={end_date or self.today}"
+               f"{self.start_date}" \
+               f"{self.end_date}"
 
-    def operators(self, start_date: str = None, end_date: str = None):
+    def operators(self) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/operators/{self.player_id}?" \
                f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=attacker,defender" \
-               f"&startDate={start_date or self.siege_release}" \
-               f"&endDate={end_date or self.today}"
+               f"{self.start_date}" \
+               f"{self.end_date}"
 
-    def gamemodes(self, start_date: str = None, end_date: str = None):
+    def gamemodes(self) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/summary/{self.player_id}?" \
                f"gameMode=all,ranked,unranked,casual,newcomer" \
                f"&platform=PC" \
-               f"&startDate={start_date or self.siege_release}" \
-               f"&endDate={end_date or self.today}"
+               f"{self.start_date}" \
+               f"{self.end_date}"
 
-    def maps(self, start_date: str = None, end_date: str = None):
+    def maps(self) -> str:
         return f"https://r6s-stats.ubisoft.com/v1/current/maps/{self.player_id}?" \
                f"gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=all,attacker,defender" \
-               f"&startDate={start_date or self.siege_release}" \
-               f"&endDate={end_date or self.today}"
+               f"{self.start_date}" \
+               f"{self.end_date}"
 
 
 class Player:
@@ -86,7 +93,7 @@ class Player:
 
         self._auth: aiohttp.ClientSession() = auth
         self._platform: str = data.get("platformType")
-        self._platform_url: str = PlatformURLNames[self._platform]
+        self._platform_url: str = platform_url_names[self._platform]
         self._spaceid: str = self._auth.spaceids[self._platform]
         self._url_builder: UrlBuilder = UrlBuilder(self._spaceid, self._platform_url, self.id)
 
@@ -117,6 +124,14 @@ class Player:
         self.operators: Operators | None = None
         self.gamemodes: Gamemodes | None = None
         self.maps: Maps | None = None
+
+    def set_timespan_dates(self, start_date: str, end_date: str) -> None:
+        if not date_pattern.match(start_date):
+            raise ValueError(f"Date for start_date '{start_date}' is invalid. The date format is 'YYYYMMDD'.")
+        if not date_pattern.match(end_date):
+            raise ValueError(f"Date for end_date '{end_date}' is invalid. The date format is 'YYYYMMDD'.")
+        else:
+            self._url_builder.set_timespan_dates(start_date, end_date)
 
     async def load_playtime(self) -> None:
         data = await self._auth.get(self._url_builder.playtime())
