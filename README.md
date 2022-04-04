@@ -72,14 +72,22 @@ Total XP: 14875818
 XP to level up: 109182
 ```
 
----
+---  
 
-## Docs
-For docs visit [WIKI](https://github.com/CNDRD/siegeapi/wiki/)
+## Docs  
+For docs visit the [GitHub Wiki](https://github.com/CNDRD/siegeapi/wiki/)  
 
-### Operator Icons  
-From [r6operators](https://github.com/marcopixel/r6operators) by [marcopixel](https://github.com/marcopixel)
+## Credits  
+Operator Icons from [r6operators][r6operators_] by [marcopixel][marcopixel_]  
+Built (and re-built) on top of what [billy-yoyo][r6s_python_api] started  
 
-### Type hints  
-Everything is type hinted to the best of my abilities  
-If there's something missing or wrong, let me know or submit a PR  
+[r6operators_]: https://github.com/marcopixel/r6operators
+[marcopixel_]: https://github.com/marcopixel
+[r6s_python_api]: https://github.com/billy-yoyo/RainbowSixSiege-Python-API
+
+## Problems  
+If you experience any problems reach out to me, or submit a PR  
+You can reach out here on GitHub or on Discord (_CNDRD#2233_)  
+
+
+![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)
