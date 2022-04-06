@@ -68,6 +68,11 @@ class Trends:
         self.ranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}), "ranked")
         self.unranked = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}), "unranked")
         self.newcomer = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}), "newcomer")
+        self._start_date: str = str(data.get("startDate", ""))
+        self._end_date: str = str(data.get("endDate", ""))
+
+    def get_timespan_dates(self) -> dict[str: str]:
+        return {"start_date": self._start_date, "end_date": self._end_date}
 
     def __repr__(self) -> str:
         return str(vars(self))
