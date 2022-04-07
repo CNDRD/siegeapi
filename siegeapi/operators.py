@@ -4,10 +4,10 @@ from .constants import operator_dict
 
 
 class Operator:
-    def __init__(self, data: dict):
+    def __init__(self, data: dict, op_about: bool):
         self.name: str = data.get("statsDetail")
         if self.name == "":
-            self.name = "Azami"
+            self.name = "Unknown Operator"
         self.matches_played: int = data.get("matchesPlayed")
         self.rounds_played: int = data.get("roundsPlayed")
         self.minutes_played: int = data.get("minutesPlayed")
@@ -44,12 +44,18 @@ class Operator:
         self.time_dead_per_match: float = data.get("timeDeadPerMatch")
         self.distance_per_round: float = data.get("distancePerRound")
 
-        self.health: int = self._get_from_operators_const("health")
-        self.armor: int = self._get_from_operators_const("armor")
-        self.unit: int = self._get_from_operators_const("unit")
-        self.country_code: int = self._get_from_operators_const("country_code")
-        self.year_introduced: int = self._get_from_operators_const("year")
         self.icon_url: int = self._get_from_operators_const("icon_url")
+        if op_about:
+            self.real_name: str = self._get_from_operators_const("realname")
+            self.birth_place: str = self._get_from_operators_const("birthplace")
+            self.date_of_birth: str = self._get_from_operators_const("date_of_birth")
+            self.age: int = self._get_from_operators_const("age")
+            self.roles: list[str] = self._get_from_operators_const("roles")
+            self.health: int = self._get_from_operators_const("health")
+            self.armor: int = self._get_from_operators_const("armor")
+            self.unit: int = self._get_from_operators_const("unit")
+            self.country_code: int = self._get_from_operators_const("country_code")
+            self.year_introduced: int = self._get_from_operators_const("year")
 
     def _get_from_operators_const(self, what: str) -> str | int | list:
         return operator_dict.get(self.name.lower(), {}).get(what, "Missing Data")
@@ -59,21 +65,21 @@ class Operator:
 
 
 class OperatorsGameMode:
-    def __init__(self, data: dict):
-        self.attacker: list = [Operator(operator) for operator in data.get("teamRoles", {}).get("attacker", {}) if operator.get("statsDetail") != "Reserve"]
-        self.defender: list = [Operator(operator) for operator in data.get("teamRoles", {}).get("defender", {}) if operator.get("statsDetail") != "Reserve"]
+    def __init__(self, data: dict, op_about: bool):
+        self.attacker: list = [Operator(operator, op_about) for operator in data.get("teamRoles", {}).get("attacker", {})]
+        self.defender: list = [Operator(operator, op_about) for operator in data.get("teamRoles", {}).get("defender", {})]
 
     def __repr__(self) -> str:
         return str(vars(self))
 
 
 class Operators:
-    def __init__(self, data: dict):
-        self.all: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("all", {}))
-        self.casual: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
-        self.ranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
-        self.unranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
-        self.newcomer: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
+    def __init__(self, data: dict, op_about: bool):
+        self.all: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("all", {}), op_about)
+        self.casual: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}), op_about)
+        self.ranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}), op_about)
+        self.unranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}), op_about)
+        self.newcomer: OperatorsGameMode = OperatorsGameMode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}), op_about)
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 

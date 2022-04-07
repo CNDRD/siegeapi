@@ -198,8 +198,8 @@ class Player:
         self.weapons = Weapons(await self._auth.get(self._url_builder.weapons()))
         return self.weapons
 
-    async def load_operators(self) -> Operators:
-        self.operators = Operators(await self._auth.get(self._url_builder.operators()))
+    async def load_operators(self, op_about: bool = False) -> Operators:
+        self.operators = Operators(await self._auth.get(self._url_builder.operators()), op_about)
         return self.operators
 
     async def load_gamemodes(self) -> Gamemodes:
