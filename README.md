@@ -90,4 +90,5 @@ If you experience any problems reach out to me, or submit a PR
 You can reach out here on GitHub or on Discord (_CNDRD#2233_)  
 
 
-![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)
+![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)  
+![forthebadge](https://forthebadge.com/images/badges/powered-by-energy-drinks.svg)  
