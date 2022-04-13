@@ -1,30 +1,18 @@
 <div align="center">
     <img width="250" src="https://raw.githubusercontent.com/CNDRD/siegeapi/master/assets/siegeapi-banner.png" />
     <h1>siegeapi</h1>
-    <a href="https://github.com/CNDRD/siegeapi/blob/master/LICENSE">
-        <img src="https://img.shields.io/github/license/CNDRD/siegeapi" />
-    </a>
     <a href="https://github.com/CNDRD/siegeapi/releases">
-        <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release" />
+        <img src="https://img.shields.io/github/v/release/CNDRD/siegeapi?label=latest%20release&style=for-the-badge&logo=github&logoColor=white" />
     </a>
     <a href="https://pypi.org/project/siegeapi/#history">
-        <img src="https://img.shields.io/pypi/v/siegeapi" />
+        <img src="https://img.shields.io/pypi/v/siegeapi?style=for-the-badge&logo=pypi&logoColor=white" />
     </a>
+    <br />
     <a href="https://www.python.org/downloads/">
-        <img src="https://img.shields.io/pypi/pyversions/siegeapi" />
-    </a>
-    <a href="https://github.com/CNDRD/siegeapi">
-        <img src="https://img.shields.io/github/repo-size/CNDRD/siegeapi" />
-    </a>
-    <br/>
-    <a href="https://github.com/CNDRD/siegeapi/commits/master">
-        <img src="https://img.shields.io/github/last-commit/CNDRD/siegeapi" />
-    </a>
-    <a href="https://github.com/CNDRD/siegeapi/commits/master">
-        <img src="https://img.shields.io/github/commit-activity/m/CNDRD/siegeapi" />
+        <img src="https://img.shields.io/pypi/pyversions/siegeapi?style=for-the-badge&logo=python&logoColor=white&color=yellow" />
     </a>
     <a href="https://pypi.org/project/siegeapi">
-        <img src="https://img.shields.io/pypi/dm/siegeapi" />
+        <img src="https://img.shields.io/pypi/dm/siegeapi?style=for-the-badge&logo=pypi&logoColor=white&color=yellow" />
     </a>
 </div>
 
@@ -81,10 +69,6 @@ For docs visit the [GitHub Wiki](https://github.com/CNDRD/siegeapi/wiki/)
 Operator Icons from [r6operators][r6operators_] by [marcopixel][marcopixel_]  
 Built (and re-built) on top of what [billy-yoyo][r6s_python_api] started  
 
-[r6operators_]: https://github.com/marcopixel/r6operators
-[marcopixel_]: https://github.com/marcopixel
-[r6s_python_api]: https://github.com/billy-yoyo/RainbowSixSiege-Python-API
-
 ## Problems  
 If you experience any problems reach out to me, or submit a PR  
 You can reach out here on GitHub or on Discord (_CNDRD#2233_)  
@@ -92,3 +76,7 @@ You can reach out here on GitHub or on Discord (_CNDRD#2233_)
 
 ![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)  
 ![forthebadge](https://forthebadge.com/images/badges/powered-by-energy-drinks.svg)  
+
+[r6operators_]: https://github.com/marcopixel/r6operators  
+[marcopixel_]: https://github.com/marcopixel  
+[r6s_python_api]: https://github.com/billy-yoyo/RainbowSixSiege-Python-API  
