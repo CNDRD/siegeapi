@@ -37,13 +37,13 @@ class Rank:
         self.max_mmr: int = int(data.get("max_mmr", 0))
         self.wins: int = data.get("wins", 0)
         self.losses: int = data.get("losses", 0)
-        self.rank_id: int = data.get("rank")
+        self.rank_id: int = data.get("rank", 0)
         self.season: int = data.get("season", -1)
         _rank_definitions = _get_rank_constants(self.season)
         self.rank: str = _rank_definitions[self.rank_id]["name"]
-        self.max_rank_id: int = data.get("max_rank")
+        self.max_rank_id: int = data.get("max_rank", 0)
         self.max_rank: str = _rank_definitions[self.max_rank_id]["name"]
-        self.region: str = data.get("region")
+        self.region: str = data.get("region", "missing")
         self.abandons: int = data.get("abandons", 0)
         self.skill_mean: float = data.get("skill_mean", 0)
         self.skill_stdev: float = data.get("skill_stdev", 0)
