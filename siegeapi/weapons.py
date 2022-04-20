@@ -51,7 +51,7 @@ class Weapons:
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 
-    def get_timespan_dates(self) -> dict[str: str]:
+    def get_timespan_dates(self) -> dict:
         return {"start_date": self._start_date, "end_date": self._end_date}
 
     def __repr__(self) -> str:
