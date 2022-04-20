@@ -1,4 +1,10 @@
 seasons = {
+    -1: {
+        "name": "Invalid",
+        "hex": "#ff0000",
+        "code": "Y0S0",
+        "start_date": "1970-01-01"
+    },
     0: {
         "name": "Default",
         "hex": "#ffffff",
