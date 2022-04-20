@@ -38,7 +38,7 @@ class Rank:
         self.wins: int = data.get("wins", 0)
         self.losses: int = data.get("losses", 0)
         self.rank_id: int = data.get("rank", 0)
-        self.season: int = data.get("season", -1)
+        self.season: int = data.get("season", -10000)
         _rank_definitions = _get_rank_constants(self.season)
         self.rank: str = _rank_definitions[self.rank_id]["name"]
         self.max_rank_id: int = data.get("max_rank", 0)
