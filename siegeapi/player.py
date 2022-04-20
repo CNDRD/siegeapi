@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .exceptions import InvalidRequest
+from .exceptions import InvalidRequest, InvalidAttributeCombination
 from .utils import get_total_xp, get_xp_to_next_lvl
 from .ranks import Rank
 from .gamemode import Gamemodes
@@ -8,6 +8,7 @@ from .operators import Operators
 from .trends import Trends, TrendBlockDuration
 from .weapons import Weapons
 from .maps import Maps
+from .constants import seasons as seasons_const
 
 import aiohttp
 import re
@@ -85,6 +86,14 @@ class UrlBuilder:
                f"{self.start_date}" \
                f"{self.end_date}"
 
+    def skill_records(self, seasons: str, boards: str, regions: str):
+        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/" \
+               f"sandboxes/{self.platform_url}/r6karma/player_skill_records?" \
+               f"board_ids={boards}" \
+               f"&season_ids={seasons}" \
+               f"&region_ids={regions}" \
+               f"&profile_ids={self.player_id}"
+
 
 class Player:
     def __init__(self, auth: aiohttp.ClientSession(), data: dict):
@@ -113,11 +122,11 @@ class Player:
         self.pvp_time_played: int = 0
         self.pve_time_played: int = 0
 
-        self.ranks: dict = {}
-        self.casuals: dict = {}
-        self.newcomers: dict = {}
-        self.events: dict = {}
-        self.deathmatch: dict = {}
+        self.ranks: dict[int: dict[str: Rank | None]] | dict = {}
+        self.casuals: dict[int: dict[str: Rank | None]] | dict = {}
+        self.newcomers: dict[int: dict[str: Rank | None]] | dict = {}
+        self.events: dict[int: dict[str: Rank | None]] | dict = {}
+        self.deathmatch: dict[int: dict[str: Rank | None]] | dict = {}
 
         self.weapons: Weapons | None = None
         self.trends: Trends | None = None
@@ -150,45 +159,128 @@ class Player:
         self.total_xp: int = get_total_xp(self.level, self.xp)
         self.xp_to_level_up: int = get_xp_to_next_lvl(self.level) - self.xp
 
+    async def load_skill_records(self, seasons: list[int] = None, boards: list[str] = None, regions: list[str] = None) -> None:
+        _all_seasons = ",".join([str(s) for s in range(6, list(seasons_const)[-1])])
+
+        seasons = ",".join([str(s) for s in seasons]) if seasons else _all_seasons
+        boards = ",".join(boards) if boards else "pvp_ranked,pvp_casual,pvp_newcomer,pvp_warmup"
+        regions = ",".join(regions) if regions else "emea,ncsa,apac,global"
+        data = await self._auth.get(self._url_builder.skill_records(seasons, boards, regions))
+
+        for season in data["seasons_player_skill_records"]:
+            season_id = season["season_id"]
+
+            for region in season["regions_player_skill_records"]:
+                region_id = region["region_id"]
+
+                for board in region["boards_player_skill_records"]:
+                    board_id = board["board_id"]
+                    rank_obj = Rank(board["players_skill_records"][0]) if board["players_skill_records"] else Rank({})
+
+                    # If user didn't play in this season and region
+                    played = (rank_obj.wins + rank_obj.losses) != 0
+
+                    if board_id == "pvp_ranked":
+                        self.ranks.setdefault(season_id, {})
+                        self.ranks[season_id]["global"] = rank_obj if played else None
+                        self.ranks[season_id][region_id] = rank_obj if played else None
+                    elif board_id == "pvp_casual":
+                        self.casuals.setdefault(season_id, {})
+                        self.casuals[season_id][region_id] = rank_obj if played else None
+                    elif board_id == "pvp_newcomer":
+                        self.newcomers.setdefault(season_id, {})
+                        self.newcomers[season_id][region_id] = rank_obj if played else None
+                    elif board_id == "pvp_event":
+                        self.events.setdefault(season_id, {})
+                        self.events[season_id][region_id] = rank_obj if played else None
+                    else:
+                        self.deathmatch.setdefault(season_id, {})
+                        self.deathmatch[season_id][region_id] = rank_obj if played else None
+
     async def load_ranked(self, season: int = -1, region: str = "emea") -> Rank:
+        if season <= 17 and region == "global":
+            raise InvalidAttributeCombination("Season ID must be greater or equal to 18 when checking the 'global' region")
+
+        # Check if we already have this combo loaded
+        if self.ranks.get(season, {}).get(region):
+            return self.ranks[season][region]
+
         data = await self._auth.get(self._url_builder.boards(season, "ranked", region))
         if data["players"] == {}:
             raise InvalidRequest(f"There is no such data for the given combination of season ({season}) and region ({region})")
 
-        self.ranks[f"{region}:{season}"] = Rank(data["players"][self.id])
-        return self.ranks[f"{region}:{season}"]
+        rank_obj = Rank(data["players"][self.id])
+        self.ranks.setdefault(season, {})
+        self.ranks[season][region] = rank_obj if ((rank_obj.wins + rank_obj.losses) != 0) else None
+        return self.ranks[season][region]
 
     async def load_casual(self, season: int = -1, region: str = "emea") -> Rank:
+        if season <= 17 and region == "global":
+            raise InvalidAttributeCombination("Season ID must be greater or equal to 18 when checking the 'global' region")
+
+        # Check if we already have this combo loaded
+        if self.ranks.get(season, {}).get(region):
+            return self.ranks[season][region]
+
         data = await self._auth.get(self._url_builder.boards(season, "casual", region))
         if data["players"] == {}:
             raise InvalidRequest(f"There is no such data for the given combination of season ({season}) and region ({region})")
 
-        self.casuals[f"{region}:{season}"] = Rank(data["players"][self.id])
-        return self.casuals[f"{region}:{season}"]
+        rank_obj = Rank(data["players"][self.id])
+        self.casuals.setdefault(season, {})
+        self.casuals[season][region] = rank_obj if ((rank_obj.wins + rank_obj.losses) != 0) else None
+        return self.casuals[season][region]
 
     async def load_newcomer(self, season: int = -1, region: str = "emea") -> Rank:
+        if season <= 17 and region == "global":
+            raise InvalidAttributeCombination("Season ID must be greater or equal to 18 when checking the 'global' region")
+
+        # Check if we already have this combo loaded
+        if self.ranks.get(season, {}).get(region):
+            return self.ranks[season][region]
+
         data = await self._auth.get(self._url_builder.boards(season, "newcomer", region))
         if data["players"] == {}:
             raise InvalidRequest(f"There is no such data for the given combination of season ({season}) and region ({region})")
 
-        self.newcomers[f"{region}:{season}"] = Rank(data["players"][self.id])
-        return self.newcomers[f"{region}:{season}"]
+        rank_obj = Rank(data["players"][self.id])
+        self.newcomers.setdefault(season, {})
+        self.newcomers[season][region] = rank_obj if ((rank_obj.wins + rank_obj.losses) != 0) else None
+        return self.newcomers[season][region]
 
     async def load_events(self, season: int = -1, region: str = "emea") -> Rank:
+        if season <= 17 and region == "global":
+            raise InvalidAttributeCombination("Season ID must be greater or equal to 18 when checking the 'global' region")
+
+        # Check if we already have this combo loaded
+        if self.ranks.get(season, {}).get(region):
+            return self.ranks[season][region]
+
         data = await self._auth.get(self._url_builder.boards(season, "event", region))
         if data["players"] == {}:
             raise InvalidRequest(f"There is no such data for the given combination of season ({season}) and region ({region})")
 
-        self.events[f"{region}:{season}"] = Rank(data["players"][self.id])
-        return self.events[f"{region}:{season}"]
+        rank_obj = Rank(data["players"][self.id])
+        self.events.setdefault(season, {})
+        self.events[season][region] = rank_obj if ((rank_obj.wins + rank_obj.losses) != 0) else None
+        return self.events[season][region]
 
     async def load_deathmatch(self, season: int = -1, region: str = "emea") -> Rank:
+        if season <= 17 and region == "global":
+            raise InvalidAttributeCombination("Season ID must be greater or equal to 18 when checking the 'global' region")
+
+        # Check if we already have this combo loaded
+        if self.ranks.get(season, {}).get(region):
+            return self.ranks[season][region]
+
         data = await self._auth.get(self._url_builder.boards(season, "warmup", region))
         if data["players"] == {}:
             raise InvalidRequest(f"There is no such data for the given combination of season ({season}) and region ({region})")
 
-        self.deathmatch[f"{region}:{season}"] = Rank(data["players"][self.id])
-        return self.deathmatch[f"{region}:{season}"]
+        rank_obj = Rank(data["players"][self.id])
+        self.deathmatch.setdefault(season, {})
+        self.deathmatch[season][region] = rank_obj if ((rank_obj.wins + rank_obj.losses) != 0) else None
+        return self.deathmatch[season][region]
 
     async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
         self.trends = Trends(await self._auth.get(self._url_builder.trends(block_duration)))
