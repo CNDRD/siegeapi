@@ -13,7 +13,7 @@ operator_dict = {
       "country_code": "BE",
       "roles": [],
       "side": "attacker",
-      "icon_url": "https://i.imgur.com/PSVGuqT.png",
+      "icon_url": "https://i.imgur.com/kwfMIVz.png",
    },
    "azami": {
       "name": "Azami",
