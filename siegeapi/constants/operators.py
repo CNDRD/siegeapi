@@ -1,4 +1,20 @@
 operator_dict = {
+   "grim": {
+      "name": "Grim",
+      "safename": "grim",
+      "realname": "",
+      "birthplace": "",
+      "age": 0,
+      "date_of_birth": "",
+      "year": "Y7S3",
+      "health": 0,
+      "armor": 0,
+      "unit": "Nighthaven",
+      "country_code": "",
+      "roles": [],
+      "side": "attacker",
+      "icon_url": "https://i.imgur.com/PSVGuqT.png",
+   },
    "sens": {
       "name": "Sens",
       "safename": "sens",
