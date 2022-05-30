@@ -183,6 +183,6 @@ seasons = {
         "name": "Vector Glare",
         "hex": "#ffffff",
         "code": "Y7S2",
-        "start_date": "2022-06-14"
+        "start_date": "2022-06-07"
     }
 }
