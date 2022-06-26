@@ -29,7 +29,7 @@ operator_dict = {
       "country_code": "",
       "roles": [],
       "side": "attacker",
-      "icon_url": "https://i.imgur.com/PSVGuqT.png",
+      "icon_url": "https://i.imgur.com/dV5ilwv.png",
    },
    "sens": {
       "name": "Sens",
