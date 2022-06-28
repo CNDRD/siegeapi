@@ -181,8 +181,14 @@ seasons = {
     },
     26: {
         "name": "Vector Glare",
-        "hex": "#ffffff",
+        "hex": "#60cdb0",
         "code": "Y7S2",
-        "start_date": "2022-06-07"
+        "start_date": "2022-06-14"
+    },
+    27: {
+        "name": "Brutal Swarm",
+        "hex": "#ffffff",
+        "code": "Y7S3",
+        "start_date": "2021-09-14"
     }
 }
