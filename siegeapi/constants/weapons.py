@@ -3,6 +3,11 @@ WEAPONS_DICT = {
 
     # Primary Weapons
     # AR's
+    "POF9": {
+        "type": "Assault Rifle",
+        "icon_url": "1bhuAox7U6aHN6UriXsAry/3c213cd27f5f64ba01a29b42e5b24ac5/POF9.png",
+        "imgur_url": "https://i.imgur.com/D2FkIjZ.png",
+    },
     "AK-12": {
         "type": "Assault Rifle",
         "icon_url": "7KAZZgnpqD07y47jVVXEuh/e0d7e67101f8f966aa6e1c59e835454f/AK-12.png",
