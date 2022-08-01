@@ -262,6 +262,11 @@ WEAPONS_DICT = {
         "icon_url": "7tUB9ZNXJhdN6ejAkCEeFQ/99691bcc19f641cf872925905d08a539/CSRX_300.png",
         "imgur_url": "https://i.imgur.com/QIpmJkI.png",
     },
+    "CAMRS": {
+        "type": "Marksman Rifle",
+        "icon_url": "4dBzqVVmnpv1DZi91LAnEN/e374b4ea289fc992280b943cdbb94d60/CAMRS.png",
+        "imgur_url": "https://i.imgur.com/jRgdhPK.png",
+    },
 
     # Shotguns
     "ACS12": {
