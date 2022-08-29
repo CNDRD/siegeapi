@@ -3,7 +3,6 @@ from __future__ import annotations
 from .exceptions import InvalidRequest, InvalidAttributeCombination
 from .utils import get_total_xp, get_xp_to_next_lvl
 from .ranks import Rank
-from .gamemode import Gamemodes
 from .operators import Operators
 from .trends import Trends, TrendBlockDuration
 from .weapons import Weapons
@@ -131,7 +130,6 @@ class Player:
         self.weapons: Weapons | None = None
         self.trends: Trends | None = None
         self.operators: Operators | None = None
-        self.gamemodes: Gamemodes | None = None
         self.maps: Maps | None = None
 
     def set_timespan_dates(self, start_date: str, end_date: str) -> None:
@@ -293,10 +291,6 @@ class Player:
     async def load_operators(self, op_about: bool = False) -> Operators:
         self.operators = Operators(await self._auth.get(self._url_builder.operators()), op_about)
         return self.operators
-
-    async def load_gamemodes(self) -> Gamemodes:
-        self.gamemodes = Gamemodes(await self._auth.get(self._url_builder.gamemodes()))
-        return self.gamemodes
 
     async def load_maps(self) -> Maps:
         self.maps = Maps(await self._auth.get(self._url_builder.maps()))
