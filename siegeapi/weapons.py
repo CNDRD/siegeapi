@@ -30,12 +30,21 @@ class Weapon:
 
 class WeaponsGameMode:
     def __init__(self, data: dict):
-        self.primary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("primaryWeapons", {}).get("weaponTypes", {}))
-        self.secondary: list = self._get_weapons_list(data.get("teamRoles", {}).get("all", {}).get("weaponSlots", {}).get("secondaryWeapons", {}).get("weaponTypes", {}))
+        self.primary: list = self._get_weapons_list(data.get("weaponSlots", {}).get("primaryWeapons", {}).get("weaponTypes", [{}])[0].get("weapons", []))
+        self.secondary: list = self._get_weapons_list(data.get("weaponSlots", {}).get("secondaryWeapons", {}).get("weaponTypes", [{}])[0].get("weapons", []))
 
     @staticmethod
-    def _get_weapons_list(data: List[dict]) -> List[Weapon]:
-        return [Weapon(weapon) for weaponType in data for weapon in weaponType.get("weapons")]
+    def _get_weapons_list(data: List[dict] | None) -> List[Weapon] | None:
+        return None if not data else [Weapon(weapon) for weapon in data]
+
+    def __repr__(self) -> str:
+        return str(vars(self))
+
+
+class WeaponsRole:
+    def __init__(self, data: dict):
+        self.attacker: WeaponsGameMode = WeaponsGameMode(data.get("teamRoles", {}).get("attacker", {}))
+        self.defender: WeaponsGameMode = WeaponsGameMode(data.get("teamRoles", {}).get("defender", {}))
 
     def __repr__(self) -> str:
         return str(vars(self))
@@ -43,11 +52,11 @@ class WeaponsGameMode:
 
 class Weapons:
     def __init__(self, data: dict):
-        self.all: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("all", {}))
-        self.casual: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
-        self.ranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
-        self.unranked: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
-        self.newcomer: WeaponsGameMode = WeaponsGameMode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
+        self.all: WeaponsRole = WeaponsRole(data.get("platforms").get("PC").get("gameModes").get("all", {}))
+        self.casual: WeaponsRole = WeaponsRole(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
+        self.ranked: WeaponsRole = WeaponsRole(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
+        self.unranked: WeaponsRole = WeaponsRole(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
+        self.newcomer: WeaponsRole = WeaponsRole(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 
