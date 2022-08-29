@@ -1,98 +1,20 @@
 from __future__ import annotations
 
-from .exceptions import InvalidRequest, InvalidAttributeCombination
+from .exceptions import InvalidAttributeCombination
 from .utils import get_total_xp, get_xp_to_next_lvl
-from .ranks import Rank
-from .gamemode import Gamemodes
-from .operators import Operators
-from .trends import Trends, TrendBlockDuration
-from .weapons import Weapons
-from .maps import Maps
 from .constants import seasons as seasons_const
+from .trends import Trends, TrendBlockDuration
+from .url_builder import UrlBuilder
+from .operators import Operators
+from .weapons import Weapons
+from .ranks import Rank
+from .maps import Maps
 
 import aiohttp
 import re
 
 platform_url_names = {"uplay": "OSBOR_PC_LNCH_A", "psn": "OSBOR_PS4_LNCH_A", "xbl": "OSBOR_XBOXONE_LNCH_A"}
-date_pattern = re.compile(r"^((2[0-9])\d{2})(0[1-9]|1[012])([012][0-9]|3[01])$")
-
-
-class UrlBuilder:
-    def __init__(self, spaceid: str, platform_url: str, player_id: str):
-        self.spaceid: str = spaceid
-        self.platform_url: str = platform_url
-        self.player_id: str = player_id
-        self.start_date: str = ""
-        self.end_date: str = ""
-
-    def set_timespan_dates(self, start_date: str, end_date: str) -> None:
-        self.start_date = f"&startDate={start_date}"
-        self.end_date = f"&endDate={end_date}"
-
-    def playtime(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
-               f"profileIds={self.player_id}" \
-               f"&spaceId={self.spaceid}" \
-               f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed"
-
-    def level_xp_alphapack(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/r6playerprofile/" \
-               f"playerprofile/progressions?profile_ids={self.player_id}"
-
-    def boards(self, season: int, board_id: str, region: str) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/" \
-               f"sandboxes/{self.platform_url}/r6karma/players?" \
-               f"board_id=pvp_{board_id}" \
-               f"&profile_ids={self.player_id}" \
-               f"&region_id={region}" \
-               f"&season_id={season}"
-
-    def trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> str:
-        return f"https://r6s-stats.ubisoft.com/v1/current/trend/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&teamRole=all,attacker,defender" \
-               f"&trendType={block_duration}" \
-               f"{self.start_date}" \
-               f"{self.end_date}"
-
-    def weapons(self) -> str:
-        return f"https://r6s-stats.ubisoft.com/v1/current/weapons/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
-               f"&teamRole=all" \
-               f"{self.start_date}" \
-               f"{self.end_date}"
-
-    def operators(self) -> str:
-        return f"https://r6s-stats.ubisoft.com/v1/current/operators/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
-               f"&teamRole=attacker,defender" \
-               f"{self.start_date}" \
-               f"{self.end_date}"
-
-    def gamemodes(self) -> str:
-        return f"https://r6s-stats.ubisoft.com/v1/current/summary/{self.player_id}?" \
-               f"gameMode=all,ranked,unranked,casual,newcomer" \
-               f"&platform=PC" \
-               f"{self.start_date}" \
-               f"{self.end_date}"
-
-    def maps(self) -> str:
-        return f"https://r6s-stats.ubisoft.com/v1/current/maps/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
-               f"&teamRole=all,attacker,defender" \
-               f"{self.start_date}" \
-               f"{self.end_date}"
-
-    def skill_records(self, seasons: str, boards: str, regions: str):
-        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/" \
-               f"sandboxes/{self.platform_url}/r6karma/player_skill_records?" \
-               f"board_ids={boards}" \
-               f"&season_ids={seasons}" \
-               f"&region_ids={regions}" \
-               f"&profile_ids={self.player_id}"
+date_pattern = re.compile(r"^((2\d)\d{2})(0[1-9]|1[012])([012]\d|3[01])$")
 
 
 class Player:
@@ -131,10 +53,10 @@ class Player:
         self.weapons: Weapons | None = None
         self.trends: Trends | None = None
         self.operators: Operators | None = None
-        self.gamemodes: Gamemodes | None = None
         self.maps: Maps | None = None
 
     def set_timespan_dates(self, start_date: str, end_date: str) -> None:
+        """YYYYMMDD"""
         if not date_pattern.match(start_date):
             raise ValueError(f"Date for start_date '{start_date}' is invalid. The date format is 'YYYYMMDD'.")
         if not date_pattern.match(end_date):
@@ -293,10 +215,6 @@ class Player:
     async def load_operators(self, op_about: bool = False) -> Operators:
         self.operators = Operators(await self._auth.get(self._url_builder.operators()), op_about)
         return self.operators
-
-    async def load_gamemodes(self) -> Gamemodes:
-        self.gamemodes = Gamemodes(await self._auth.get(self._url_builder.gamemodes()))
-        return self.gamemodes
 
     async def load_maps(self) -> Maps:
         self.maps = Maps(await self._auth.get(self._url_builder.maps()))
