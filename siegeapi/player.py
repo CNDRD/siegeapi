@@ -55,6 +55,7 @@ class Player:
         self.maps: Maps | None = None
 
     def set_timespan_dates(self, start_date: str, end_date: str) -> None:
+        """YYYYMMDD"""
         if not date_pattern.match(start_date):
             raise ValueError(f"Date for start_date '{start_date}' is invalid. The date format is 'YYYYMMDD'.")
         if not date_pattern.match(end_date):
