@@ -52,12 +52,12 @@ asyncio.get_event_loop().run_until_complete(sample())
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
-Total Time Played: 6723492
-Level: 261
-Alpha pack %: 30.5
-XP: 12318
-Total XP: 14875818
-XP to level up: 109182
+Total Time Played: 7225456
+Level: 271
+Alpha pack %: 17.0
+XP: 117793
+Total XP: 16218793
+XP to level up: 8707
 ```
 
 ---  
@@ -70,7 +70,7 @@ Operator Icons from [r6operators][r6operators_] by [marcopixel][marcopixel_]
 Built (and re-built) on top of what [billy-yoyo][r6s_python_api] started  
 
 ## Problems  
-If you experience any problems reach out to me, or submit a PR  
+If you experience any problems, reach out to me, or submit a PR  
 You can reach out here on GitHub or on Discord (_CNDRD#2233_)  
 
 
