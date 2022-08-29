@@ -35,8 +35,8 @@ class Operator(DefaultStats):
 
 class OperatorsGameMode:
     def __init__(self, data: dict, op_about: bool):
-        self.attacker: list = [Operator(operator, op_about) for operator in data.get("teamRoles", {}).get("attacker", {})]
-        self.defender: list = [Operator(operator, op_about) for operator in data.get("teamRoles", {}).get("defender", {})]
+        self.attacker: list = [Operator(operator, op_about) for operator in data.get("teamRoles", {}).get("Attacker", {})]
+        self.defender: list = [Operator(operator, op_about) for operator in data.get("teamRoles", {}).get("Defender", {})]
 
     def __repr__(self) -> str:
         return str(vars(self))

@@ -7,12 +7,18 @@ class Map(DefaultStats):
         super().__init__(data)
         self.map_name: str = data.get("statsDetail")
 
+    def __repr__(self) -> str:
+        return str(vars(self))
+
 
 class MapRoles:
     def __init__(self, data: dict):
         self.all: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("all", [])]
-        self.attacker: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("attacker", [])]
-        self.defender: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("defender", [])]
+        self.attacker: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("Attacker", [])]
+        self.defender: list = [Map(map_) for map_ in data.get("teamRoles", {}).get("Defender", [])]
+
+    def __repr__(self) -> str:
+        return str(vars(self))
 
 
 class Maps:
