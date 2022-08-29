@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from .exceptions import InvalidRequest, InvalidAttributeCombination
+from .exceptions import InvalidAttributeCombination
 from .utils import get_total_xp, get_xp_to_next_lvl
-from .ranks import Rank
-from .operators import Operators
-from .trends import Trends, TrendBlockDuration
-from .weapons import Weapons
-from .maps import Maps
 from .constants import seasons as seasons_const
+from .trends import Trends, TrendBlockDuration
+from .url_builder import UrlBuilder
+from .operators import Operators
+from .weapons import Weapons
+from .ranks import Rank
+from .maps import Maps
 
 import aiohttp
 import re
