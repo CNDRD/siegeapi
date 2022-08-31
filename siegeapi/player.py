@@ -3,10 +3,10 @@ from __future__ import annotations
 from .exceptions import InvalidAttributeCombination
 from .utils import get_total_xp, get_xp_to_next_lvl
 from .constants import seasons as seasons_const
-from .trends import Trends, TrendBlockDuration
 from .url_builder import UrlBuilder
 from .operators import Operators
 from .weapons import Weapons
+from .trends import Trends
 from .ranks import Rank
 from .maps import Maps
 
@@ -204,8 +204,8 @@ class Player:
         self.deathmatch[season_id][region] = rank_obj
         return self.deathmatch[season_id][region]
 
-    async def load_trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> Trends:
-        self.trends = Trends(await self._auth.get(self._url_builder.trends(block_duration)))
+    async def load_trends(self) -> Trends:
+        self.trends = Trends(await self._auth.get(self._url_builder.trends()))
         return self.trends
 
     async def load_weapons(self) -> Weapons:
