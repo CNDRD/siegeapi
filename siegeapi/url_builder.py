@@ -1,4 +1,3 @@
-from .trends import TrendBlockDuration
 
 
 class UrlBuilder:
@@ -39,12 +38,12 @@ class UrlBuilder:
                f"&region_id={region}" \
                f"&season_id={season}"
 
-    def trends(self, block_duration: TrendBlockDuration = TrendBlockDuration.WEEKLY) -> str:
+    def trends(self) -> str:
         return f"https://prod.datadev.ubisoft.com/v1/profiles/{self.player_id}/playerstats?" \
                f"spaceId={self.spaceid}" \
                f"&view=current" \
                f"&aggregation=movingpoint" \
-               f"&trendType={block_duration}" \
+               f"&trendType=daily" \
                f"&gameMode=all,ranked,casual,unranked,newcomer" \
                f"&platform=PC" \
                f"&teamRole=all,attacker,defender" \

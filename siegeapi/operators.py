@@ -20,7 +20,7 @@ class Operator(DefaultStats):
             self.age: int = self._get_from_operators_const("age")
             self.roles: list[str] = self._get_from_operators_const("roles")
             self.health: int = self._get_from_operators_const("health")
-            self.speed: int = self._get_from_operators_const("armor")
+            self.speed: int = self._get_from_operators_const("speed")
             self.hp: int = self._get_hp()
             self.unit: int = self._get_from_operators_const("unit")
             self.country_code: int = self._get_from_operators_const("country_code")
