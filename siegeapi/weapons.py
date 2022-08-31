@@ -1,4 +1,4 @@
-from typing import List
+from __future__ import annotations
 
 from .constants import WEAPONS_DICT
 
@@ -34,7 +34,7 @@ class WeaponsGameMode:
         self.secondary: list = self._get_weapons_list(data.get("weaponSlots", {}).get("secondaryWeapons", {}).get("weaponTypes", [{}])[0].get("weapons", []))
 
     @staticmethod
-    def _get_weapons_list(data: List[dict] | None) -> List[Weapon] | None:
+    def _get_weapons_list(data: list[dict] | None) -> list[Weapon] | None:
         return None if not data else [Weapon(weapon) for weapon in data]
 
     def __repr__(self) -> str:
