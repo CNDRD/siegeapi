@@ -63,7 +63,7 @@ XP to level up: 8707
 ---  
 
 ## Docs  
-For docs visit the [GitHub Wiki](https://github.com/CNDRD/siegeapi/wiki/)  
+For docs go to [cndrd.github.io/siegeapi](https://cndrd.github.io/siegeapi/)  
 
 ## Credits  
 Operator Icons from [r6operators][r6operators_] by [marcopixel][marcopixel_]  
