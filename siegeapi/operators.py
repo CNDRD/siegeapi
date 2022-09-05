@@ -13,7 +13,7 @@ class Operator(DefaultStats):
             self.name = "Unknown Operator"
 
         if op_about:
-            self.icon_url: int = self._get_from_operators_const("icon_url")
+            self.icon_url: str = self._get_from_operators_const("icon_url")
             self.real_name: str = self._get_from_operators_const("realname")
             self.birth_place: str = self._get_from_operators_const("birthplace")
             self.date_of_birth: str = self._get_from_operators_const("date_of_birth")
@@ -22,9 +22,9 @@ class Operator(DefaultStats):
             self.health: int = self._get_from_operators_const("health")
             self.speed: int = self._get_from_operators_const("speed")
             self.hp: int = self._get_hp()
-            self.unit: int = self._get_from_operators_const("unit")
-            self.country_code: int = self._get_from_operators_const("country_code")
-            self.season_introduced: int = self._get_from_operators_const("season_introduced")
+            self.unit: str = self._get_from_operators_const("unit")
+            self.country_code: str = self._get_from_operators_const("country_code")
+            self.season_introduced: str = self._get_from_operators_const("season_introduced")
 
     def _get_hp(self) -> int:
         return {1: 100, 2: 110, 3: 125}.get(self.speed)
