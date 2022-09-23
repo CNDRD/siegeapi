@@ -28,6 +28,8 @@ def _get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, in
 
 class Rank:
     def __init__(self, data):
+        from pprint import pprint
+        pprint(data)
         self.kills: int = data.get("kills", 0)
         self.deaths: int = data.get("deaths", 0)
         self.last_mmr_change: int = int(data.get("last_match_mmr_change", 0))
@@ -53,7 +55,7 @@ class Rank:
         # For casual where the API doesn't return this data
         if self.prev_rank_mmr == 0 and self.next_rank_mmr == 0:
             self.rank, self.prev_rank_mmr, self.next_rank_mmr, self.rank_id = _get_rank_from_mmr(self.mmr)
-            self.max_rank_id = self.max_mmr = -1
+            self.max_rank_id = self.max_mmr = 0
             self.max_rank = "Undefined"
 
     def get_dict(self) -> dict[str: str | int | float]:
