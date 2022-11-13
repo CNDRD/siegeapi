@@ -14,9 +14,11 @@ def _get_rank_constants(season_number: int = -1) -> List[dict[str: str | int]]:
         return ranks_v3
     if 15 <= season_number <= 22:
         return ranks_v4
-    if season_number <= 23:
+    if 23 <= season_number <= 27:
         return ranks_v5
-    return ranks_v5
+    if 28 <= season_number:
+        return ranks_v6
+    return ranks_v6
 
 
 def _get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, int, int]:

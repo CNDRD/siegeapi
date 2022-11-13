@@ -102,7 +102,7 @@ ranks_v4 = [
     {"name": "Champion", "min_mmr": 5000, "max_mmr": 999999}
 ]
 
-# Y6S3+ | #23+ | Crystal Guard+
+# Y6S3 - Y7S3 | #23 - #27 | Crystal Guard - Brutal Swarm
 ranks_v5 = [
     {"name": "Unranked", "min_mmr": 0, "max_mmr": 0},
     {"name": "Copper 5", "min_mmr": 1, "max_mmr": 1199},
@@ -130,4 +130,44 @@ ranks_v5 = [
     {"name": "Diamond 2", "min_mmr": 4400, "max_mmr": 4699},
     {"name": "Diamond 1", "min_mmr": 4700, "max_mmr": 4999},
     {"name": "Champions", "min_mmr": 5000, "max_mmr": 999999}
+]
+
+# Y7S4+ | #28+ | Solar Raid+ (Ranked 2.0)
+ranks_v6 = [
+    {"name": "Copper 5", "min_mmr": 0, "max_mmr": 99},
+    {"name": "Copper 4", "min_mmr": 100, "max_mmr": 199},
+    {"name": "Copper 3", "min_mmr": 200, "max_mmr": 299},
+    {"name": "Copper 2", "min_mmr": 300, "max_mmr": 399},
+    {"name": "Copper 1", "min_mmr": 400, "max_mmr": 499},
+    {"name": "Bronze 5", "min_mmr": 500, "max_mmr": 599},
+    {"name": "Bronze 4", "min_mmr": 600, "max_mmr": 699},
+    {"name": "Bronze 3", "min_mmr": 700, "max_mmr": 799},
+    {"name": "Bronze 2", "min_mmr": 800, "max_mmr": 899},
+    {"name": "Bronze 1", "min_mmr": 900, "max_mmr": 999},
+    {"name": "Silver 5", "min_mmr": 1000, "max_mmr": 1099},
+    {"name": "Silver 4", "min_mmr": 1100, "max_mmr": 1199},
+    {"name": "Silver 3", "min_mmr": 1200, "max_mmr": 1299},
+    {"name": "Silver 2", "min_mmr": 1300, "max_mmr": 1399},
+    {"name": "Silver 1", "min_mmr": 1400, "max_mmr": 1499},
+    {"name": "Gold 5", "min_mmr": 1500, "max_mmr": 1599},
+    {"name": "Gold 4", "min_mmr": 1600, "max_mmr": 1699},
+    {"name": "Gold 3", "min_mmr": 1700, "max_mmr": 1799},
+    {"name": "Gold 2", "min_mmr": 1800, "max_mmr": 1899},
+    {"name": "Gold 1", "min_mmr": 1900, "max_mmr": 1999},
+    {"name": "Platinum 5", "min_mmr": 2000, "max_mmr": 2099},
+    {"name": "Platinum 4", "min_mmr": 2100, "max_mmr": 2199},
+    {"name": "Platinum 3", "min_mmr": 2200, "max_mmr": 2299},
+    {"name": "Platinum 2", "min_mmr": 2300, "max_mmr": 2399},
+    {"name": "Platinum 1", "min_mmr": 2400, "max_mmr": 2499},
+    {"name": "Emerald 5", "min_mmr": 2500, "max_mmr": 2599},
+    {"name": "Emerald 4", "min_mmr": 2600, "max_mmr": 2699},
+    {"name": "Emerald 3", "min_mmr": 2700, "max_mmr": 2799},
+    {"name": "Emerald 2", "min_mmr": 2800, "max_mmr": 2899},
+    {"name": "Emerald 1", "min_mmr": 2900, "max_mmr": 2999},
+    {"name": "Diamond 5", "min_mmr": 3000, "max_mmr": 3099},
+    {"name": "Diamond 4", "min_mmr": 3100, "max_mmr": 3199},
+    {"name": "Diamond 3", "min_mmr": 3200, "max_mmr": 3299},
+    {"name": "Diamond 2", "min_mmr": 3300, "max_mmr": 3399},
+    {"name": "Diamond 1", "min_mmr": 3400, "max_mmr": 3499},
+    {"name": "Champions", "min_mmr": 3500, "max_mmr": 999999}
 ]
