@@ -190,5 +190,11 @@ seasons = {
         "hex": "#dac924",
         "code": "Y7S3",
         "start_date": "2021-09-14"
+    },
+    28: {
+        "name": "Solar Raid",
+        "hex": "#ffffff",
+        "code": "Y7S4",
+        "start_date": "2021-12-07"
     }
 }
