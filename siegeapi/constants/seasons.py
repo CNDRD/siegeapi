@@ -189,12 +189,12 @@ seasons = {
         "name": "Brutal Swarm",
         "hex": "#dac924",
         "code": "Y7S3",
-        "start_date": "2021-09-14"
+        "start_date": "2022-09-14"
     },
     28: {
         "name": "Solar Raid",
         "hex": "#ffffff",
         "code": "Y7S4",
-        "start_date": "2021-12-07"
+        "start_date": "2022-12-07"
     }
 }
