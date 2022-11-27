@@ -193,7 +193,7 @@ seasons = {
     },
     28: {
         "name": "Solar Raid",
-        "hex": "#ffffff",
+        "hex": "#d03314",
         "code": "Y7S4",
         "start_date": "2022-12-07"
     }
