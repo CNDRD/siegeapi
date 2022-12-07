@@ -11,9 +11,9 @@ operator_dict = {
       "speed": 2,
       "unit": "AFEAU",
       "country_code": "CO",
-      "roles": [],
+      "roles": ["Intel Gatherer"],
       "side": "defender",
-      "icon_url": "https://i.imgur.com/PSVGuqT.png",
+      "icon_url": "https://i.imgur.com/PgtffOh.png",
    },
    "grim": {
       "name": "Grim",
