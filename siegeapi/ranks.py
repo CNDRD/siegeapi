@@ -30,8 +30,6 @@ def _get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, in
 
 class Rank:
     def __init__(self, data):
-        from pprint import pprint
-        pprint(data)
         self.kills: int = data.get("kills", 0)
         self.deaths: int = data.get("deaths", 0)
         self.last_mmr_change: int = int(data.get("last_match_mmr_change", 0))
