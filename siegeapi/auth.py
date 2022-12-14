@@ -119,6 +119,8 @@ class Auth:
         data = await resp.json()
 
         if "ticket" in data:
+            self.profileid = data.get("profileId")
+            self.userid = data.get("userId")
             self.key = data.get("ticket")
             self.sessionid = data.get("sessionId")
             self.uncertain_spaceid = data.get("spaceId")
