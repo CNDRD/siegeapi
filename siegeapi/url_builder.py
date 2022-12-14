@@ -1,9 +1,10 @@
 
 
 class UrlBuilder:
-    def __init__(self, spaceid: str, platform_url: str, player_id: str):
+    def __init__(self, spaceid: str, platform_url: str, player_id: str, platform_group: str):
         self.spaceid: str = spaceid
         self.platform_url: str = platform_url
+        self.platform_group: str = platform_group
         self.player_id: str = player_id
         self.start_date: str = ""
         self.end_date: str = ""
@@ -44,8 +45,8 @@ class UrlBuilder:
                f"&view=current" \
                f"&aggregation=movingpoint" \
                f"&trendType=daily" \
-               f"&gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
+               f"&gameMode=all,ranked,casual,unranked" \
+               f"&platformGroup=PC" \
                f"&teamRole=all,attacker,defender" \
                f"{self.start_date}" \
                f"{self.end_date}"
@@ -55,8 +56,8 @@ class UrlBuilder:
                f"spaceId={self.spaceid}" \
                f"&view=current" \
                f"&aggregation=weapons" \
-               f"&gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
+               f"&gameMode=all,ranked,casual,unranked" \
+               f"&platformGroup=PC" \
                f"&teamRole=attacker,defender" \
                f"{self.start_date}" \
                f"{self.end_date}"
@@ -66,17 +67,9 @@ class UrlBuilder:
                f"spaceId={self.spaceid}" \
                f"&view=current" \
                f"&aggregation=operators" \
-               f"&gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
+               f"&gameMode=all,ranked,casual,unranked" \
+               f"&platformGroup=PC" \
                f"&teamRole=all,Attacker,Defender" \
-               f"{self.start_date}" \
-               f"{self.end_date}"
-
-    def maps_(self) -> str:
-        return f"https://r6s-stats.ubisoft.com/v1/current/maps/{self.player_id}?" \
-               f"gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
-               f"&teamRole=all,attacker,defender" \
                f"{self.start_date}" \
                f"{self.end_date}"
 
@@ -85,8 +78,28 @@ class UrlBuilder:
                f"spaceId={self.spaceid}" \
                f"&view=current" \
                f"&aggregation=maps" \
-               f"&gameMode=all,ranked,casual,unranked,newcomer" \
-               f"&platform=PC" \
+               f"&gameMode=all,ranked,casual,unranked" \
+               f"&platformGroup=PC" \
                f"&teamRole=all,Attacker,Defender" \
                f"{self.start_date}" \
                f"{self.end_date}"
+
+    def seasonal_summaries(self, gamemodes: str, team_roles: str, seasons: str) -> str:
+        return f"https://prod.datadev.ubisoft.com/v1/users/{self.player_id}/playerstats?" \
+               f"spaceId={self.spaceid}" \
+               f"&view=seasonal" \
+               f"&aggregation=summary" \
+               f"&gameMode={gamemodes}" \
+               f"&platformGroup={self.platform_group}" \
+               f"&teamRole={team_roles}" \
+               f"&seasons={seasons}"
+
+    def test(self) -> str:
+        return f"https://prod.datadev.ubisoft.com/v1/users/{self.player_id}/playerstats?" \
+               f"spaceId={self.spaceid}" \
+               f"&view=seasonal" \
+               f"&aggregation=summary" \
+               f"&gameMode=all,ranked,unranked,casual" \
+               f"&platformGroup=PC" \
+               f"&teamRole=all,Attacker,Defender" \
+               f"&seasons=Y2S2"

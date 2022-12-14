@@ -1,3 +1,6 @@
+from .constants import seasons as seasons_const
+from .exceptions import InvalidAttributeCombination
+
 
 def get_xp_to_next_lvl(lvl: int) -> int:
     if lvl == 0:
@@ -38,3 +41,25 @@ def get_total_xp(lvl: int, current_xp: int) -> int:
     for level in range(1, lvl):
         total += get_xp_to_next_lvl(level)
     return total + current_xp
+
+
+def season_id_to_code(season_id: int) -> str:
+    """Depends on 'seasons_const' always being up-to-date.."""
+    seasons_count = len(seasons_const) - 3
+    season_id = seasons_count - season_id if season_id < 0 else season_id
+
+    if 0 <= season_id < 6 or season_id > seasons_count+1:
+        raise InvalidAttributeCombination(f"Season ID must be between than 6 and {seasons_count+1}, got {season_id}")
+
+    return seasons_const.get(season_id, {}).get("code")
+
+
+def season_code_to_id(season_code: str) -> int:
+    """Depends on 'seasons_const' always being up-to-date.."""
+    seasons_count = len(seasons_const) - 3
+    season_id = next((k for k, v in seasons_const.items() if v["code"] == season_code), None)
+
+    if season_id is None:
+        raise InvalidAttributeCombination(f"Season code '{season_code}' is invalid")
+
+    return seasons_count - season_id if season_id < 0 else season_id
