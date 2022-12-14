@@ -19,15 +19,9 @@ class Operator(DefaultStats):
             self.date_of_birth: str = self._get_from_operators_const("date_of_birth")
             self.age: int = self._get_from_operators_const("age")
             self.roles: list[str] = self._get_from_operators_const("roles")
-            self.health: int = self._get_from_operators_const("health")
-            self.speed: int = self._get_from_operators_const("speed")
-            self.hp: int = self._get_hp()
             self.unit: str = self._get_from_operators_const("unit")
             self.country_code: str = self._get_from_operators_const("country_code")
             self.season_introduced: str = self._get_from_operators_const("season_introduced")
-
-    def _get_hp(self) -> int:
-        return {1: 100, 2: 110, 3: 125}.get(self.speed)
 
     def _get_from_operators_const(self, what: str) -> str | int | list:
         return operator_dict.get(self.name.lower(), {}).get(what, "Missing Data")
