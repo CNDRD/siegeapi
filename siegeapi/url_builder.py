@@ -93,13 +93,3 @@ class UrlBuilder:
                f"&platformGroup={self.platform_group}" \
                f"&teamRole={team_roles}" \
                f"&seasons={seasons}"
-
-    def test(self) -> str:
-        return f"https://prod.datadev.ubisoft.com/v1/users/{self.player_id}/playerstats?" \
-               f"spaceId={self.spaceid}" \
-               f"&view=seasonal" \
-               f"&aggregation=summary" \
-               f"&gameMode=all,ranked,unranked,casual" \
-               f"&platformGroup=PC" \
-               f"&teamRole=all,Attacker,Defender" \
-               f"&seasons=Y2S2"
