@@ -1,8 +1,13 @@
+from typing import Tuple, List
+
 from .constants import seasons as seasons_const
 from .exceptions import InvalidAttributeCombination
+from .constants.ranks import *
 
 
 def get_xp_to_next_lvl(lvl: int) -> int:
+    if lvl > 37:
+        return (lvl - 18) * 500
     if lvl == 0:
         return 500
     if lvl == 1:
@@ -33,7 +38,6 @@ def get_xp_to_next_lvl(lvl: int) -> int:
         return 9_500
     if lvl in (35, 36, 37):
         return 10_000
-    return (lvl - 18) * 500
 
 
 def get_total_xp(lvl: int, current_xp: int) -> int:
@@ -63,3 +67,26 @@ def season_code_to_id(season_code: str) -> int:
         raise InvalidAttributeCombination(f"Season code '{season_code}' is invalid")
 
     return seasons_count - season_id if season_id < 0 else season_id
+
+
+def get_rank_constants(season_number: int = -1) -> List[dict[str: str | int]]:
+    if 1 <= season_number <= 3:
+        return ranks_v1
+    if 4 == season_number:
+        return ranks_v2
+    if 5 <= season_number <= 14:
+        return ranks_v3
+    if 15 <= season_number <= 22:
+        return ranks_v4
+    if 23 <= season_number <= 27:
+        return ranks_v5
+    if 28 <= season_number:
+        return ranks_v6
+    return ranks_v6
+
+
+def get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, int, int]:
+    for rank_id, r in enumerate(get_rank_constants(season)):
+        if r["min_mmr"] <= int(mmr) <= r["max_mmr"]:
+            return r["name"], r["min_mmr"], r["max_mmr"]+1, rank_id
+    return "Unranked", 0, 0, 0
