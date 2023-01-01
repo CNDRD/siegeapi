@@ -6,3 +6,4 @@ dist/
 
 serviceAccountKey.json
 testing.py
+creds/
