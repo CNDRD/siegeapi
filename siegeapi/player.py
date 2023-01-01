@@ -70,18 +70,10 @@ class Player:
         data = await self._auth.get(self._url_builder.playtime())
         stats = data.get("profiles", [])[0].get("stats", {})
 
+        self.level = int(stats.get("PClearanceLevel", {}).get("value", 0))
         self.pvp_time_played = int(stats.get("PPvPTimePlayed", {}).get("value", 0))
         self.pve_time_played = int(stats.get("PPvETimePlayed", {}).get("value", 0))
         self.total_time_played = int(stats.get("PTotalTimePlayed", {}).get("value", 0))
-
-    async def load_progress(self) -> None:
-        data = await self._auth.get(self._url_builder.level_xp_alphapack())
-
-        self.alpha_pack = int(data.get("player_profiles", [])[0].get("lootbox_probability", 0)) / 100
-        self.level = int(data.get("player_profiles", [])[0].get("level", 0))
-        self.xp = int(data.get("player_profiles", [])[0].get("xp", 0))
-        self.total_xp: int = get_total_xp(self.level, self.xp)
-        self.xp_to_level_up: int = get_xp_to_next_lvl(self.level) - self.xp
 
     async def load_skill_records(self, seasons: list[int] = None, boards: list[str] = None, regions: list[str] = None) -> None:
         """Can get data only for seasons 6 (Health - Y2S2) until 27 (Brutal Swarm - Y7S3) because of ranked 2.0"""
