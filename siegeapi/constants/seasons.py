@@ -187,7 +187,7 @@ seasons = {
     },
     27: {
         "name": "Brutal Swarm",
-        "hex": "#dac924",
+        "hex": "#dac925",
         "code": "Y7S3",
         "start_date": "2022-09-14"
     },
