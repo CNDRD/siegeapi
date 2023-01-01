@@ -77,7 +77,7 @@ class Player:
 
     async def load_skill_records(self, seasons: list[int] = None, boards: list[str] = None, regions: list[str] = None) -> None:
         """Can get data only for seasons 6 (Health - Y2S2) until 27 (Brutal Swarm - Y7S3) because of ranked 2.0"""
-        _all_seasons = ",".join([str(s) for s in range(6, 27)])
+        _all_seasons = ",".join([str(s) for s in range(6, 28)])
 
         if seasons and not set(list(range(6, 28))).issuperset(set(seasons)):
             raise ValueError(f"Seasons can only be between 6 and 27. You gave {seasons}")
