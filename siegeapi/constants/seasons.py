@@ -1,7 +1,7 @@
 seasons = {
     -10000: {
         "name": "No data",
-        "hex": "#xdxdxd",
+        "hex": "#ffffff",
         "code": "Y0S0",
         "start_date": "1970-01-01"
     },
