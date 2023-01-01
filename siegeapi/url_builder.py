@@ -16,12 +16,8 @@ class UrlBuilder:
     def playtime(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
                f"profileIds={self.player_id}" \
-               f"&spaceId={self.spaceid}" \
-               f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed"
-
-    def level_xp_alphapack(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/sandboxes/{self.platform_url}/r6playerprofile/" \
-               f"playerprofile/progressions?profile_ids={self.player_id}"
+               f"&spaceId=0d2ae42d-4c27-4cb7-af6c-2099062302bb" \
+               f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed,PClearanceLevel"
 
     def skill_records(self, seasons: str, boards: str, regions: str):
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/" \
