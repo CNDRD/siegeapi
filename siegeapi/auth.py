@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 from urllib import parse
-import datetime
 import aiohttp
 import base64
 import time
 import json
+import os
 
 from .exceptions import FailedToConnect, InvalidRequest
 from .player import Player
@@ -24,6 +26,7 @@ class Auth:
             password: str = None,
             token: str = None,
             appid: str = None,
+            creds_path: str = None,
             cachetime: int = 120,
             max_connect_retries: int = 1,
             session: aiohttp.ClientSession() = None,
@@ -34,10 +37,12 @@ class Auth:
         self.refresh_session_period: int = refresh_session_period
 
         self.token: str = token or Auth.get_basic_token(email, password)
-        self.appid: str = appid or "39baebad-39e5-4552-8c25-2c9b919064e2"
+        self.creds_path: str = creds_path or f"{os.getcwd()}/creds/{self.token}.json"
+        self.appid: str = appid or 'e3d5ea9e-50bd-43b7-88bf-39794f4e3d40'
         self.sessionid: str = ""
         self.key: str = ""
-        self.uncertain_spaceid: str = ""
+        self.new_key: str = ""
+        self.spaceid: str = ""
         self.spaceids: dict[str: str] = {
             "uplay": "5172a557-50b5-4665-b7db-e3f2e8c5041d",
             "psn": "05bfb3f7-6c21-4c42-be1f-97a33fb5cf66",
@@ -45,6 +50,8 @@ class Auth:
         }
         self.profileid: str = ""
         self.userid: str = ""
+        self.expiration: str = ""
+        self.new_expiration: str = ""
 
         self.cachetime: int = cachetime
         self.cache = {}
@@ -104,26 +111,93 @@ class Auth:
         await self._ensure_session_valid()
         return self.session
 
-    async def connect(self) -> None:
+    def save_creds(self) -> None:
+        """ Saves the credentials to a file """
+
+        if not os.path.exists(self.creds_path):
+            with open(self.creds_path, 'w') as f:
+                json.dump({}, f)
+
+        # write to file, overwriting the old one
+        with open(self.creds_path, 'w') as f:
+            json.dump({
+                "sessionid": self.sessionid,
+                "key": self.key,
+                "new_key": self.new_key,
+                "spaceid": self.spaceid,
+                "profileid": self.profileid,
+                "userid": self.userid,
+                "expiration": self.expiration,
+                "new_expiration": self.new_expiration,
+            }, f, indent=4)
+
+    def load_creds(self) -> None:
+        """ Loads the credentials from a file """
+
+        if not os.path.exists(self.creds_path):
+            return
+
+        with open(self.creds_path, "r") as f:
+            data = json.load(f)
+
+        self.sessionid = data.get("sessionid", "")
+        self.key = data.get("key", "")
+        self.new_key = data.get("new_key", "")
+        self.spaceid = data.get("spaceid", "")
+        self.profileid = data.get("profileid", "")
+        self.userid = data.get("userid", "")
+        self.expiration = data.get("expiration", "")
+        self.new_expiration = data.get("new_expiration", "")
+
+    async def connect(self, _new: bool = False) -> None:
         """ Connect to Ubisoft, automatically called when needed """
         if self._login_cooldown > time.time():
             raise FailedToConnect("Login on cooldown")
 
+        self.load_creds()
+
+        # If keys are still valid, don't connect again
+        if _new:
+            if self.new_key and datetime.fromisoformat(self.new_expiration[:26]+"+00:00") > datetime.now(timezone.utc):
+                return
+        else:
+            if self.key and datetime.fromisoformat(self.expiration[:26]+"+00:00") > datetime.now(timezone.utc):
+                await self.connect(_new=True)
+                return
+
         session = await self.get_session()
-        resp = await session.post("https://public-ubiservices.ubi.com/v3/profiles/sessions", headers={
-            "Content-Type": "application/json",
-            "Ubi-AppId": self.appid,
+        headers = {
+            "Content-Type": "application/json; charset=UTF-8",
+            "Ubi-AppId": "39baebad-39e5-4552-8c25-2c9b919064e2",
             "Authorization": "Basic " + self.token
-        }, data=json.dumps({"rememberMe": True}))
+        }
+
+        if _new:
+            headers["Ubi-AppId"] = self.appid
+            headers["Authorization"] = "Ubi_v1 t=" + self.key
+            headers["User-Agent"] = "UbiServices_SDK_2020.Release.58_PC64_ansi_static"
+
+        print(f"Connecting to Ubisoft... {_new = } | {headers = }")
+
+        resp = await session.post(
+            url="https://public-ubiservices.ubi.com/v3/profiles/sessions",
+            headers=headers,
+            data=json.dumps({"rememberMe": True})
+        )
 
         data = await resp.json()
 
         if "ticket" in data:
-            self.profileid = data.get("profileId")
-            self.userid = data.get("userId")
-            self.key = data.get("ticket")
+            if _new:
+                self.new_key = data.get('ticket')
+                self.new_expiration = data.get('expiration')
+            else:
+                self.key = data.get("ticket")
+                self.expiration = data.get("expiration")
+            self.profileid = data.get('profileId')
             self.sessionid = data.get("sessionId")
-            self.uncertain_spaceid = data.get("spaceId")
+            self.spaceid = data.get("spaceId")
+            self.userid = data.get("userId")
         else:
             message = "Unknown Error"
             if "message" in data and "httpCode" in data:
@@ -134,12 +208,16 @@ class Auth:
                 message = str(data["httpCode"])
             raise FailedToConnect(message)
 
+        self.save_creds()
+        await self.connect(_new=True)
+
     async def close(self) -> None:
         """ Closes the session associated with the auth object """
+        self.save_creds()
         await self.session.close()
 
-    async def get(self, *args, retries: int = 0, referer: str = None, json_: bool = True, **kwargs) -> dict | str:
-        if not self.key:
+    async def get(self, *args, retries: int = 0, json_: bool = True, new: bool = False, **kwargs) -> dict | str:
+        if (not self.key and not new) or (not self.new_key and new):
             last_error = None
             for _ in range(self.max_connect_retries):
                 try:
@@ -158,17 +236,17 @@ class Auth:
 
         if "headers" not in kwargs:
             kwargs["headers"] = {}
-        kwargs["headers"]["Authorization"] = "Ubi_v1 t=" + self.key
-        kwargs["headers"]["Ubi-AppId"] = self.appid
-        kwargs["headers"]["Ubi-SessionId"] = self.sessionid
-        kwargs["headers"]["Connection"] = "keep-alive"
-        kwargs["headers"]["expiration"] = f"{(datetime.datetime.utcnow() + datetime.timedelta(hours=2.0)).isoformat()}Z"
-        kwargs["headers"]["Ubi-LocaleCode"] = "x"
 
-        if referer is not None:
-            if isinstance(referer, Player):
-                referer = f"https://game-rainbow6.ubi.com/en-gb/uplay/player-statistics/{referer.id}/multiplayer"
-            kwargs["headers"]["Referer"] = str(referer)
+        authorization = kwargs["headers"].get("Authorization") or "Ubi_v1 t=" + (self.new_key if new else self.key)
+        appid = kwargs["headers"].get("Ubi-AppId") or self.appid
+
+        kwargs["headers"]["Authorization"] = authorization
+        kwargs["headers"]["Ubi-AppId"] = appid
+        kwargs["headers"]["Ubi-LocaleCode"] = kwargs["headers"].get("Ubi-LocaleCode") or "en-US"
+        kwargs["headers"]["Ubi-SessionId"] = kwargs["headers"].get("Ubi-SessionId") or self.sessionid
+        kwargs["headers"]["User-Agent"] = kwargs["headers"].get("User-Agent") or "UbiServices_SDK_2020.Release.58_PC64_ansi_static"
+        kwargs["headers"]["Connection"] = kwargs["headers"].get("Connection") or "keep-alive"
+        kwargs["headers"]["expiration"] = kwargs["headers"].get("expiration") or self.expiration
 
         session = await self.get_session()
         resp = await session.get(*args, **kwargs)
