@@ -93,3 +93,8 @@ class UrlBuilder:
                f"&platformGroup={self.platform_group}" \
                f"&teamRole={team_roles}" \
                f"&seasons={seasons}"
+
+    def full_profiles(self) -> str:
+        return f"https://public-ubiservices.ubi.com/v2/spaces/0d2ae42d-4c27-4cb7-af6c-2099062302bb/title/r6s/skill/full_profiles?" \
+               f"profile_ids={self.player_id}" \
+               f"&platform_families={self.platform_group.lower()}"

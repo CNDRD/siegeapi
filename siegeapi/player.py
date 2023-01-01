@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from .utils import get_total_xp, get_xp_to_next_lvl, season_id_to_code, season_code_to_id
+from .utils import season_id_to_code, season_code_to_id
+from .rank_profile import FullProfile
 from .url_builder import UrlBuilder
 from .operators import Operators
 from .summaries import Summary
@@ -51,6 +52,12 @@ class Player:
         self.casual_summary: dict = {}
         self.unranked_summary: dict = {}
         self.all_summary: dict = {}
+
+        self.unranked_profile: FullProfile | None = None
+        self.ranked_profile: FullProfile | None = None
+        self.casual_profile: FullProfile | None = None
+        self.warmup_profile: FullProfile | None = None
+        self.event_profile: FullProfile | None = None
 
         self.weapons: Weapons | None = None
         self.trends: Trends | None = None
@@ -151,3 +158,24 @@ class Player:
     async def load_maps(self) -> Maps:
         self.maps = Maps(await self._auth.get(self._url_builder.maps()))
         return self.maps
+
+    async def load_ranked_v2(self) -> tuple[FullProfile | None, FullProfile | None, FullProfile | None, FullProfile | None, FullProfile | None]:
+        """ Returns a tuple of FullProfile objects for each profile board (unranked, ranked, casual, warmup, event) """
+
+        data = await self._auth.get(self._url_builder.full_profiles(), new=True)
+        boards = data.get('platform_families_full_profiles', [])[0].get('board_ids_full_profiles', [])
+
+        for board in boards:
+
+            if board.get('board_id') == 'unranked':
+                self.unranked_profile = FullProfile(board.get('full_profiles', [])[0])
+            elif board.get('board_id') == 'ranked':
+                self.ranked_profile = FullProfile(board.get('full_profiles', [])[0])
+            elif board.get('board_id') == 'casual':
+                self.casual_profile = FullProfile(board.get('full_profiles', [])[0])
+            elif board.get('board_id') == 'warmup':
+                self.warmup_profile = FullProfile(board.get('full_profiles', [])[0])
+            elif board.get('board_id') == 'event':
+                self.event_profile = FullProfile(board.get('full_profiles', [])[0])
+
+        return self.unranked_profile, self.ranked_profile, self.casual_profile, self.warmup_profile, self.event_profile
