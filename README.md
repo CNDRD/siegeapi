@@ -63,7 +63,7 @@ XP to level up: 8707
 ---  
 
 ## Siege Inventory  
-If you want to see every skin, headgead, uniform and more, head over to **[skins.cndrd.xyz](https://skins.cndrd.xyz/)**  
+If you want to see every skin, headgear, uniform and more, head over to **[skins.cndrd.xyz](https://skins.cndrd.xyz/)**  
 
 ## Docs  
 For docs go to [cndrd.github.io/siegeapi](https://cndrd.github.io/siegeapi/)  
