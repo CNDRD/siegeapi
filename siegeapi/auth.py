@@ -177,8 +177,6 @@ class Auth:
             headers["Authorization"] = "Ubi_v1 t=" + self.key
             headers["User-Agent"] = "UbiServices_SDK_2020.Release.58_PC64_ansi_static"
 
-        print(f"Connecting to Ubisoft... {_new = } | {headers = }")
-
         resp = await session.post(
             url="https://public-ubiservices.ubi.com/v3/profiles/sessions",
             headers=headers,
