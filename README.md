@@ -43,6 +43,11 @@ async def sample():
     print(f"Max Rank Points: {player.ranked_profile.max_rank_points}")
     print(f"Max Rank: {player.ranked_profile.max_rank}")
 
+    await player.load_progress()
+    print(f"XP: {player.xp}")
+    print(f"Total XP: {player.total_xp}")
+    print(f"XP to level up: {player.xp_to_level_up}")
+    
     await auth.close()
 
 asyncio.get_event_loop().run_until_complete(sample())
@@ -52,12 +57,15 @@ asyncio.get_event_loop().run_until_complete(sample())
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
-Total Time Played: 7,616,619 seconds
-Level: 279
-Ranked Points: 3630
-Rank: Emerald 4
+Total Time Played: 7,634,850 seconds
+Level: 280
+Ranked Points: 3528
+Rank: Emerald 5
 Max Rank Points: 3694
 Max Rank: Emerald 4
+XP: 14174
+Total XP: 17271674
+XP to level up: 116826
 ```
 
 ---  

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .utils import season_id_to_code, season_code_to_id
+from .utils import season_id_to_code, season_code_to_id, get_total_xp, get_xp_to_next_lvl
 from .rank_profile import FullProfile
 from .url_builder import UrlBuilder
 from .operators import Operators
@@ -72,6 +72,14 @@ class Player:
             raise ValueError(f"Date for end_date '{end_date}' is invalid. The date format is 'YYYYMMDD'.")
         else:
             self._url_builder.set_timespan_dates(start_date, end_date)
+
+    async def load_progress(self) -> tuple[int, int]:
+        data = await self._auth.get(self._url_builder.xp_lvl(), new=True)
+        self.level = int(data.get("level", 0))
+        self.xp = int(data.get("xp", 0))
+        self.total_xp: int = get_total_xp(self.level, self.xp)
+        self.xp_to_level_up: int = get_xp_to_next_lvl(self.level) - self.xp
+        return self.xp, self.level
 
     async def load_playtime(self) -> None:
         data = await self._auth.get(self._url_builder.playtime())
