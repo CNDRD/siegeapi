@@ -1,3 +1,4 @@
+from __future__ import annotations
 from .utils import season_id_to_code, get_rank_from_mmr, get_rank_constants
 
 

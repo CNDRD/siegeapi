@@ -1,4 +1,4 @@
-from typing import Tuple, List
+from __future__ import annotations
 
 from .constants import seasons as seasons_const
 from .exceptions import InvalidAttributeCombination
@@ -69,7 +69,7 @@ def season_code_to_id(season_code: str) -> int:
     return seasons_count - season_id if season_id < 0 else season_id
 
 
-def get_rank_constants(season_number: int = -1) -> List[dict[str: str | int]]:
+def get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
     if 1 <= season_number <= 3:
         return ranks_v1
     if 4 == season_number:
@@ -85,7 +85,7 @@ def get_rank_constants(season_number: int = -1) -> List[dict[str: str | int]]:
     return ranks_v6
 
 
-def get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, int, int]:
+def get_rank_from_mmr(mmr: int | float, season: int = -1) -> tuple[str, int, int, int]:
     for rank_id, r in enumerate(get_rank_constants(season)):
         if r["min_mmr"] <= int(mmr) <= r["max_mmr"]:
             return r["name"], r["min_mmr"], r["max_mmr"]+1, rank_id
