@@ -196,5 +196,14 @@ seasons = {
         "hex": "#d03314",
         "code": "Y7S4",
         "start_date": "2022-12-07"
-    }
+    },
+
+
+
+    29: {
+        "name": "Commanding Force",
+        "hex": "#45abf3",
+        "code": "Y8S1",
+        "start_date": "2023-03-07"
+    },
 }
