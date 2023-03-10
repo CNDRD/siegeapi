@@ -123,11 +123,10 @@ class Player:
                         self.casual_skill_records.setdefault(season_id, {})
                         self.casual_skill_records[season_id][region_id] = rank_obj if played else None
 
-    async def load_summaries(self, gamemodes: list[str] = None, team_roles: list[str] = None, seasons: list[str] = None) -> None:
+    async def load_summaries(self, gamemodes: list[str] = None, team_roles: list[str] = None) -> None:
         gamemodes = ",".join(gamemodes) if gamemodes else "all,ranked,unranked,casual"
         team_roles = ",".join(team_roles) if team_roles else "all,Attacker,Defender"
-        seasons = ",".join(seasons) if seasons else season_id_to_code(-1)
-        data = await self._auth.get(self._url_builder.seasonal_summaries(gamemodes, team_roles, seasons))
+        data = await self._auth.get(self._url_builder.seasonal_summaries(gamemodes, team_roles))
 
         data_gamemodes = data.get('profileData').get(self.id).get("platforms").get(self._platform_group).get("gameModes")
 

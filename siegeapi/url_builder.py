@@ -84,15 +84,14 @@ class UrlBuilder:
                f"{self.start_date}" \
                f"{self.end_date}"
 
-    def seasonal_summaries(self, gamemodes: str, team_roles: str, seasons: str) -> str:
+    def seasonal_summaries(self, gamemodes: str, team_roles: str) -> str:
         return f"https://prod.datadev.ubisoft.com/v1/users/{self.player_id}/playerstats?" \
                f"spaceId={self.spaceid}" \
                f"&view=seasonal" \
                f"&aggregation=summary" \
                f"&gameMode={gamemodes}" \
                f"&platformGroup={self.platform_group}" \
-               f"&teamRole={team_roles}" \
-               f"&seasons={seasons}"
+               f"&teamRole={team_roles}"
 
     def full_profiles(self) -> str:
         return f"https://public-ubiservices.ubi.com/v2/spaces/0d2ae42d-4c27-4cb7-af6c-2099062302bb/title/r6s/skill/full_profiles?" \
