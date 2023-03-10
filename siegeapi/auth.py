@@ -114,6 +114,9 @@ class Auth:
     def save_creds(self) -> None:
         """ Saves the credentials to a file """
 
+        if not os.path.exists(os.path.dirname(self.creds_path)):
+            os.makedirs(os.path.dirname(self.creds_path))
+
         if not os.path.exists(self.creds_path):
             with open(self.creds_path, 'w') as f:
                 json.dump({}, f)
