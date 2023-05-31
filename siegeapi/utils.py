@@ -48,12 +48,8 @@ def get_total_xp(lvl: int, current_xp: int) -> int:
 
 
 def season_id_to_code(season_id: int) -> str:
-    """Depends on 'seasons_const' always being up-to-date.."""
     seasons_count = len(seasons_const) - 3
     season_id = seasons_count - season_id if season_id < 0 else season_id
-
-    if 0 <= season_id < 6 or season_id > seasons_count+1:
-        raise InvalidAttributeCombination(f"Season ID must be between than 6 and {seasons_count+1}, got {season_id}")
 
     return seasons_const.get(season_id, {}).get("code")
 
