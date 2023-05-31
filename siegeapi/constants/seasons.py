@@ -206,4 +206,10 @@ seasons = {
         "code": "Y8S1",
         "start_date": "2023-03-07"
     },
+    30: {
+        "name": "Dread Factor",
+        "hex": "#6432ef",
+        "code": "Y8S2",
+        "start_date": "2023-30-05"
+    }
 }
