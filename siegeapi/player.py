@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from .utils import season_id_to_code, season_code_to_id, get_total_xp, get_xp_to_next_lvl
+from .utils import season_code_to_id, get_total_xp, get_xp_to_next_lvl
+from .linked_accounts import LinkedAccount
 from .rank_profile import FullProfile
 from .url_builder import UrlBuilder
 from .operators import Operators
@@ -33,6 +34,7 @@ class Player:
         self.profile_pic_url_256: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_256_256.png"
         self.profile_pic_url_500: str = f"https://ubisoft-avatars.akamaized.net/{self.id}/default_tall.png"
         self.profile_pic_url: str = self.profile_pic_url_256
+        self.linked_accounts: list[LinkedAccount] = []
 
         self.name: str = data.get("nameOnPlatform")
         self.level: int = 0
@@ -72,6 +74,12 @@ class Player:
             raise ValueError(f"Date for end_date '{end_date}' is invalid. The date format is 'YYYYMMDD'.")
         else:
             self._url_builder.set_timespan_dates(start_date, end_date)
+
+    async def load_linked_accounts(self):
+        data = await self._auth.get(self._url_builder.connected_accounts())
+        for account in data.get("profiles", []):
+            self.linked_accounts.append(LinkedAccount(account))
+        return self.linked_accounts
 
     async def load_progress(self) -> tuple[int, int]:
         data = await self._auth.get(self._url_builder.xp_lvl(), new=True)
