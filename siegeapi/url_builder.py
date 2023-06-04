@@ -13,6 +13,9 @@ class UrlBuilder:
         self.start_date = f"&startDate={start_date}"
         self.end_date = f"&endDate={end_date}"
 
+    def connected_accounts(self) -> str:
+        return f"https://public-ubiservices.ubi.com/v3/users/{self.player_id}/profiles"
+
     def xp_lvl(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/0d2ae42d-4c27-4cb7-af6c-2099062302bb/title/r6s/rewards/public_profile?" \
                f"profile_id={self.player_id}"
