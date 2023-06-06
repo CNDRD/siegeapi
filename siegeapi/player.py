@@ -76,7 +76,7 @@ class Player:
             self._url_builder.set_timespan_dates(start_date, end_date)
 
     async def load_linked_accounts(self):
-        data = await self._auth.get(self._url_builder.connected_accounts())
+        data = await self._auth.get(self._url_builder.linked_accounts())
         for account in data.get("profiles", []):
             self.linked_accounts.append(LinkedAccount(account))
         return self.linked_accounts

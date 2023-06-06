@@ -13,7 +13,7 @@ class UrlBuilder:
         self.start_date = f"&startDate={start_date}"
         self.end_date = f"&endDate={end_date}"
 
-    def connected_accounts(self) -> str:
+    def linked_accounts(self) -> str:
         return f"https://public-ubiservices.ubi.com/v3/users/{self.player_id}/profiles"
 
     def xp_lvl(self) -> str:
