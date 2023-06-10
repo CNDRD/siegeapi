@@ -82,7 +82,7 @@ Built (and re-built) on top of what [billy-yoyo][r6s_python_api] started
 
 ## Problems  
 If you experience any problems, reach out to me, or submit a PR  
-You can reach out here on GitHub or on Discord (_CNDRD#2233_)  
+You can reach out here on GitHub or on Discord (_cndrd_)  
 
 
 ![forthebadge](https://forthebadge.com/images/badges/works-on-my-machine.svg)  
