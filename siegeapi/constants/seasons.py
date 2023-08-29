@@ -211,5 +211,17 @@ seasons = {
         "hex": "#6432ef",
         "code": "Y8S2",
         "start_date": "2023-30-05"
-    }
+    },
+    31: {
+        "name": "Heavy Mettle",
+        "hex": "#fe7e00",
+        "code": "Y8S3",
+        "start_date": "2023-28-09"
+    },
+    # 32: {
+    #     "name": "Deep Freeze",
+    #     "hex": "#ff0000",
+    #     "code": "Y8S4",
+    #     "start_date": "2023-12-12"
+    # },
 }
