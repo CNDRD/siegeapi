@@ -1,4 +1,20 @@
 operator_dict = {
+   "ram": {
+      "name": "Ram",
+      "safename": "ram",
+      "realname": "Bo-Ram Choi",
+      "birthplace": "Busan, South Korea",
+      "age": 37,
+      "date_of_birth": "April 25",
+      "season_introduced": "Y8S4",
+      "health": 3,
+      "speed": 1,
+      "unit": "Redhammer",
+      "country_code": "KR",
+      "roles": ["Breach"],
+      "side": "attacker",
+      "icon_url": "https://i.imgur.com/NokDK0I.png",
+   },
    "fenrir": {
       "name": "Fenrir",
       "safename": "fenrir",
