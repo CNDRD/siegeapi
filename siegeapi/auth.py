@@ -61,17 +61,17 @@ class Auth:
 
     async def _find_players(self, name: str, platform: str, uid: str) -> list[Player]:
         """ Get a list of players matching the search term on a given platform """
-
-        if name is None and uid is None:
-            raise TypeError("'name' and 'uid' are both None, exactly one must be given")
-
-        if name is not None and uid is not None:
-            raise TypeError("Cannot search by 'uid' and 'name' at the same time, please give one or the other")
+        
+        if (name is not None and uid is not None) or (name or uid is '') or (name is None and uid is None):
+            await self.close()
+            raise TypeError("Exactly one non-empty parameter should be provided (name or uid)")
 
         if platform is None:
+            await self.close()
             raise TypeError("platform cannot be None")
 
         if platform not in ("uplay", "xbl", "psn"):
+            await self.close()
             raise TypeError(f"'platform' has to be one of the following: 'uplay' / 'xbl' / 'psn'; Not {platform}")
 
         if name:
@@ -84,6 +84,7 @@ class Auth:
         if "profiles" in data:
             results = [Player(self, x) for x in data["profiles"] if x.get("platformType", "") == platform]
             if len(results) == 0:
+                await self.close()
                 raise InvalidRequest("No results")
             return results
         else:
