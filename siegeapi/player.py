@@ -44,6 +44,7 @@ class Player:
         self.xp_to_level_up: int = 0
 
         self.total_time_played: int = 0
+        self.total_time_played_hours: int = 0
         self.pvp_time_played: int = 0
         self.pve_time_played: int = 0
 
@@ -97,6 +98,7 @@ class Player:
         self.pvp_time_played = int(stats.get("PPvPTimePlayed", {}).get("value", 0))
         self.pve_time_played = int(stats.get("PPvETimePlayed", {}).get("value", 0))
         self.total_time_played = int(stats.get("PTotalTimePlayed", {}).get("value", 0))
+        self.total_time_played_hours = self.total_time_played // 3600 if self.total_time_played else 0
 
     async def load_skill_records(self, seasons: list[int] = None, boards: list[str] = None, regions: list[str] = None) -> None:
         """Can get data only for seasons 6 (Health - Y2S2) until 27 (Brutal Swarm - Y7S3) because of ranked 2.0"""
