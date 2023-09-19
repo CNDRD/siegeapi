@@ -61,8 +61,7 @@ class Auth:
 
     async def _find_players(self, name: str, platform: str, uid: str) -> list[Player]:
         """ Get a list of players matching the search term on a given platform """
-        
-        if (name is not None and uid is not None) or (name or uid is '') or (name is None and uid is None):
+        if (name == '' or uid == '') or (name is None and uid is None) or (name is not None and uid is not None):
             await self.close()
             raise TypeError("Exactly one non-empty parameter should be provided (name or uid)")
 
