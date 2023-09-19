@@ -170,6 +170,7 @@ class Auth:
 
         session = await self.get_session()
         headers = {
+            "User-Agent": "UbiServices_SDK_2020.Release.58_PC64_ansi_static",
             "Content-Type": "application/json; charset=UTF-8",
             "Ubi-AppId": "39baebad-39e5-4552-8c25-2c9b919064e2",
             "Authorization": "Basic " + self.token
@@ -178,7 +179,6 @@ class Auth:
         if _new:
             headers["Ubi-AppId"] = self.appid
             headers["Authorization"] = "Ubi_v1 t=" + self.key
-            headers["User-Agent"] = "UbiServices_SDK_2020.Release.58_PC64_ansi_static"
 
         resp = await session.post(
             url="https://public-ubiservices.ubi.com/v3/profiles/sessions",
