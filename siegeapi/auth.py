@@ -152,12 +152,14 @@ class Auth:
         self.expiration = data.get("expiration", "")
         self.new_expiration = data.get("new_expiration", "")
 
+        self._login_cooldown = 0
+
     async def connect(self, _new: bool = False) -> None:
         """ Connect to Ubisoft, automatically called when needed """
+        self.load_creds()
+
         if self._login_cooldown > time.time():
             raise FailedToConnect("Login on cooldown")
-
-        self.load_creds()
 
         # If keys are still valid, don't connect again
         if _new:
