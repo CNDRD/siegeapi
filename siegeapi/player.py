@@ -21,7 +21,7 @@ date_pattern = re.compile(r"^((2\d)\d{2})(0[1-9]|1[012])([012]\d|3[01])$")
 class Player:
     def __init__(self, auth: aiohttp.ClientSession(), data: dict):
 
-        self.id: str = data.get("profileId")
+        self.id: str = data.get("userId")
 
         self._auth: aiohttp.ClientSession() = auth
         self._platform: str = data.get("platformType")
