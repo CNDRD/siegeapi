@@ -218,10 +218,10 @@ seasons = {
         "code": "Y8S3",
         "start_date": "2023-28-09"
     },
-    # 32: {
-    #     "name": "Deep Freeze",
-    #     "hex": "#ff0000",
-    #     "code": "Y8S4",
-    #     "start_date": "2023-12-12"
-    # },
+    32: {
+        "name": "Deep Freeze",
+        "hex": "#55a1aa",
+        "code": "Y8S4",
+        "start_date": "2023-12-06"
+    },
 }
