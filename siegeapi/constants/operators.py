@@ -6,7 +6,7 @@ operator_dict = {
       "birthplace": "Busan, South Korea",
       "age": 37,
       "date_of_birth": "April 25",
-      "season_introduced": "Y8S4",
+      "season_introduced": "Y8S3",
       "health": 3,
       "speed": 1,
       "unit": "Redhammer",
