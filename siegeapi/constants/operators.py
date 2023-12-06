@@ -1,4 +1,20 @@
 operator_dict = {
+   "tubarao": {
+      "name": "Tubarão",
+      "safename": "tubarao",
+      "realname": "Isaac Nunes Oliveira",
+      "birthplace": "Ponta Delgada, Portugal",
+      "age": 35,
+      "date_of_birth": "November 24th",
+      "season_introduced": "Y8S4",
+      "health": 2,
+      "speed": 2,
+      "unit": "Wolfguard",
+      "country_code": "PT",
+      "roles": ["ANTI-ENTRY", "ANTI-GADGET"],
+      "side": "defender",
+      "icon_url": "https://i.imgur.com/UdpHcJv.png",
+   },
    "ram": {
       "name": "Ram",
       "safename": "ram",
