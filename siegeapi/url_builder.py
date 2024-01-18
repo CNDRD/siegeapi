@@ -17,13 +17,13 @@ class UrlBuilder:
         return f"https://public-ubiservices.ubi.com/v3/users/{self.player_id}/profiles"
 
     def xp_lvl(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/spaces/0d2ae42d-4c27-4cb7-af6c-2099062302bb/title/r6s/rewards/public_profile?" \
+        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/title/r6s/rewards/public_profile?" \
                f"profile_id={self.player_id}"
 
     def playtime(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
                f"profileIds={self.player_id}" \
-               f"&spaceId=0d2ae42d-4c27-4cb7-af6c-2099062302bb" \
+               f"&spaceId={self.spaceid}" \
                f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed,PClearanceLevel"
 
     def skill_records(self, seasons: str, boards: str, regions: str):
@@ -97,6 +97,6 @@ class UrlBuilder:
                f"&teamRole={team_roles}"
 
     def full_profiles(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v2/spaces/0d2ae42d-4c27-4cb7-af6c-2099062302bb/title/r6s/skill/full_profiles?" \
+        return f"https://public-ubiservices.ubi.com/v2/spaces/{self.spaceid}/title/r6s/skill/full_profiles?" \
                f"profile_ids={self.player_id}" \
                f"&platform_families={self.platform_group.lower()}"
