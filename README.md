@@ -57,15 +57,15 @@ asyncio.get_event_loop().run_until_complete(sample())
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
-Total Time Played: 7,910,265 seconds
-Level: 285
-Ranked Points: 1000
-Rank: Unranked
-Max Rank Points: 1000
-Max Rank: Unranked
-XP: 56,362
-Total XP: 17,973,862
-XP to level up: 77,138
+Total Time Played: 9,037,159 seconds
+Level: 305
+Ranked Points: 4188
+Rank: Diamond 4
+Max Rank Points: 4289
+Max Rank: Diamond 3
+XP: 11,858
+Total XP: 20,694,358
+XP to level up: 131,642
 ```
 
 ---  
@@ -77,7 +77,7 @@ If you want to see every skin, headgear, uniform and more, head over to **[skins
 For docs go to [cndrd.github.io/siegeapi](https://cndrd.github.io/siegeapi/)  
 
 ## Credits  
-Operator Icons from [r6operators][r6operators_] by [marcopixel][marcopixel_]  
+Operator Icons from [r6operators][r6operators_] by [marcopixel][marcopixel_] & sourced by me straight from the game files  
 Built (and re-built) on top of what [billy-yoyo][r6s_python_api] started  
 
 ## Problems  
