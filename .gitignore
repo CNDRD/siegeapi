@@ -7,3 +7,5 @@ dist/
 serviceAccountKey.json
 testing.py
 creds/
+
+.DS_Store
