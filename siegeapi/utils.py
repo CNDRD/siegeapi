@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Dict, List, Optional, Tuple, Union
 
 from .constants import seasons as seasons_const
 from .exceptions import InvalidAttributeCombination
@@ -38,6 +39,8 @@ def get_xp_to_next_lvl(lvl: int) -> int:
         return 9_500
     if lvl in (35, 36, 37):
         return 10_000
+    #return None
+    raise ValueError(f"Level {lvl} is not a valid level.")
 
 
 def get_total_xp(lvl: int, current_xp: int) -> int:
@@ -47,11 +50,11 @@ def get_total_xp(lvl: int, current_xp: int) -> int:
     return total + current_xp
 
 
-def season_id_to_code(season_id: int) -> str:
+def season_id_to_code(season_id: int) -> Optional[str]:
     seasons_count = len(seasons_const) - 3
     season_id = seasons_count - season_id if season_id < 0 else season_id
 
-    return seasons_const.get(season_id, {}).get("code")
+    return seasons_const.get(season_id, {}).get("code",None)
 
 
 def season_code_to_id(season_code: str) -> int:
@@ -65,7 +68,7 @@ def season_code_to_id(season_code: str) -> int:
     return seasons_count - season_id if season_id < 0 else season_id
 
 
-def get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
+def get_rank_constants(season_number: int = -1) -> List[Dict[str, Union[str, int]]]:
     if 1 <= season_number <= 3:
         return ranks_v1
     if 4 == season_number:
@@ -80,9 +83,8 @@ def get_rank_constants(season_number: int = -1) -> list[dict[str: str | int]]:
         return ranks_v6
     return ranks_v6
 
-
-def get_rank_from_mmr(mmr: int | float, season: int = -1) -> tuple[str, int, int, int]:
+def get_rank_from_mmr(mmr: int | float, season: int = -1) -> Tuple[str, int, int, int]:
     for rank_id, r in enumerate(get_rank_constants(season)):
-        if r["min_mmr"] <= int(mmr) <= r["max_mmr"]:
-            return r["name"], r["min_mmr"], r["max_mmr"]+1, rank_id
+        if int(r["min_mmr"]) <= int(mmr) <= int(r["max_mmr"]):
+            return str(r["name"]), int(r["min_mmr"]), int(r["max_mmr"])+1, int(rank_id)
     return "Unranked", 0, 0, 0

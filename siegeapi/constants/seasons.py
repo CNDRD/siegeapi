@@ -1,4 +1,7 @@
-seasons = {
+from typing import Dict
+
+
+seasons: Dict[int, Dict[str, str]] = {
     -10000: {
         "name": "No data",
         "hex": "#ffffff",

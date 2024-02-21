@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from typing import Dict, List, Literal, Optional, Union
 
 from urllib import parse
 import aiohttp
@@ -12,6 +13,7 @@ import os
 from .exceptions import FailedToConnect, InvalidRequest
 from .player import Player
 
+PLATFORMS = ["uplay", "xbl", "psn"]
 
 class Auth:
     """ Holds the authentication information """
@@ -22,28 +24,34 @@ class Auth:
 
     def __init__(
             self,
-            email: str = None,
-            password: str = None,
-            token: str = None,
-            appid: str = None,
-            creds_path: str = None,
+            email: Optional[str] = None,
+            password: Optional[str] = None,
+            token: Optional[str] = None,
+            appid: Optional[str] = None,
+            creds_path: Optional[str] = None,
             cachetime: int = 120,
             max_connect_retries: int = 1,
-            session: aiohttp.ClientSession() = None,
+            session: Optional[aiohttp.ClientSession] = None,
             refresh_session_period: int = 180
     ):
-        self.session: aiohttp.ClientSession() = session or aiohttp.ClientSession()
+        self.session: aiohttp.ClientSession = session or aiohttp.ClientSession()
         self.max_connect_retries: int = max_connect_retries
         self.refresh_session_period: int = refresh_session_period
 
-        self.token: str = token or Auth.get_basic_token(email, password)
+        if token:
+            self.token: str = token 
+        elif email and password:
+            self.token: str = Auth.get_basic_token(email, password)
+        else:
+            raise ValueError("Either 'token' or ('email' and 'password') must be provided")
+        
         self.creds_path: str = creds_path or f"{os.getcwd()}/creds/{self.token}.json"
         self.appid: str = appid or 'e3d5ea9e-50bd-43b7-88bf-39794f4e3d40'
         self.sessionid: str = ""
-        self.key: str = ""
+        self.key: Optional[str] = ""
         self.new_key: str = ""
         self.spaceid: str = ""
-        self.spaceids: dict[str: str] = {
+        self.spaceids: Dict[str, str] = {
             "uplay": "0d2ae42d-4c27-4cb7-af6c-2099062302bb",
             "psn": "0d2ae42d-4c27-4cb7-af6c-2099062302bb",
             "xbl": "0d2ae42d-4c27-4cb7-af6c-2099062302bb"
@@ -59,19 +67,20 @@ class Auth:
         self._login_cooldown: int = 0
         self._session_start: float = time.time()
 
-    async def _find_players(self, name: str, platform: str, uid: str) -> list[Player]:
-        """ Get a list of players matching the search term on a given platform """
-        if (name == '' or uid == '') or (name is None and uid is None) or (name is not None and uid is not None):
+    async def _find_players(self, name: Optional[str], platform: Literal["uplay", "xbl", "psn"], uid: Optional[str]) -> List[Player]:
+        """ Get a list of players matching the search term on a given platform.
+        Must provide either name or uid, but not both."""
+        if (not name and not uid) or (name and uid):
             await self.close()
             raise TypeError("Exactly one non-empty parameter should be provided (name or uid)")
 
-        if platform is None:
+        if not platform:
             await self.close()
-            raise TypeError("platform cannot be None")
+            raise TypeError("'platform' cannot be None")
 
-        if platform not in ("uplay", "xbl", "psn"):
+        if platform not in PLATFORMS:
             await self.close()
-            raise TypeError(f"'platform' has to be one of the following: 'uplay' / 'xbl' / 'psn'; Not {platform}")
+            raise TypeError(f"'platform' has to be one of the following: {PLATFORMS}; Not {platform}")
 
         if name:
             data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?"
@@ -79,10 +88,14 @@ class Auth:
         else:
             data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?"
                                   f"platformType={parse.quote(platform)}")
+        
+        if not isinstance(data, dict):
+            await self.close()
+            raise InvalidRequest(f"Expected a JSON object, got {type(data)}")
 
         if "profiles" in data:
-            results = [Player(self, x) for x in data["profiles"] if x.get("platformType", "") == platform]
-            if len(results) == 0:
+            results = [Player(self, x) for x in data.get("profiles",{}) if x.get("platformType", "") == platform]
+            if not results:
                 await self.close()
                 raise InvalidRequest("No results")
             return results
@@ -106,13 +119,13 @@ class Auth:
         self.session = aiohttp.ClientSession()
         self._session_start = time.time()
 
-    async def get_session(self) -> aiohttp.ClientSession():
-        """ Retrieves the current session, ensuring it's valid first """
+    async def get_session(self) -> aiohttp.ClientSession:
+        """ Retrieves the current session, ensuring it's valid first."""
         await self._ensure_session_valid()
         return self.session
 
     def save_creds(self) -> None:
-        """ Saves the credentials to a file """
+        """ Saves the credentials to a file. """
 
         if not os.path.exists(os.path.dirname(self.creds_path)):
             os.makedirs(os.path.dirname(self.creds_path))
@@ -180,7 +193,7 @@ class Auth:
 
         if _new:
             headers["Ubi-AppId"] = self.appid
-            headers["Authorization"] = "Ubi_v1 t=" + self.key
+            headers["Authorization"] = f"Ubi_v1 t={self.key}"
 
         resp = await session.post(
             url="https://public-ubiservices.ubi.com/v3/profiles/sessions",
@@ -219,7 +232,7 @@ class Auth:
         self.save_creds()
         await self.session.close()
 
-    async def get(self, *args, retries: int = 0, json_: bool = True, new: bool = False, **kwargs) -> dict | str:
+    async def get(self, *args, retries: int = 0, json_: bool = True, new: bool = False, **kwargs) -> Union[dict, str]:
         if (not self.key and not new) or (not self.new_key and new):
             last_error = None
             for _ in range(self.max_connect_retries):
@@ -240,16 +253,16 @@ class Auth:
         if "headers" not in kwargs:
             kwargs["headers"] = {}
 
-        authorization = kwargs["headers"].get("Authorization") or "Ubi_v1 t=" + (self.new_key if new else self.key)
+        authorization = kwargs["headers"].get("Authorization") or f"Ubi_v1 t={self.new_key if new else self.key}"
         appid = kwargs["headers"].get("Ubi-AppId") or self.appid
 
         kwargs["headers"]["Authorization"] = authorization
         kwargs["headers"]["Ubi-AppId"] = appid
-        kwargs["headers"]["Ubi-LocaleCode"] = kwargs["headers"].get("Ubi-LocaleCode") or "en-US"
-        kwargs["headers"]["Ubi-SessionId"] = kwargs["headers"].get("Ubi-SessionId") or self.sessionid
-        kwargs["headers"]["User-Agent"] = kwargs["headers"].get("User-Agent") or "UbiServices_SDK_2020.Release.58_PC64_ansi_static"
-        kwargs["headers"]["Connection"] = kwargs["headers"].get("Connection") or "keep-alive"
-        kwargs["headers"]["expiration"] = kwargs["headers"].get("expiration") or self.expiration
+        kwargs["headers"]["Ubi-LocaleCode"] = kwargs["headers"].get("Ubi-LocaleCode", "en-us")
+        kwargs["headers"]["Ubi-SessionId"] = kwargs["headers"].get("Ubi-SessionId", self.sessionid)
+        kwargs["headers"]["User-Agent"] = kwargs["headers"].get("User-Agent", "UbiServices_SDK_2020.Release.58_PC64_ansi_static")
+        kwargs["headers"]["Connection"] = kwargs["headers"].get("Connection", "keep-alive")
+        kwargs["headers"]["expiration"] = kwargs["headers"].get("expiration", self.expiration)
 
         session = await self.get_session()
         resp = await session.get(*args, **kwargs)
@@ -267,7 +280,8 @@ class Auth:
                 if data["httpCode"] == 401:
                     if retries >= self.max_connect_retries:
                         # wait 30 seconds before sending another request
-                        self._login_cooldown = time.time() + 30
+                        # pyright type checker doesn't like the below line
+                        self._login_cooldown = 30 + time.time() # type: ignore
 
                     # key no longer works, so remove key and let the following .get() call refresh it
                     self.key = None
@@ -282,13 +296,13 @@ class Auth:
         else:
             return await resp.text()
 
-    async def get_player(self, name: str = None, uid: str = None, platform: str = "uplay") -> Player:
+    async def get_player(self, name: Optional[str] = None, uid: Optional[str] = None, platform: Literal["uplay", "xbl", "psn"] = "uplay") -> Player:
         """ Calls get_players and returns the first element """
 
         results = await self._find_players(name=name, platform=platform, uid=uid)
         return results[0]
 
-    async def get_player_batch(self, names: list[str] = None, uids: list[str] = None, platform: str = "uplay") -> dict[str: Player]:
+    async def get_player_batch(self, names: Optional[List[str]] = None, uids: Optional[List[str]] = None, platform: Literal["uplay", "xbl", "psn"] = "uplay") -> Dict[str, Player]:
         players = {}
         if names is not None:
             for name in names:
