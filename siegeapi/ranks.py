@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Dict, Union
 
 from .constants.seasons import seasons
 from .utils import get_rank_constants, get_rank_from_mmr
@@ -18,7 +19,7 @@ class Rank:
         self.rank_id: int = data.get("rank", 0)
         self.season: int = data.get("season", -10000)
         _rank_definitions = get_rank_constants(self.season)
-        self.rank: str = _rank_definitions[self.rank_id]["name"]
+        self.rank: str = _rank_definitions[self.rank_id].get("name","")
         self.max_rank_id: int = data.get("max_rank", 0)
         self.max_rank: str = _rank_definitions[self.max_rank_id]["name"]
         self.region: str = data.get("region", "missing")
@@ -34,5 +35,5 @@ class Rank:
             self.max_rank_id = self.max_mmr = 0
             self.max_rank = "Undefined"
 
-    def get_dict(self) -> dict[str: str | int | float]:
+    def get_dict(self) -> Dict[str, Union[str, int, float]]:
         return vars(self)

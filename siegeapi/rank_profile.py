@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Dict, Union
 from .utils import season_id_to_code, get_rank_from_mmr, get_rank_constants
 
 
@@ -17,8 +18,8 @@ class FullProfile:
 
         rank_constants = get_rank_constants(self.season_id)
         _, prev_, next_, _ = get_rank_from_mmr(self.rank_points)
-        self.max_rank: str = rank_constants[self.max_rank_id]["name"]
-        self.rank: str = rank_constants[self.rank_id]["name"]
+        self.max_rank: str = rank_constants[self.max_rank_id].get("name",'')
+        self.rank: str = rank_constants[self.rank_id].get("name",'')
         self.prev_rank_points: int = prev_
         self.next_rank_points: int = next_
         self.season_code: str = season_id_to_code(self.season_id)
@@ -29,5 +30,5 @@ class FullProfile:
         self.losses: int = match_outcomes.get("losses", 0)
         self.wins: int = match_outcomes.get("wins", 0)
 
-    def get_dict(self) -> dict[str: str | int | float]:
+    def get_dict(self) -> Dict[str, Union[str, int, float]]:
         return vars(self)
