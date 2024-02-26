@@ -227,4 +227,13 @@ seasons: Dict[int, Dict[str, str]] = {
         "code": "Y8S4",
         "start_date": "2023-12-06"
     },
+
+
+
+    33: {
+        "name": "Deadly Omen",
+        "hex": "#f14b37",
+        "code": "Y9S1",
+        "start_date": "2024-03-05"
+    },
 }
