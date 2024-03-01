@@ -9,3 +9,5 @@ testing.py
 creds/
 
 .DS_Store
+apikeys.yml
+main.py
