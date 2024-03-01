@@ -1,4 +1,20 @@
 operator_dict = {
+   "deimos": {
+      "name": "Deimos",
+      "safename": "deimos",
+      "realname": "Gerald Morris",
+      "birthplace": "Birmingham, Alabama",
+      "age": 51,
+      "date_of_birth": "December 24th",
+      "season_introduced": "Y9S1",
+      "health": 2,
+      "speed": 2,
+      "unit": "N/A",
+      "country_code": "US",
+      "roles": ["INTEL", "MAP CONTROL"],
+      "side": "attacker",
+      "icon_url": "https://i.imgur.com/av1keWp.png",
+   },
    "tubarao": {
       "name": "Tubarão",
       "safename": "tubarao",

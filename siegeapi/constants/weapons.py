@@ -569,6 +569,11 @@ WEAPONS_DICT = {
         "icon_url": "6W3Jz0YcQzbZ6BOPr7VVel/4c67f342964132a652f7d5821e887050/.44_Mag_Semi-Auto.png",
         "imgur_url": "https://i.imgur.com/4QUGA4Z.png",
     },
+    ".44 Vendetta": {
+        "type": "Pistol",
+        "icon_url": "2kx8YFXaz4l9A3iJctZ33h/30f25aff1e25daf0dff88d258423adcf/44VENDETTA.png",
+        "imgur_url": "https://i.imgur.com/YCCL5cK.png",
+    },
 
     # Hand Cannon
     "GONNE-6": {
