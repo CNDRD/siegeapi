@@ -306,7 +306,6 @@ class Auth:
                     if data["httpCode"] == 404:
                         msg = f"Missing resource {data.get('resource', args[0])}"
                     raise InvalidRequest(f"HTTP {data['httpCode']}: {msg}", code=data["httpCode"])
-            pprint(data)
             return data
         else:
             return await resp.text()
