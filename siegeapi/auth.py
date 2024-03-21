@@ -69,7 +69,15 @@ class Auth:
 
     async def _find_players(self, name: Optional[str], platform: Literal["uplay", "xbl", "psn"], uid: Optional[str]) -> List[Player]:
         """ Get a list of players matching the search term on a given platform.
-        Must provide either name or uid, but not both."""
+        Must provide either name or uid, but not both.
+
+        Raises:
+            TypeError: If neither name nor uid is provided, if both are provided, or if platform is None.
+            InvalidRequest: If the returned API request  is missing the 'profiles' key.
+
+        Returns:
+            List[Player]: A list of player objects matching the search term.
+        """        
         if (not name and not uid) or (name and uid):
             await self.close()
             raise TypeError("Exactly one non-empty parameter should be provided (name or uid)")
@@ -120,12 +128,16 @@ class Auth:
         self._session_start = time.time()
 
     async def get_session(self) -> aiohttp.ClientSession:
-        """ Retrieves the current session, ensuring it's valid first."""
+        """Retrieves the current session, ensuring it's valid first.
+
+        Returns:
+            aiohttp.ClientSession: The current session.
+        """
         await self._ensure_session_valid()
         return self.session
 
     def save_creds(self) -> None:
-        """ Saves the credentials to a file. """
+        """Saves the credentials to a file."""
 
         if not os.path.exists(os.path.dirname(self.creds_path)):
             os.makedirs(os.path.dirname(self.creds_path))
@@ -148,7 +160,7 @@ class Auth:
             }, f, indent=4)
 
     def load_creds(self) -> None:
-        """ Loads the credentials from a file """
+        """Loads the credentials from a file."""
 
         if not os.path.exists(self.creds_path):
             return
@@ -168,7 +180,8 @@ class Auth:
         self._login_cooldown = 0
 
     async def connect(self, _new: bool = False) -> None:
-        """ Connect to Ubisoft, automatically called when needed """
+        """Connect to the Ubisoft API.
+        This method will automatically called when needed."""
         self.load_creds()
 
         if self._login_cooldown > time.time():
@@ -228,11 +241,13 @@ class Auth:
         await self.connect(_new=True)
 
     async def close(self) -> None:
-        """ Closes the session associated with the auth object """
+        """Closes the session associated with the auth object. """
         self.save_creds()
         await self.session.close()
 
     async def get(self, *args, retries: int = 0, json_: bool = True, new: bool = False, **kwargs) -> Union[dict, str]:
+        """Sends a GET request to the Ubisoft API.
+        Intended for internal use only."""
         if (not self.key and not new) or (not self.new_key and new):
             last_error = None
             for _ in range(self.max_connect_retries):
@@ -291,18 +306,37 @@ class Auth:
                     if data["httpCode"] == 404:
                         msg = f"Missing resource {data.get('resource', args[0])}"
                     raise InvalidRequest(f"HTTP {data['httpCode']}: {msg}", code=data["httpCode"])
-
             return data
         else:
             return await resp.text()
 
     async def get_player(self, name: Optional[str] = None, uid: Optional[str] = None, platform: Literal["uplay", "xbl", "psn"] = "uplay") -> Player:
-        """ Calls get_players and returns the first element """
+        """Get a player object by name or uid.
+        Calls get_players and returns the first element.
 
+        Args:
+            name (Optional[str]): The username of the player. Defaults to None.
+            uid (Optional[str]): The UID of the player. Defaults to None.
+            platform (Literal[uplay, xbl, psn]): The playform the player plays on. Defaults to "uplay".
+
+        Returns:
+            Player: The player object.
+        """
         results = await self._find_players(name=name, platform=platform, uid=uid)
         return results[0]
 
     async def get_player_batch(self, names: Optional[List[str]] = None, uids: Optional[List[str]] = None, platform: Literal["uplay", "xbl", "psn"] = "uplay") -> Dict[str, Player]:
+        """Get a dictionary of players by name or uid.
+        Note that all players must share the same provided platform.
+
+        Args:
+            name (Optional[str]): List of usernames to lookup. Defaults to None.
+            uid (Optional[str]): List of UIDs to lookup. Defaults to None.
+            platform (Literal[uplay, xbl, psn]): The playform the players plays on. Defaults to "uplay".
+
+        Returns:
+            Dict[str, Player]: A dictionary of player objects, with the form {uid: player}.
+        """
         players = {}
         if names is not None:
             for name in names:
