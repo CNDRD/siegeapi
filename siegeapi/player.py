@@ -40,7 +40,7 @@ class Player:
         self.profile_pic_url: str = self.profile_pic_url_256
         self.linked_accounts: List[LinkedAccount] = []
 
-        self.name: str = data.get("nameOnPlatform","")
+        self.name: str = data.get("nameOnPlatform", "")
         self.level: int = 0
         self.alpha_pack: float = 0
         self.xp: int = 0
@@ -53,7 +53,7 @@ class Player:
         self.pve_time_played: int = 0
 
         self.rank_skill_records: Dict[int, Dict[str, Optional[Rank]]] | Dict = {}
-        self.casual_skill_records: Dict[int, Dict[str,Optional[Rank]]] | Dict = {}
+        self.casual_skill_records: Dict[int, Dict[str, Optional[Rank]]] | Dict = {}
 
         self.ranked_summary: dict = {}
         self.casual_summary: dict = {}
@@ -201,10 +201,11 @@ class Player:
         _gamemodes: str = ",".join(gamemodes)
         _team_roles: str = ",".join(team_roles)
         data = await self._auth.get(self._url_builder.seasonal_summaries(_gamemodes, _team_roles))
+
         if not isinstance(data, dict):
             raise ValueError(f"Failed to load summaries. Response: {data}")
 
-        data_gamemodes = data.get('profileData',{}).get(self.uid,{}).get("platforms",{}).get(self._platform_group,{}).get("gameModes",[])
+        data_gamemodes = data.get('profileData', {}).get(self.uid, {}).get("platforms", {}).get(self._platform_group, {}).get("gameModes", [])
 
         for gamemode in data_gamemodes:
             roles = data_gamemodes[gamemode]['teamRoles']
@@ -307,7 +308,7 @@ class Player:
 
         data = await self._auth.get(self._url_builder.full_profiles(), new=True)
         if not isinstance(data, dict):
-            raise ValueError(f"Failed to load full profiles. Response: {data}") # maybe return None instead?
+            raise ValueError(f"Failed to load full profiles. Response: {data}")  # maybe return None instead?
         
         boards = data.get('platform_families_full_profiles', [])[0].get('board_ids_full_profiles', [])
 

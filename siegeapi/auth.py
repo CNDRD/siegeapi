@@ -15,6 +15,7 @@ from .player import Player
 
 PLATFORMS = ["uplay", "xbl", "psn"]
 
+
 class Auth:
     """ Holds the authentication information """
 
@@ -102,7 +103,7 @@ class Auth:
             raise InvalidRequest(f"Expected a JSON object, got {type(data)}")
 
         if "profiles" in data:
-            results = [Player(self, x) for x in data.get("profiles",{}) if x.get("platformType", "") == platform]
+            results = [Player(self, x) for x in data.get("profiles", {}) if x.get("platformType", "") == platform]
             if not results:
                 await self.close()
                 raise InvalidRequest("No results")

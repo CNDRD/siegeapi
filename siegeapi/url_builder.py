@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 class UrlBuilder:
     def __init__(self, spaceid: str, platform_url: str, player_id: str, platform_group: str):
         self.spaceid: str = spaceid

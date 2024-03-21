@@ -54,7 +54,7 @@ def season_id_to_code(season_id: int) -> Optional[str]:
     seasons_count = len(seasons_const) - 3
     season_id = seasons_count - season_id if season_id < 0 else season_id
 
-    return seasons_const.get(season_id, {}).get("code",None)
+    return seasons_const.get(season_id, {}).get("code", None)
 
 
 def season_code_to_id(season_code: str) -> int:
