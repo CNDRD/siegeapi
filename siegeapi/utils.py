@@ -39,7 +39,6 @@ def get_xp_to_next_lvl(lvl: int) -> int:
         return 9_500
     if lvl in (35, 36, 37):
         return 10_000
-    #return None
     raise ValueError(f"Level {lvl} is not a valid level.")
 
 
