@@ -8,3 +8,7 @@ class LinkedAccount:
         self.platform_type: str = data.get("platformType", "")
         self.id_on_platform: str = data.get("idOnPlatform", "")
         self.name_on_platform: str = data.get("nameOnPlatform", "")
+
+    def __repr__(self) -> str:
+        return str(vars(self))
+    
