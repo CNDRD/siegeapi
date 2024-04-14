@@ -44,6 +44,7 @@ class WeaponsGameMode:
 
 class WeaponsRole:
     def __init__(self, data: dict):
+        self.all: WeaponsGameMode = WeaponsGameMode(data.get("teamRoles", {}).get("all", {}))
         self.attacker: WeaponsGameMode = WeaponsGameMode(data.get("teamRoles", {}).get("attacker", {}))
         self.defender: WeaponsGameMode = WeaponsGameMode(data.get("teamRoles", {}).get("defender", {}))
 
@@ -53,11 +54,14 @@ class WeaponsRole:
 
 class Weapons:
     def __init__(self, data: dict):
-        self.all: WeaponsRole = WeaponsRole(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("all", {}))
-        self.casual: WeaponsRole = WeaponsRole(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("casual", {}))
-        self.ranked: WeaponsRole = WeaponsRole(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("ranked", {}))
-        self.unranked: WeaponsRole = WeaponsRole(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("unranked", {}))
-        self.newcomer: WeaponsRole = WeaponsRole(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("newcomer", {}))
+        platform_data = data.get("platforms", {})
+        platform_data = platform_data.get(list(platform_data.keys())[0] if len(platform_data.keys()) > 0 else "PC", {})
+
+        self.all: WeaponsRole = WeaponsRole(platform_data.get("gameModes",{}).get("all", {}))
+        self.casual: WeaponsRole = WeaponsRole(platform_data.get("gameModes",{}).get("casual", {}))
+        self.ranked: WeaponsRole = WeaponsRole(platform_data.get("gameModes",{}).get("ranked", {}))
+        self.unranked: WeaponsRole = WeaponsRole(platform_data.get("gameModes",{}).get("unranked", {}))
+        self.newcomer: WeaponsRole = WeaponsRole(platform_data.get("gameModes",{}).get("newcomer", {}))
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 

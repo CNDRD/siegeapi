@@ -34,9 +34,13 @@ class TrendData:
 
 class TrendsGameMode:
     def __init__(self, data: dict):
-        self.all: TrendData = TrendData(data.get("teamRoles", {}).get("all", [{}])[0])
-        self.attacker: TrendData = TrendData(data.get("teamRoles", {}).get("attacker", [{}])[0])
-        self.defender: TrendData = TrendData(data.get("teamRoles", {}).get("defender", [{}])[0])
+        _all = data.get("teamRoles", {}).get("all", [{}])
+        _attacker = data.get("teamRoles", {}).get("attacker", [{}])
+        _defender = data.get("teamRoles", {}).get("defender", [{}])
+
+        self.all: TrendData = TrendData(_all[0] if len(_all) > 0 else {})
+        self.attacker: TrendData = TrendData(_attacker[0] if len(_attacker) > 0 else {})
+        self.defender: TrendData = TrendData(_defender[0] if len(_defender) > 0 else {})
 
     def __repr__(self) -> str:
         return str(vars(self))
@@ -44,11 +48,14 @@ class TrendsGameMode:
 
 class Trends:
     def __init__(self, data: dict):
-        self.all: TrendsGameMode = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("all", {}))
-        self.casual: TrendsGameMode = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("casual", {}))
-        self.ranked: TrendsGameMode = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("ranked", {}))
-        self.unranked: TrendsGameMode = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("unranked", {}))
-        self.newcomer: TrendsGameMode = TrendsGameMode(data.get("platforms").get("PC").get("gameModes").get("newcomer", {}))
+        platform_data = data.get("platforms", {})
+        platform_data = platform_data.get(list(platform_data.keys())[0] if len(platform_data.keys()) > 0 else "PC", {})
+
+        self.all: TrendsGameMode = TrendsGameMode(platform_data.get("gameModes").get("all", {}))
+        self.casual: TrendsGameMode = TrendsGameMode(platform_data.get("gameModes").get("casual", {}))
+        self.ranked: TrendsGameMode = TrendsGameMode(platform_data.get("gameModes").get("ranked", {}))
+        self.unranked: TrendsGameMode = TrendsGameMode(platform_data.get("gameModes").get("unranked", {}))
+        self.newcomer: TrendsGameMode = TrendsGameMode(platform_data.get("gameModes").get("newcomer", {}))
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 

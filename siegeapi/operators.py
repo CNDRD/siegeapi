@@ -27,7 +27,6 @@ class Operator(DefaultStats):
     def _get_from_operators_const(self, value: str) -> Union[str, int, list]:
         return operator_dict.get(self.name.lower(), {}).get(value, "Missing Data")
 
-    # for typing
     def _get_str_from_operators_const(self, value: str) -> str:
         returnv = self._get_from_operators_const(value)
         if isinstance(returnv, str):
@@ -45,7 +44,9 @@ class Operator(DefaultStats):
         if isinstance(returnv, list):
             return returnv
         raise ValueError(f"Value {value} is not a list")
-        
+    
+    def __repr__(self) -> str:
+        return str(vars(self))
 
 
 class OperatorsGameMode:
@@ -59,11 +60,14 @@ class OperatorsGameMode:
 
 class Operators:
     def __init__(self, data: dict, op_about: bool):
-        self.all: OperatorsGameMode = OperatorsGameMode(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("all", {}), op_about)
-        self.casual: OperatorsGameMode = OperatorsGameMode(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("casual", {}), op_about)
-        self.ranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("ranked", {}), op_about)
-        self.unranked: OperatorsGameMode = OperatorsGameMode(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("unranked", {}), op_about)
-        self.newcomer: OperatorsGameMode = OperatorsGameMode(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("newcomer", {}), op_about)
+        platform_data = data.get("platforms", {})
+        platform_data = platform_data.get(list(platform_data.keys())[0] if len(platform_data.keys()) > 0 else "PC", {})
+
+        self.all: OperatorsGameMode = OperatorsGameMode(platform_data.get("gameModes", {}).get("all", {}), op_about)
+        self.casual: OperatorsGameMode = OperatorsGameMode(platform_data.get("gameModes", {}).get("casual", {}), op_about)
+        self.ranked: OperatorsGameMode = OperatorsGameMode(platform_data.get("gameModes", {}).get("ranked", {}), op_about)
+        self.unranked: OperatorsGameMode = OperatorsGameMode(platform_data.get("gameModes", {}).get("unranked", {}), op_about)
+        self.newcomer: OperatorsGameMode = OperatorsGameMode(platform_data.get("gameModes", {}).get("newcomer", {}), op_about)
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 

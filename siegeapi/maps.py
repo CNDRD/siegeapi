@@ -24,10 +24,13 @@ class MapRoles:
 
 class Maps:
     def __init__(self, data: dict):
-        self.all: MapRoles = MapRoles(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("all", {}))
-        self.casual: MapRoles = MapRoles(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("casual", {}))
-        self.ranked: MapRoles = MapRoles(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("ranked", {}))
-        self.unranked: MapRoles = MapRoles(data.get("platforms",{}).get("PC",{}).get("gameModes",{}).get("unranked", {}))
+        platform_data = data.get("platforms", {})
+        platform_data = platform_data.get(list(platform_data.keys())[0] if len(platform_data.keys()) > 0 else "PC", {})
+
+        self.all: MapRoles = MapRoles(platform_data.get("gameModes", {}).get("all", {}))
+        self.casual: MapRoles = MapRoles(platform_data.get("gameModes", {}).get("casual", {}))
+        self.ranked: MapRoles = MapRoles(platform_data.get("gameModes", {}).get("ranked", {}))
+        self.unranked: MapRoles = MapRoles(platform_data.get("gameModes", {}).get("unranked", {}))
         self._start_date: str = str(data.get("startDate", ""))
         self._end_date: str = str(data.get("endDate", ""))
 
