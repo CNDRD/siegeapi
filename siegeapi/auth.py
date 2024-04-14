@@ -97,11 +97,9 @@ class Auth:
             raise TypeError(f"'platform' has to be one of the following: {PLATFORMS}; Not {platform}")
 
         if name:
-            data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?"
-                                  f"nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
+            data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
         else:
-            data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?"
-                                  f"platformType={parse.quote(platform)}")
+            data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?platformType={parse.quote(platform)}")
         
         if not isinstance(data, dict):
             await self.close()
@@ -187,7 +185,7 @@ class Auth:
 
     async def connect(self, _new: bool = False) -> None:
         """Connect to the Ubisoft API.
-        This method will automatically called when needed."""
+        This method will be automatically called when needed."""
         self.load_creds()
 
         if self._login_cooldown > time.time():
@@ -302,7 +300,7 @@ class Auth:
                     if retries >= self.max_connect_retries:
                         # wait 30 seconds before sending another request
                         # pyright type checker doesn't like the below line
-                        self._login_cooldown = 30 + time.time() # type: ignore
+                        self._login_cooldown = 30 + time.time()  # type: ignore
 
                     # key no longer works, so remove key and let the following .get() call refresh it
                     self.key = None
