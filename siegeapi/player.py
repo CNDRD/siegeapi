@@ -31,8 +31,16 @@ class Player:
         self._platform: str = data.get("platformType","")
         self._platform_url: str = PLATFORM_URL_NAMES[self._platform]
         self._spaceid: str = self._auth.spaceids[self._platform]
+        self._spaceids: Dict[str, str] = self._auth.spaceids
         self._platform_group: str = "PC" if self._platform == "uplay" else "Console"
-        self._url_builder: UrlBuilder = UrlBuilder(self._spaceid, self._platform_url, self.uid, self._platform_group)
+        self._url_builder: UrlBuilder = UrlBuilder(
+            spaceid=self._spaceid,
+            spaceids=self._spaceids,
+            platform_url=self._platform_url,
+            platform_group=self._platform_group,
+            player_uid=self.uid,
+            player_id=self.id,
+        )
 
         self.profile_pic_url_146: str = f"https://ubisoft-avatars.akamaized.net/{self.uid}/default_146_146.png"
         self.profile_pic_url_256: str = f"https://ubisoft-avatars.akamaized.net/{self.uid}/default_256_256.png"
