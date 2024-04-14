@@ -54,8 +54,7 @@ async def sample():
 
     await auth.close()
 
-asyncio.get_event_loop().run_until_complete(sample())
-# Or `asyncio.run(sample())`  
+asyncio.run(sample())
 ```
 ### Output  
 ```text
