@@ -68,6 +68,7 @@ class Player:
         self.unranked_summary: dict = {}
         self.all_summary: dict = {}
 
+        self.standard_profile: Optional[FullProfile] = None
         self.unranked_profile: Optional[FullProfile] = None
         self.ranked_profile: Optional[FullProfile] = None
         self.casual_profile: Optional[FullProfile] = None
@@ -322,7 +323,9 @@ class Player:
 
         for board in boards:
 
-            if board.get('board_id') == 'unranked':
+            if board.get('board_id') == 'standard':
+                self.standard_profile = FullProfile(board.get('full_profiles', [])[0])
+            elif board.get('board_id') == 'unranked':
                 self.unranked_profile = FullProfile(board.get('full_profiles', [])[0])
             elif board.get('board_id') == 'ranked':
                 self.ranked_profile = FullProfile(board.get('full_profiles', [])[0])
@@ -333,4 +336,4 @@ class Player:
             elif board.get('board_id') == 'event':
                 self.event_profile = FullProfile(board.get('full_profiles', [])[0])
 
-        return (self.unranked_profile, self.ranked_profile, self.casual_profile, self.warmup_profile, self.event_profile)
+        return self.unranked_profile, self.ranked_profile, self.casual_profile, self.warmup_profile, self.event_profile
