@@ -12,7 +12,7 @@ setup(
     packages=find_packages(),
     license="MIT",
     include_package_data=True,
-    install_requires=["aiohttp>=3.6.0,<3.8.0"],
+    install_requires=["aiohttp>=3.6.0"],
     python_requires=">=3.8.0",
     long_description=long_description,
     long_description_content_type='text/markdown',
