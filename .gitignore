@@ -6,6 +6,7 @@ dist/
 
 serviceAccountKey.json
 testing.py
+wss.py
 creds/
 
 .DS_Store
