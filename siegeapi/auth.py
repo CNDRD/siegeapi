@@ -29,6 +29,7 @@ class Auth:
             password: Optional[str] = None,
             token: Optional[str] = None,
             appid: Optional[str] = None,
+            spaceids: Optional[Dict[Literal['uplay', 'psn', 'xbl', 'xplay'], str]] = None,
             creds_path: Optional[str] = None,
             cachetime: int = 120,
             max_connect_retries: int = 1,
@@ -53,10 +54,14 @@ class Auth:
         self.new_key: str = ""
         self.spaceid: str = ""
         self.spaceids: Dict[str, str] = {
-            "uplay": "0d2ae42d-4c27-4cb7-af6c-2099062302bb",
-            "psn": "0d2ae42d-4c27-4cb7-af6c-2099062302bb",
-            "xbl": "0d2ae42d-4c27-4cb7-af6c-2099062302bb"
+            "uplay": "5172a557-50b5-4665-b7db-e3f2e8c5041d",
+            "psn": "05bfb3f7-6c21-4c42-be1f-97a33fb5cf66",
+            "xbl": "98a601e5-ca91-4440-b1c5-753f601a2c90",
+            "xplay": "0d2ae42d-4c27-4cb7-af6c-2099062302bb"
         }
+        if spaceids:
+            self.spaceids.update(spaceids)
+
         self.profileid: str = ""
         self.userid: str = ""
         self.expiration: str = ""
