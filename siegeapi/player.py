@@ -3,10 +3,12 @@ from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
 
 from .utils import season_code_to_id, get_total_xp, get_xp_to_next_lvl
 from .linked_accounts import LinkedAccount
+from .exceptions import InvalidRequest
 from .rank_profile import FullProfile
 from .url_builder import UrlBuilder
 from .operators import Operators
 from .summaries import Summary
+from .persona import Persona
 from .weapons import Weapons
 from .trends import Trends
 from .ranks import Rank
@@ -51,6 +53,7 @@ class Player:
         self.linked_accounts: List[LinkedAccount] = []
 
         self.name: str = data.get("nameOnPlatform", "")
+        self.persona: Optional[Persona] = None
         self.level: int = 0
         self.alpha_pack: float = 0
         self.xp: int = 0
@@ -339,3 +342,25 @@ class Player:
                 self.event_profile = FullProfile(board.get('full_profiles', [])[0])
 
         return self.unranked_profile, self.ranked_profile, self.casual_profile, self.warmup_profile, self.event_profile
+
+    async def load_persona(self) -> Persona:
+        """"Loads the player's streamer nickname.
+
+        Raises:
+            ValueError: If the API response is not valid.
+
+        Returns:
+            Persona: The player's persona.
+        """
+
+        # Ubi throws a 404 at us if the user doesn't have a persona set (or never set it, idk)
+        try:
+            data = await self._auth.get(self._url_builder.persona())
+        except InvalidRequest as e:
+            data = {}
+        
+        if not isinstance(data, dict):
+            raise ValueError(f"Failed to load persona. Response: {data}")
+        
+        self.persona = Persona(data)
+        return self.persona

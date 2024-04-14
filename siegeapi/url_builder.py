@@ -106,3 +106,6 @@ class UrlBuilder:
         return f"https://public-ubiservices.ubi.com/v2/spaces/{self.xplay_spaceid}/title/r6s/skill/full_profiles?" \
                f"profile_ids={self.uid}" \
                f"&platform_families={self.platform_group.lower()}"
+
+    def persona(self) -> str:
+        return f"https://public-ubiservices.ubi.com/v1/profiles/{self.player_id}/persona?spaceId={self.xplay_spaceid}"
