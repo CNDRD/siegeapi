@@ -11,15 +11,17 @@ from .weapons import Weapons
 from .trends import Trends
 from .ranks import Rank
 from .maps import Maps
+import re
 
 if TYPE_CHECKING:
     from .auth import Auth
 
-import re
+
 
 PLATFORM_URL_NAMES = {"uplay": "OSBOR_PC_LNCH_A", "psn": "OSBOR_PS4_LNCH_A", "xbl": "OSBOR_XBOXONE_LNCH_A", "xplay": "OSBOR_XPLAY_LNCH_A"}
 DATE_PATTERN = re.compile(r"^((2\d)\d{2})(0[1-9]|1[012])([012]\d|3[01])$")
-ALL_SEASONS = list(range(6, 28))
+ALL_SEASONS: list[int] = list(range(6, 28))
+
 
 
 class Player:
@@ -151,7 +153,7 @@ class Player:
         self.total_time_played = int(stats.get("PTotalTimePlayed", {}).get("value", 0))
         self.total_time_played_hours = self.total_time_played // 3600 if self.total_time_played else 0
 
-    async def load_skill_records(self, seasons: List[int] = ALL_SEASONS, boards: List[str] = ["pvp_ranked","pvp_casual"], regions: List[str] = ["emea","ncsa","apac","global"]) -> None:
+    async def load_skill_records(self, seasons: List[int] = ALL_SEASONS, boards: List[str] = ["pvp_ranked", "pvp_casual"], regions: List[str] = ["emea","ncsa","apac","global"]) -> None:
         """Loads the player's skill records.
         Can get data only for seasons 6 (Health - Y2S2) until 27 (Brutal Swarm - Y7S3) because of ranked 2.0
 
@@ -196,7 +198,7 @@ class Player:
                         self.casual_skill_records.setdefault(season_id, {})
                         self.casual_skill_records[season_id][region_id] = rank_obj if played else None
 
-    async def load_summaries(self, gamemodes: List[str] = ["all","ranked","unranked","casual"], team_roles: List[str] = ['all', 'Attacker', 'Defender']) -> None:
+    async def load_summaries(self, gamemodes: List[str] = ["all", "ranked", "unranked", "casual"], team_roles: List[str] = ['all', 'Attacker', 'Defender']) -> None:
         """Loads the player's seasonal summaries.
         Note that the summaries are not returned, they must be accessed via their attributes (ranked_summary, unranked_summary, casual_summary, all_summary)
 
@@ -206,7 +208,7 @@ class Player:
 
         Raises:
             ValueError: If the API response is not valid.
-        """        
+        """
         _gamemodes: str = ",".join(gamemodes)
         _team_roles: str = ",".join(team_roles)
         data = await self._auth.get(self._url_builder.seasonal_summaries(_gamemodes, _team_roles))
