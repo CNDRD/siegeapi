@@ -3,6 +3,7 @@ from typing import Dict, List, Optional, Tuple, Union
 
 from .constants.ranks import *
 
+import re
 
 def get_xp_to_next_lvl(lvl: int) -> int:
     if lvl > 37:
@@ -54,7 +55,10 @@ def season_id_to_code(season_id: int) -> Optional[str]:
 
 
 def season_code_to_id(season_code: str) -> int:
-    # maybe add a check that the season_code format is like "Y_S_"
+    
+    if not re.match(r'Y\d+S\d+', season_code):
+        raise ValueError(f"Season code {season_code} does not match the expected format 'YXSX' where X is a number.")
+
     code_split = season_code.split('S')
     return (int(code_split[0][1:]) - 1) * 4 + int(code_split[1])
 
