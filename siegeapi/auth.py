@@ -15,6 +15,7 @@ from .player import Player
 
 PLATFORMS = ["uplay", "xbl", "psn"]
 
+
 class Auth:
     """ Holds the authentication information """
 
@@ -28,6 +29,7 @@ class Auth:
             password: Optional[str] = None,
             token: Optional[str] = None,
             appid: Optional[str] = None,
+            spaceids: Optional[Dict[Literal['uplay', 'psn', 'xbl', 'xplay'], str]] = None,
             creds_path: Optional[str] = None,
             cachetime: int = 120,
             max_connect_retries: int = 1,
@@ -52,10 +54,14 @@ class Auth:
         self.new_key: str = ""
         self.spaceid: str = ""
         self.spaceids: Dict[str, str] = {
-            "uplay": "0d2ae42d-4c27-4cb7-af6c-2099062302bb",
-            "psn": "0d2ae42d-4c27-4cb7-af6c-2099062302bb",
-            "xbl": "0d2ae42d-4c27-4cb7-af6c-2099062302bb"
+            "uplay": "5172a557-50b5-4665-b7db-e3f2e8c5041d",
+            "psn": "05bfb3f7-6c21-4c42-be1f-97a33fb5cf66",
+            "xbl": "98a601e5-ca91-4440-b1c5-753f601a2c90",
+            "xplay": "0d2ae42d-4c27-4cb7-af6c-2099062302bb"
         }
+        if spaceids:
+            self.spaceids.update(spaceids)
+
         self.profileid: str = ""
         self.userid: str = ""
         self.expiration: str = ""
@@ -91,18 +97,16 @@ class Auth:
             raise TypeError(f"'platform' has to be one of the following: {PLATFORMS}; Not {platform}")
 
         if name:
-            data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?"
-                                  f"nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
+            data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
         else:
-            data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?"
-                                  f"platformType={parse.quote(platform)}")
+            data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?platformType={parse.quote(platform)}")
         
         if not isinstance(data, dict):
             await self.close()
             raise InvalidRequest(f"Expected a JSON object, got {type(data)}")
 
         if "profiles" in data:
-            results = [Player(self, x) for x in data.get("profiles",{}) if x.get("platformType", "") == platform]
+            results = [Player(self, x) for x in data.get("profiles", {}) if x.get("platformType", "") == platform]
             if not results:
                 await self.close()
                 raise InvalidRequest("No results")
@@ -181,7 +185,7 @@ class Auth:
 
     async def connect(self, _new: bool = False) -> None:
         """Connect to the Ubisoft API.
-        This method will automatically called when needed."""
+        This method will be automatically called when needed."""
         self.load_creds()
 
         if self._login_cooldown > time.time():
@@ -296,7 +300,7 @@ class Auth:
                     if retries >= self.max_connect_retries:
                         # wait 30 seconds before sending another request
                         # pyright type checker doesn't like the below line
-                        self._login_cooldown = 30 + time.time() # type: ignore
+                        self._login_cooldown = 30 + time.time()  # type: ignore
 
                     # key no longer works, so remove key and let the following .get() call refresh it
                     self.key = None

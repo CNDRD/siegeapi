@@ -1,10 +1,9 @@
 from __future__ import annotations
 from typing import Dict, List, Optional, Tuple, Union
 
-from .constants import seasons as seasons_const
-from .exceptions import InvalidAttributeCombination
 from .constants.ranks import *
 
+import re
 
 def get_xp_to_next_lvl(lvl: int) -> int:
     if lvl > 37:
@@ -39,7 +38,6 @@ def get_xp_to_next_lvl(lvl: int) -> int:
         return 9_500
     if lvl in (35, 36, 37):
         return 10_000
-    #return None
     raise ValueError(f"Level {lvl} is not a valid level.")
 
 
@@ -51,21 +49,18 @@ def get_total_xp(lvl: int, current_xp: int) -> int:
 
 
 def season_id_to_code(season_id: int) -> Optional[str]:
-    seasons_count = len(seasons_const) - 3
-    season_id = seasons_count - season_id if season_id < 0 else season_id
-
-    return seasons_const.get(season_id, {}).get("code",None)
+    yr = (season_id - 1) // 4 + 1
+    ssn = (season_id - 1) % 4 + 1
+    return f"Y{yr}S{ssn}"
 
 
 def season_code_to_id(season_code: str) -> int:
-    """Depends on 'seasons_const' always being up-to-date.."""
-    seasons_count = len(seasons_const) - 3
-    season_id = next((k for k, v in seasons_const.items() if v["code"] == season_code), None)
+    
+    if not re.match(r'Y\d+S\d+', season_code):
+        raise ValueError(f"Season code {season_code} does not match the expected format 'YXSX' where X is a number.")
 
-    if season_id is None:
-        raise InvalidAttributeCombination(f"Season code '{season_code}' is invalid")
-
-    return seasons_count - season_id if season_id < 0 else season_id
+    code_split = season_code.split('S')
+    return (int(code_split[0][1:]) - 1) * 4 + int(code_split[1])
 
 
 def get_rank_constants(season_number: int = -1) -> List[Dict[str, Union[str, int]]]:

@@ -27,14 +27,18 @@ from siegeapi import Auth
 import asyncio
 
 async def sample():
-    auth = Auth("UBI_EMAIL", "UBI_PASSWORD")
-    player = await auth.get_player(uid="7e0f63df-a39b-44c5-8de0-d39a05926e77")
+    auth = Auth(UBISOFT_EMAIL, UBISOFT_PASSW)
+    player = await auth.get_player(name="CNDRD")
 
     print(f"Name: {player.name}")
     print(f"Profile pic URL: {player.profile_pic_url}")
-    
+
+    await player.load_persona()
+    print(f"Streamer nickname: {player.persona.nickname}")
+    print(f"Nickname enabled: {player.persona.enabled}")
+
     await player.load_playtime()
-    print(f"Total Time Played: {player.total_time_played:,} seconds")
+    print(f"Total Time Played: {player.total_time_played:,} seconds / {player.total_time_played_hours:,} hours")
     print(f"Level: {player.level}")
 
     await player.load_ranked_v2()
@@ -47,25 +51,26 @@ async def sample():
     print(f"XP: {player.xp:,}")
     print(f"Total XP: {player.total_xp:,}")
     print(f"XP to level up: {player.xp_to_level_up:,}")
-    
+
     await auth.close()
 
-asyncio.get_event_loop().run_until_complete(sample())
-# Or `asyncio.run(sample())`  
+asyncio.run(sample())
 ```
 ### Output  
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
-Total Time Played: 9,037,159 seconds
-Level: 305
-Ranked Points: 4188
-Rank: Diamond 4
-Max Rank Points: 4289
-Max Rank: Diamond 3
-XP: 11,858
-Total XP: 20,694,358
-XP to level up: 131,642
+Streamer nickname: d1kCheeze
+Nickname enabled: True
+Total Time Played: 9,265,890 seconds / 2,573 hours
+Level: 308
+Ranked Points: 3919
+Rank: Emerald 1
+Max Rank Points: 3933
+Max Rank: Emerald 1
+XP: 124,375
+Total XP: 21,238,875
+XP to level up: 20,625
 ```
 
 ---  

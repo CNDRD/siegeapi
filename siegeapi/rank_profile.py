@@ -18,8 +18,8 @@ class FullProfile:
 
         rank_constants = get_rank_constants(self.season_id)
         _, prev_, next_, _ = get_rank_from_mmr(self.rank_points)
-        self.max_rank: str = rank_constants[self.max_rank_id].get("name",'')
-        self.rank: str = rank_constants[self.rank_id].get("name",'')
+        self.max_rank: str = rank_constants[self.max_rank_id].get("name", '')
+        self.rank: str = rank_constants[self.rank_id].get("name", '')
         self.prev_rank_points: int = prev_
         self.next_rank_points: int = next_
         self.season_code: str = season_id_to_code(self.season_id)
@@ -32,3 +32,7 @@ class FullProfile:
 
     def get_dict(self) -> Dict[str, Union[str, int, float]]:
         return vars(self)
+
+    def __repr__(self) -> str:
+        return str(vars(self))
+    

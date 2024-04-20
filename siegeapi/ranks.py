@@ -37,3 +37,7 @@ class Rank:
 
     def get_dict(self) -> Dict[str, Union[str, int, float]]:
         return vars(self)
+
+    def __repr__(self) -> str:
+        return str(vars(self))
+    
