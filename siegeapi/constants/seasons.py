@@ -236,4 +236,10 @@ seasons: Dict[int, Dict[str, str]] = {
         "code": "Y9S1",
         "start_date": "2024-03-05"
     },
+    34: {
+        "name": "New Blood",
+        "hex": "#f58223",
+        "code": "Y9S2",
+        "start_date": "2024-06-11"
+    },
 }
