@@ -6,6 +6,7 @@ dist/
 
 serviceAccountKey.json
 testing.py
+skinsTesting.py
 wss.py
 creds/
 
