@@ -85,15 +85,12 @@ class Auth:
             List[Player]: A list of player objects matching the search term.
         """        
         if (not name and not uid) or (name and uid):
-            await self.close()
             raise TypeError("Exactly one non-empty parameter should be provided (name or uid)")
 
         if not platform:
-            await self.close()
             raise TypeError("'platform' cannot be None")
 
         if platform not in PLATFORMS:
-            await self.close()
             raise TypeError(f"'platform' has to be one of the following: {PLATFORMS}; Not {platform}")
 
         if name:
@@ -102,13 +99,11 @@ class Auth:
             data = await self.get(f"https://public-ubiservices.ubi.com/v3/users/{uid}/profiles?platformType={parse.quote(platform)}")
         
         if not isinstance(data, dict):
-            await self.close()
             raise InvalidRequest(f"Expected a JSON object, got {type(data)}")
 
         if "profiles" in data:
             results = [Player(self, x) for x in data.get("profiles", {}) if x.get("platformType", "") == platform]
             if not results:
-                await self.close()
                 raise InvalidRequest("No results")
             return results
         else:
