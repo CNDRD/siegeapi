@@ -20,15 +20,15 @@ class UrlBuilder:
         self.end_date = f"&endDate={end_date}"
 
     def linked_accounts(self) -> str:
-        return f"https://public-ubiservices.ubi.com/v3/users/{self.player_id}/profiles"
+        return f"https://public-ubiservices.ubi.com/v3/users/{self.uid}/profiles"
 
     def xp_lvl(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/spaces/{self.xplay_spaceid}/title/r6s/rewards/public_profile?" \
-               f"profile_id={self.player_id}"
+               f"profile_id={self.uid}"
 
     def playtime(self) -> str:
         return f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
-               f"profileIds={self.player_id}" \
+               f"profileIds={self.uid}" \
                f"&spaceId={self.xplay_spaceid}" \
                f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed,PClearanceLevel"
 
@@ -86,7 +86,7 @@ class UrlBuilder:
                f"{self.end_date}"
 
     def seasonal_summaries(self, gamemodes: str, team_roles: str) -> str:
-        return f"https://prod.datadev.ubisoft.com/v1/users/{self.player_id}/playerstats?" \
+        return f"https://prod.datadev.ubisoft.com/v1/users/{self.uid}/playerstats?" \
                f"spaceId={self.xplay_spaceid}" \
                f"&view=seasonal" \
                f"&aggregation=summary" \
