@@ -102,7 +102,7 @@ class Auth:
             raise InvalidRequest(f"Expected a JSON object, got {type(data)}")
 
         if "profiles" in data:
-            results = [Player(self, x) for x in data.get("profiles", {}) if x.get("platformType", "") == platform]
+            results = [Player(self, x) for x in data.get("profiles", {}) if x.get("platformType", "") == platform and x.get("userId") is not None]
             if not results:
                 raise InvalidRequest("No results")
             return results
