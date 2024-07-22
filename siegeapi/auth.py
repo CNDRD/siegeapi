@@ -281,6 +281,10 @@ class Auth:
         session = await self.get_session()
         resp = await session.get(*args, **kwargs)
 
+        # This is maybe putting too much trust into Ubisoft lmao.. we'll see won't we
+        if resp.status == 204:
+            return {}
+
         if json_:
             try:
                 data = await resp.json()
