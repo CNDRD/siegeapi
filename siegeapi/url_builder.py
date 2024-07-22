@@ -40,14 +40,6 @@ class UrlBuilder:
                f"&region_ids={regions}" \
                f"&profile_ids={self.player_id}"
 
-    def boards(self, season: int, board_id: str, region: str) -> str:
-        return f"https://public-ubiservices.ubi.com/v1/spaces/{self.spaceid}/" \
-               f"sandboxes/{self.platform_url}/r6karma/players?" \
-               f"board_id=pvp_{board_id}" \
-               f"&profile_ids={self.player_id}" \
-               f"&region_id={region}" \
-               f"&season_id={season}"
-
     def trends(self) -> str:
         return f"https://prod.datadev.ubisoft.com/v1/profiles/{self.uid}/playerstats?" \
                f"spaceId={self.spaceid}" \
