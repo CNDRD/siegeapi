@@ -13,3 +13,7 @@ creds/
 .DS_Store
 apikeys.yml
 main.py
+ban_tracker.py
+xd.py
+
+tests/
