@@ -3,6 +3,11 @@ WEAPONS_DICT = {
 
     # Primary Weapons
     # AR's
+    "PCX-33": {
+        "type": "Assault Rifle",
+        "icon_url": "jKFNRujDQyioHLu0PULiR/a3dce57946beba1378566c386cfa0270/pcx-33.png",
+        "imgur_url": "https://i.imgur.com/IiuCBXu.png",
+    },
     "POF9": {
         "type": "Assault Rifle",
         "icon_url": "1bhuAox7U6aHN6UriXsAry/3c213cd27f5f64ba01a29b42e5b24ac5/POF9.png",

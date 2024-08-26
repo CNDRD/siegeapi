@@ -242,4 +242,10 @@ seasons: Dict[int, Dict[str, str]] = {
         "code": "Y9S2",
         "start_date": "2024-06-11"
     },
+    35: {
+        "name": "Twin Shells",
+        "hex": "#c028d6",
+        "code": "Y9S3",
+        "start_date": "2024-09-10"
+    },
 }

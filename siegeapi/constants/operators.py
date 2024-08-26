@@ -1,4 +1,20 @@
 operator_dict = {
+   "skopos": {
+      "name": "Skopós",
+      "safename": "skopos",
+      "realname": "Kure Galanos",
+      "birthplace": "Nicosia, Cyprus",
+      "age": 42,
+      "date_of_birth": "July 25th",
+      "season_introduced": "Y9S3",
+      "health": 2,
+      "speed": 2,
+      "unit": "Wolfguard",
+      "country_code": "CY",
+      "roles": ["INTEL", "SUPPORT"],
+      "side": "defender",
+      "icon_url": "https://i.imgur.com/NdHeyUx.png",
+   },
    "striker": {
       "name": "Striker",
       "safename": "striker",
