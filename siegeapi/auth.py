@@ -34,11 +34,13 @@ class Auth:
             cachetime: int = 120,
             max_connect_retries: int = 1,
             session: Optional[aiohttp.ClientSession] = None,
-            refresh_session_period: int = 180
+            refresh_session_period: int = 180,
+            extra_get_kwargs: Optional[Dict[str, str]] = None,
     ):
         self.session: aiohttp.ClientSession = session or aiohttp.ClientSession()
         self.max_connect_retries: int = max_connect_retries
         self.refresh_session_period: int = refresh_session_period
+        self.extra_get_kwargs: Dict[str, str] = extra_get_kwargs or {}
 
         if token:
             self.token: str = token 
@@ -263,6 +265,9 @@ class Auth:
                     raise last_error
                 else:
                     raise FailedToConnect("Unknown Error")
+
+        # Apply extra kwargs to every request.
+        kwargs.update(self.extra_get_kwargs)
 
         if "headers" not in kwargs:
             kwargs["headers"] = {}
