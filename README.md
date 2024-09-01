@@ -62,15 +62,15 @@ Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
 Streamer nickname: d1kCheeze
 Nickname enabled: True
-Total Time Played: 9,265,890 seconds / 2,573 hours
-Level: 308
-Ranked Points: 3919
-Rank: Emerald 1
-Max Rank Points: 3933
-Max Rank: Emerald 1
-XP: 124,375
-Total XP: 21,238,875
-XP to level up: 20,625
+Total Time Played: 9,795,281 seconds / 2,720 hours
+Level: 317
+Ranked Points: 4400
+Rank: Diamond 1
+Max Rank Points: 4432
+Max Rank: Diamond 1
+XP: 136,139
+Total XP: 22,573,639
+XP to level up: 13,361
 ```
 
 ---  
