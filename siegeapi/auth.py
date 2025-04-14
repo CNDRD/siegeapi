@@ -249,6 +249,12 @@ class Auth:
     async def get(self, *args, retries: int = 0, json_: bool = True, new: bool = False, **kwargs) -> Union[dict, str]:
         """Sends a GET request to the Ubisoft API.
         Intended for internal use only."""
+
+        MAX_RETRIES = 3
+
+        if retries >= MAX_RETRIES:
+            raise InvalidRequest(f"Exceeded max retry attempts in get() after {MAX_RETRIES} tries.")
+
         if (not self.key and not new) or (not self.new_key and new):
             last_error = None
             for _ in range(self.max_connect_retries):
