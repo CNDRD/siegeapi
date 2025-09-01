@@ -5,7 +5,7 @@ with open('README.md') as f:
 
 setup(
     name="siegeapi",
-    version="6.3.5",
+    version="7.0.0-rc1",
     url="https://github.com/CNDRD/siegeapi",
     description="Rainbow Six Siege API interface",
     author="CNDRD",
@@ -24,8 +24,6 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.8",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Python Modules",

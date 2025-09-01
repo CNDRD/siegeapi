@@ -1,6 +1,6 @@
-from __future__ import annotations
-from typing import Dict, Union
+
 from .utils import season_id_to_code, get_rank_from_mmr, get_rank_constants
+
 
 
 class FullProfile:
@@ -30,7 +30,7 @@ class FullProfile:
         self.losses: int = match_outcomes.get("losses", 0)
         self.wins: int = match_outcomes.get("wins", 0)
 
-    def get_dict(self) -> Dict[str, Union[str, int, float]]:
+    def get_dict(self) -> dict[str, str | int | float]:
         return vars(self)
 
     def __repr__(self) -> str:
