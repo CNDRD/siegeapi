@@ -5,6 +5,12 @@ from .constants.ranks import *
 
 import re
 
+"""
+
+# im gonna leave these here forever
+# for future explorers
+# to see how life was
+
 def get_xp_to_next_lvl(lvl: int) -> int:
     if lvl > 37:
         return (lvl - 18) * 500
@@ -46,6 +52,8 @@ def get_total_xp(lvl: int, current_xp: int) -> int:
     for level in range(1, lvl):
         total += get_xp_to_next_lvl(level)
     return total + current_xp
+
+"""
 
 
 def season_id_to_code(season_id: int) -> Optional[str]:
