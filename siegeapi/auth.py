@@ -129,7 +129,7 @@ class Auth:
         authorization = f"Ubi_v1 t={self._base_auth.ticket}" if advanced else f"Basic {self._token}"
 
         # Check if the auth_data is already set and not expired
-        if auth_data is not None or (auth_data and not auth_data.is_expired()):
+        if auth_data and not auth_data.is_expired():
             return auth_data
 
         # The auth_data is expired or not set, so let's get a new one
