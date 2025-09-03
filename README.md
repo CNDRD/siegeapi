@@ -28,14 +28,22 @@ import asyncio
 
 async def sample():
     auth = Auth(UBISOFT_EMAIL, UBISOFT_PASSW)
-    player = await auth.get_player(name="CNDRD")
-
+    player = await auth.get_player(name='CNDRD')
+    
     print(f"Name: {player.name}")
     print(f"Profile pic URL: {player.profile_pic_url}")
+    print()
 
-    await player.load_playtime()
+    await player.load_stats()
+    print(f"Level: {player.level}")
     print(f"Total Time Played: {player.total_time_played:,} seconds / {player.total_time_played_hours:,} hours")
     print(f"PVE: {player.pve_time_played:,} seconds | PVP: {player.pvp_time_played:,} seconds")
+    print(f"Total Commendations: {player.commendations.get('total', 0)}")
+    for k, v in player.commendations.items():
+        if k != 'total':
+            print(f"{v}x {k.capitalize()} ", end='')
+    print()
+    print()
 
     await player.load_full_profiles()
     print(f"Players' full profiles: {player.list_full_profiles()}")
@@ -53,13 +61,18 @@ asyncio.run(sample())
 ```text
 Name: CNDRD
 Profile pic URL: https://ubisoft-avatars.akamaized.net/7e0f63df-a39b-44c5-8de0-d39a05926e77/default_256_256.png
+
+Level: 620
 Total Time Played: 10,811,538 seconds / 3,003 hours
 PVE: 157,560 seconds | PVP: 9,830,647 seconds
+Total Commendations: 328
+83x Dedication 59x Guidance 184x Valor
+
 Players' full profiles: ['standard', 'dual_front', 'ranked']
-Ranked Points: 4129
-Rank: Diamond 4
-Max Rank Points: 4162
-Max Rank: Diamond 4
+Ranked Points: 1000
+Rank: Unranked
+Max Rank Points: 1000
+Max Rank: Unranked
 ```
 
 ---  
