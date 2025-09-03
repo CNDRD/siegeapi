@@ -20,6 +20,7 @@ class Player:
         self._xplay_spaceid: str = '0d2ae42d-4c27-4cb7-af6c-2099062302bb'
         self._platform_group: str = 'pc' if self._platform == 'uplay' else 'console'
 
+        self.level: int = 0
         self.total_time_played: int = 0
         self.total_time_played_hours: int = 0
         self.pvp_time_played: int = 0
@@ -72,7 +73,7 @@ class Player:
         url = f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
                 f"profileIds={self.user_id}" \
                 f"&spaceId={self._xplay_spaceid}" \
-                f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed"
+                f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed,PClearanceLevel"
 
         data = await self._auth.get(url)
 
@@ -81,6 +82,7 @@ class Player:
 
         stats = data.get('profiles', [])[0].get('stats', {})
 
+        self.level = int(stats.get("PClearanceLevel", {}).get("value", 0))
         self.pvp_time_played = int(stats.get("PPvPTimePlayed", {}).get("value", 0))
         self.pve_time_played = int(stats.get("PPvETimePlayed", {}).get("value", 0))
         self.total_time_played = int(stats.get("PTotalTimePlayed", {}).get("value", 0))
