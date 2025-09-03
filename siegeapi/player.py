@@ -25,6 +25,8 @@ class Player:
         self.total_time_played_hours: int = 0
         self.pvp_time_played: int = 0
         self.pve_time_played: int = 0
+        self.commendations: dict[str, int] = {}
+        self.bp_levels: dict[int, int] = {} # season_id: level
 
         self.full_profiles: dict[str, FullProfile | None] = {}
     
@@ -66,19 +68,24 @@ class Player:
 
 
 
-    # ----------
-    #  Playtime
+    # -------
+    #  Stats
 
-    async def load_playtime(self) -> None:
+    async def load_stats(self) -> None:
+        stat_names = [
+            'PPvPTimePlayed', 'PPvETimePlayed', 'PTotalTimePlayed', 'PClearanceLevel',
+            'Commendations', 'CommendationsType', 'PlayerBPCurrentLevelPerSeason',
+        ]
+
         url = f"https://public-ubiservices.ubi.com/v1/profiles/stats?" \
                 f"profileIds={self.user_id}" \
                 f"&spaceId={self._xplay_spaceid}" \
-                f"&statNames=PPvPTimePlayed,PPvETimePlayed,PTotalTimePlayed,PClearanceLevel"
+                f"&statNames={','.join(stat_names)}"
 
         data = await self._auth.get(url)
 
         if not isinstance(data, dict):
-            raise ValueError(f"Failed to load playtime. Response: {data}")
+            raise ValueError(f"Failed to load stats. Response: {data}")
 
         stats = data.get('profiles', [])[0].get('stats', {})
 
@@ -87,3 +94,15 @@ class Player:
         self.pve_time_played = int(stats.get("PPvETimePlayed", {}).get("value", 0))
         self.total_time_played = int(stats.get("PTotalTimePlayed", {}).get("value", 0))
         self.total_time_played_hours = self.total_time_played // 3600 if self.total_time_played else 0
+
+        self.commendations['total'] = int(stats.get('Commendations', {}).get('value', 0))
+
+        for key, value in stats.items():
+            if key.startswith('CommendationsType.commendtype.'):
+                commend_type = key.split('.')[-1].lower()
+                self.commendations[commend_type] = int(value.get('value', 0))
+
+            elif key.startswith('PlayerBPCurrentLevelPerSeason.seasonid.'):
+                season_id = int(key.split('.')[-1])
+                level = int(value.get('value', 0))
+                self.bp_levels[season_id] = level
