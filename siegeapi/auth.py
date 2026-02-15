@@ -221,8 +221,8 @@ class Auth:
         if (not name and not uid) or (name and uid):
             raise TypeError("Exactly one non-empty parameter should be provided (name or uid)")
 
-        if not platform in ['uplay', 'console']:
-            raise ValueError("Platform must be either 'uplay' or 'console'")
+        if not platform in ['uplay', 'xbl', 'psn']:
+            raise ValueError("Platform must be either 'uplay', 'xbl' or 'psn'")
 
         if name:
             data = await self.get(f"https://public-ubiservices.ubi.com/v3/profiles?nameOnPlatform={parse.quote(name)}&platformType={parse.quote(platform)}")
